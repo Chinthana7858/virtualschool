@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 public class Address {
-    private String country;
-    private String postcode;
+    private String number;
+    private String street;
     private String city;
 }

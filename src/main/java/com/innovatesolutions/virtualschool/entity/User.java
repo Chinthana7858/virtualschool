@@ -1,23 +1,14 @@
 package com.innovatesolutions.virtualschool.entity;
-
 import com.innovatesolutions.virtualschool.enums.Gender;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Data
 @Document
-public class Student {
-    @Id
-    private String id;
+public class User {
     @Indexed(unique = true)
     private String userid;
+    private String userRole;
     private String firstName;
     private String lastName;
     private String fullName;
@@ -28,16 +19,18 @@ public class Student {
     private Gender gender;
     private Address address;
 
-    public Student(String userid,
-                   String firstName,
-                   String lastName,
-                   String fullName,
-                   String phoneNo,
-                   String dateOfBirth,
-                   String email,
-                   Gender gender,
-                   Address address) {
+    public User(String userid,
+                String userRole,
+                String firstName,
+                String lastName,
+                String fullName,
+                String phoneNo,
+                String dateOfBirth,
+                String email,
+                Gender gender,
+                Address address) {
         this.userid= userid;
+        this.userRole=userRole;
         this.firstName = firstName;
         this.lastName = lastName;
         this.fullName=fullName;
