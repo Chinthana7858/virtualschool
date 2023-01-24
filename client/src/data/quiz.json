@@ -1,0 +1,49 @@
+{
+    "data": [
+      {
+        "question": "1. In Operating Systems, which of the following is/are CPU scheduling algorithms?",
+        "choices": ["a) Priority", "b) Round Robin", "c) Shortest Job First", "d) All of the mentioned"],
+        "answer": "d) All of the mentioned"
+      },
+      {
+        "question": "2. To access the services of the operating system, the interface is provided by the ___________",
+        "choices": ["a) Library", "b) System calls", "c) Assembly instructions", "d) API"],
+        "answer": "b) System calls"
+      },
+      {
+        "question": "3. Which one of the following is not a real time operating system?",
+        "choices": ["a) RTLinux", "b) Palm OS", "c) QNX", "d) VxWorks"],
+        "answer": "b) Palm OS"
+      },
+      {
+        "question": "4. The main memory accommodates ____________",
+        "choices": ["a) operating system", "b) cpu", "c) user processes", "d) all of the mentioned"],
+        "answer": "a) operating system"
+      },
+      {
+        "question": "5. The operating system is responsible for?",
+        "choices": ["a) bad-block recovery", "b) all of the mentioned", "c) disk initialization", "b) booting from disk"],
+        "answer": "b) all of the mentioned"
+      },
+      {
+        "question": "6. Using transient code, _______ the size of the operating system during program execution.",
+        "choices": ["a) maintains", "b) changes", "c) increases", "d) decreases"],
+        "answer": "b) changes"
+      },
+      {
+        "question": "7. Which one of the following is a real time operating system?",
+        "choices": ["a) All of the mentioned", "b) Windows CE", "c) Windows CE", "d) VxWorks"],
+        "answer": "a) All of the mentioned"
+      },
+      {
+        "question": "8. In Unix, which system call creates the new process?",
+        "choices": ["a) create", "b) fork", "c) new", "d) none of the mentioned"],
+        "answer": "b) fork"
+      },
+      {
+        "question": "9. The operating system keeps a small table containing information about all open files called",
+        "choices": ["a) file table", "b) open-file table", "c) open-file table", "d) system table"],
+        "answer": "b) open-file table"
+      }
+    ]
+  }
