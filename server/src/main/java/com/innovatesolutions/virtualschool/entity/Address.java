@@ -1,7 +1,8 @@
-package com.innovatesolutions.virtualschool.controller.entity;
+package com.innovatesolutions.virtualschool.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
 @AllArgsConstructor

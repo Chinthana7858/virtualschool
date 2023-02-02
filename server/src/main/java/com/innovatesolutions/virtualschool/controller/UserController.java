@@ -1,6 +1,7 @@
-package com.innovatesolutions.virtualschool.controller.controller;
-import com.innovatesolutions.virtualschool.controller.service.UserService;
-import com.innovatesolutions.virtualschool.controller.entity.User;
+package com.innovatesolutions.virtualschool.controller;
+import com.innovatesolutions.virtualschool.repository.UserRepository;
+import com.innovatesolutions.virtualschool.service.UserService;
+import com.innovatesolutions.virtualschool.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,4 +32,18 @@ public class UserController {
             return new ResponseEntity<>("User with userid " + userid + " not found.", HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @PutMapping("api/vi/users/{userid}")
+    public ResponseEntity<String> updateUser(@RequestBody User user) {
+        try {
+            userService.updateUser(user);
+            return new ResponseEntity<>("User with userid " + user.getUserid() + " has been updated.", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("User with userid " + user.getUserid() + " not found. and exeption is"+ e.getMessage()+" and passed user "+user, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }
