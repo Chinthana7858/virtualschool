@@ -1,6 +1,6 @@
-package com.innovatesolutions.virtualschool.controller.controller;
-import com.innovatesolutions.virtualschool.controller.service.UserService;
-import com.innovatesolutions.virtualschool.controller.entity.User;
+package com.innovatesolutions.virtualschool.controller;
+import com.innovatesolutions.virtualschool.service.UserService;
+import com.innovatesolutions.virtualschool.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

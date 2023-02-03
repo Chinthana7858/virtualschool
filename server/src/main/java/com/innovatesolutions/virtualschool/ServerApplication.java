@@ -1,4 +1,4 @@
-package com.innovatesolutions.virtualschool.controller;
+package com.innovatesolutions.virtualschool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

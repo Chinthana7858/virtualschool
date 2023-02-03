@@ -1,5 +1,5 @@
-package com.innovatesolutions.virtualschool.controller.entity;
-import com.innovatesolutions.virtualschool.controller.enums.Gender;
+package com.innovatesolutions.virtualschool.entity;
+import com.innovatesolutions.virtualschool.enums.Gender;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;

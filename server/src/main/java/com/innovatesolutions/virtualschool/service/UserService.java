@@ -1,6 +1,6 @@
-package com.innovatesolutions.virtualschool.controller.service;
-import com.innovatesolutions.virtualschool.controller.entity.User;
-import com.innovatesolutions.virtualschool.controller.repository.UserRepository;
+package com.innovatesolutions.virtualschool.service;
+import com.innovatesolutions.virtualschool.entity.User;
+import com.innovatesolutions.virtualschool.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
