@@ -3,7 +3,7 @@
 const SideBarStudent = () => {
 
     const Menus = [
-      { title: "Home", src: "Home" },
+      { title: "Home", src: "Home",gap: true },
       { title: "Classroom", src: "Classroom" },
       { title: "Results", src: "Results" },
       { title: "Attendance ", src: "Attendance" },
@@ -16,7 +16,7 @@ const SideBarStudent = () => {
     return (
     
       <div className="fixed">
-        <div className={`  h-[90vh]  p-5  pt-8  bg-[#586B7D] duration-500 sticky`} >
+        <div className={`  h-[100vh]  p-5  pt-8  bg-[#586B7D] duration-500 sticky`} >
        
          
           <div className="flex items-center gap-x-4">

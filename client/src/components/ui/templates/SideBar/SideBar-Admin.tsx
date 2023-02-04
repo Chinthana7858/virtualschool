@@ -16,7 +16,7 @@ const SideBarAdmin = () => {
   return (
   
     <div className="fixed">
-      <div className={`  h-[90vh]  p-5  pt-8  bg-[#586B7D] duration-500 sticky`} >
+      <div className={`  h-[100vh]  p-5  pt-8  bg-[#586B7D] duration-500 sticky`} >
      
        
         <div className="flex items-center gap-x-4">
