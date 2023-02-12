@@ -1,5 +1,5 @@
 package com.innovatesolutions.virtualschool.controller;
-import com.innovatesolutions.virtualschool.repository.UserRepository;
+import com.innovatesolutions.virtualschool.enums.userRole;
 import com.innovatesolutions.virtualschool.service.UserService;
 import com.innovatesolutions.virtualschool.entity.User;
 import lombok.AllArgsConstructor;
@@ -7,23 +7,47 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
 
+    //Get all users
     @GetMapping("api/vi/users")
     public List<User> fetchAllUsers(){
         return userService.getAllUsers();
     }
 
+    //Get users by userid
+     @GetMapping("api/vi/users/{userid}")
+    public Optional<User> getUserById(@PathVariable String userid) {
+        return userService.getUserById(userid);
+    }
+
+    //Get users by userRole
+    @GetMapping("api/vi/users/role/{userRole}")
+    public List<User> getUserByRole(@PathVariable userRole userRole) {
+        return userService.getUsersByRole(userRole);
+    }
+
+    //Get users by userRole and userState
+  @GetMapping("api/vi/users/role/{userRole}/state/{userState}")
+    public List<User> getUserByRoleAndState(@PathVariable userRole userRole, @PathVariable String userState) {
+        return userService.getUsersByRoleAndState(userRole, userState);
+    }
+
+    //Save users
     @PostMapping("api/vi/users")
     public String RegisterNewUser(@RequestBody User user){
         userService.addNewUser(user);
         return "Profile created";
     }
 
+    //Delete users by userid
     @DeleteMapping("api/vi/users/{userid}")
     public ResponseEntity<String> deleteUser(@PathVariable String userid) {
         if (userService.deleteUser(userid)) {
@@ -33,16 +57,25 @@ public class UserController {
         }
     }
 
-
+    //Update user by userid
     @PutMapping("api/vi/users/{userid}")
-    public ResponseEntity<String> updateUser(@RequestBody User user) {
-        try {
-            userService.updateUser(user);
-            return new ResponseEntity<>("User with userid " + user.getUserid() + " has been updated.", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("User with userid " + user.getUserid() + " not found. and exeption is"+ e.getMessage()+" and passed user "+user, HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> updateUser(@PathVariable("userid") String userid, @RequestBody User user){
+        if(userService.updateUser(userid,user)){
+            return new ResponseEntity<>("User with userid " + userid + " has been updated.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User with userid " + userid + " not found.", HttpStatus.NOT_FOUND);
         }
+
+    }
+
+    @PutMapping("api/vi/users/userState/{userid}")
+    public ResponseEntity<String> updateUserState(@PathVariable("userid") String userid){
+        if(userService.updateUserState(userid)){
+            return new ResponseEntity<>("UserState with userid " + userid + " has been updated.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User with userid " + userid + " not found.", HttpStatus.NOT_FOUND);
+        }
+
     }
 
 
