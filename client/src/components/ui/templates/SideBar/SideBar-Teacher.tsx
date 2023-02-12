@@ -1,7 +1,7 @@
 const SideBarTeacher = () => {
 
     const Menus = [
-      { title: "Home", src: "Home",gap: true },
+      { title: "Home", src: "Home" },
       { title: "Classes", src: "Classroom" },
       { title: "Profile", src: "Profile" },
       { title: "Contacts", src: "Contacts" },
@@ -27,7 +27,7 @@ const SideBarTeacher = () => {
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
               >
-                <img src={`./images/${Menu.src}.png `} className="w-7 h-7" />
+                <img src= {`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} className="w-8 h-8" />
                 <span className={` hover:bg-slate-700 `}>
                   {Menu.title }
                 </span>
