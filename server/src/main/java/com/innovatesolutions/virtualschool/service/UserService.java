@@ -1,5 +1,5 @@
 package com.innovatesolutions.virtualschool.service;
-import com.innovatesolutions.virtualschool.enums.userRole;
+import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.repository.UserRepository;
 import com.innovatesolutions.virtualschool.entity.User;
 import lombok.AllArgsConstructor;
@@ -27,11 +27,11 @@ public class UserService {
         return userRepository.findById(userid);
     }
 
-    public List<User> getUsersByRole(userRole userRole) {
+    public List<User> getUsersByRole(UserRole userRole) {
         return userRepository.findByUserRole(userRole);
     }
 
-    public List<User> getUsersByRoleAndState(userRole userRole, String userState) {
+    public List<User> getUsersByRoleAndState(UserRole userRole, String userState) {
         return userRepository.findByUserRoleAndUserState(userRole, userState);
     }
     public boolean deleteUser(String userid) {

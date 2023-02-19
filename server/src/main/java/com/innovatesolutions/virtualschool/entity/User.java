@@ -1,6 +1,6 @@
 package com.innovatesolutions.virtualschool.entity;
 import com.innovatesolutions.virtualschool.enums.Gender;
-import com.innovatesolutions.virtualschool.enums.userRole;
+import com.innovatesolutions.virtualschool.enums.UserRole;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -11,7 +11,7 @@ public class User {
     @Id
     private String userid;
     private String userState;
-    private userRole userRole;
+    private UserRole userRole;
     private String nameWithInitials;
     private String fullName;
     private String phoneNo;
@@ -25,7 +25,7 @@ public class User {
 
     public User(String userid,
                 String userState,
-                userRole userRole,
+                UserRole userRole,
                 String nameWithInitials,
                 String fullName,
                 String phoneNo,

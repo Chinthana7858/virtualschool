@@ -1,5 +1,5 @@
 package com.innovatesolutions.virtualschool.controller;
-import com.innovatesolutions.virtualschool.enums.userRole;
+import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.service.UserService;
 import com.innovatesolutions.virtualschool.entity.User;
 import lombok.AllArgsConstructor;
@@ -30,13 +30,13 @@ public class UserController {
 
     //Get users by userRole
     @GetMapping("api/vi/users/role/{userRole}")
-    public List<User> getUserByRole(@PathVariable userRole userRole) {
+    public List<User> getUserByRole(@PathVariable UserRole userRole) {
         return userService.getUsersByRole(userRole);
     }
 
     //Get users by userRole and userState
   @GetMapping("api/vi/users/role/{userRole}/state/{userState}")
-    public List<User> getUserByRoleAndState(@PathVariable userRole userRole, @PathVariable String userState) {
+    public List<User> getUserByRoleAndState(@PathVariable UserRole userRole, @PathVariable String userState) {
         return userService.getUsersByRoleAndState(userRole, userState);
     }
 

@@ -1,5 +1,8 @@
 package com.innovatesolutions.virtualschool.enums;
 
-public enum userRole {
-    STUDENT,TEACHER,PRINCIPAL,PARENT,ADMIN
+public enum UserRole {
+    STUDENT,TEACHER,ADMIN,PRINCIPAL,SECTION_HEAD
 }
+
+
+
