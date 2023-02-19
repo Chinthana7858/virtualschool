@@ -6,7 +6,6 @@ const SideBarPrincipal = () => {
       { title: "Home", src: "Home" },
       { title: "Sections", src: "Classroom" },
       { title: "Results", src: "Results" },
-      { title: "Users", src: "Users" },
       { title: "Profile", src: "Profile" },
       { title: "Contacts", src: "Contacts" },
       { title: "SignOut", src: "SignOut" , gap: true },
@@ -19,7 +18,7 @@ const SideBarPrincipal = () => {
        
          
           <div className="flex items-center gap-x-4">
-            <img src="./images/logo.png"className={` duration-500  w-14 h-14" }`}/>
+            <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className={` duration-500  w-14 h-14" }`}/>
             <h1 className={` origin-left fontmedium text-xl duration-1000 text-white`} >
               Virtial School
             </h1>
@@ -31,7 +30,7 @@ const SideBarPrincipal = () => {
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
               >
-                <img src={`./images/${Menu.src}.png `} className="w-7 h-7" />
+                <img src={`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} className="w-7 h-7" />
                 <span className={` hover:bg-slate-700 `}>
                   {Menu.title }
                 </span>
