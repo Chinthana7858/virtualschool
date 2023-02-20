@@ -105,7 +105,7 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
