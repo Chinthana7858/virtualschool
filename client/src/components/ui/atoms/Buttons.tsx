@@ -1,7 +1,8 @@
 import React from 'react'
-import { AiFillDelete, AiOutlineRight } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit, AiOutlineRight } from "react-icons/ai";
 import { BiCheck } from "react-icons/bi";
-
+import { FiCheckSquare } from "react-icons/fi";
+import { RxCross2 } from "react-icons/rx";
 export  function ViewButton() {
   return (
     <div>
@@ -63,6 +64,68 @@ export  function RemoveUserButton() {
     <div>
       <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
         <div className='flex'><span className="text-lg font-normal">Remove User</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
+      </button>
+    </div>
+  )
+
+
+}
+
+
+
+export  function TimeTableDeleteButton() {
+  return (
+    <div>
+      <button className="pt-3 pb-4 pl-6 pr-2 text-sm font-semibold text-white bg-[#794848] rounded-md hover:bg-[#5a3131]">
+        <div className='flex'><span className="font-normal text-md">Delete</span> <span className='px-3 pt-0'><AiFillDelete size="1.5em"/></span> </div>
+      </button>
+    </div>
+  )
+
+
+}
+
+export  function TimeTableEditButton() {
+  return (
+    <div>
+      <button className="pt-3 pb-4 pl-10 pr-2 text-sm font-semibold text-white bg-[#407c43] rounded-md hover:bg-[#264828]">
+        <div className='flex'><span className="font-normal text-md">Edit</span> <span className='px-3 pt-0'><AiFillEdit size="1.5em"/></span> </div>
+      </button>
+    </div>
+  )
+
+
+}
+
+export  function AddNewRowButton() {
+  return (
+    <div>
+      <button className="pt-3 pb-4 px-[25vw] text-sm font-semibold text-white bg-[#4e407c] rounded-md hover:bg-[#362648]">
+        <div className='flex'><span className="font-normal text-md">Add New Row</span> <span className='px-3 pt-0'><AiFillEdit size="1.5em"/></span> </div>
+      </button>
+    </div>
+  )
+
+
+}
+
+export  function SubmitButton() {
+  return (
+    <div>
+      <button className="pt-2 pb-3 px-4  text-sm font-semibold text-white bg-[#4e407c] rounded-md hover:bg-[#362648]">
+        <div className='flex'><span className="font-normal text-md">Submit</span> <span className='px-3 pt-0'><FiCheckSquare size="1.5em"/></span> </div>
+      </button>
+    </div>
+  )
+
+
+}
+
+export  function CloseButton() {
+  return (
+    <div>
+      <button className=" p-1 text-sm font-semibold text-white bg-[#ce3a3a] rounded-sm hover:bg-[#bb2944]">
+        <div className='flex'><span className="font-normal text-md"></span> <span className=''><RxCross2 size="1em"/></span> </div>
       </button>
     </div>
   )
