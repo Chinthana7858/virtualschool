@@ -68,6 +68,7 @@ public class UserController {
 
     }
 
+    //Update userState by userid
     @PutMapping("api/vi/users/userState/{userid}")
     public ResponseEntity<String> updateUserState(@PathVariable("userid") String userid){
         if(userService.updateUserState(userid)){

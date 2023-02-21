@@ -47,6 +47,7 @@ public class UserService {
         List<User> usersToUpdate = userRepository.findByUserid(userid);
         if (!usersToUpdate.isEmpty()) {
             User userToUpdate = usersToUpdate.get(0);
+<<<<<<< HEAD
             userToUpdate.setUserRole(user.getUserRole());
             userToUpdate.setUserState(user.getUserState());
             userToUpdate.setFullName(user.getFullName());
@@ -55,6 +56,16 @@ public class UserService {
             userToUpdate.setEmail(user.getEmail());
             userToUpdate.setGender(user.getGender());
             userToUpdate.setAddress(user.getAddress());
+=======
+            userToUpdate.setUserRole(user.getUserRole()!=null?user.getUserRole():userToUpdate.getUserRole());
+            userToUpdate.setUserState(user.getUserState()!=null?user.getUserState():userToUpdate.getUserState());
+            userToUpdate.setFullName(user.getFullName()!=null?user.getFullName():userToUpdate.getFullName());
+            userToUpdate.setPhoneNo(user.getPhoneNo()!=null?user.getPhoneNo():userToUpdate.getPhoneNo());
+            userToUpdate.setDateOfBirth(user.getDateOfBirth()!=null?user.getDateOfBirth():userToUpdate.getDateOfBirth());
+            userToUpdate.setEmail(user.getEmail()!=null?user.getEmail():userToUpdate.getEmail());
+            userToUpdate.setGender(user.getGender()!=null?user.getGender():userToUpdate.getGender());
+            userToUpdate.setAddress(user.getAddress()!=null?user.getAddress():userToUpdate.getAddress());
+>>>>>>> chinthana
             userRepository.save(userToUpdate);
             return true;
         } else {
