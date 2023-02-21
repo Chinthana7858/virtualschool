@@ -1,14 +1,8 @@
 import React from 'react'
-<<<<<<< HEAD
-import { AiFillDelete, AiOutlineRight } from "react-icons/ai";
-import { BiCheck } from "react-icons/bi";
-
-=======
 import { AiFillDelete, AiFillEdit, AiOutlineRight } from "react-icons/ai";
 import { BiCheck } from "react-icons/bi";
 import { FiCheckSquare } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
->>>>>>> chinthana
 export  function ViewButton() {
   return (
     <div>
@@ -78,8 +72,6 @@ export  function RemoveUserButton() {
 }
 
 
-<<<<<<< HEAD
-=======
 
 export  function TimeTableDeleteButton() {
   return (
@@ -142,4 +134,3 @@ export  function CloseButton() {
 }
 
 
->>>>>>> chinthana

@@ -17,11 +17,8 @@ import UserRequests from './components/pages/UsersRequests';
 import UserRequest from './components/pages/UserRequest';
 import UserProfileAdminView from './components/pages/UserProfileAdminView';
 import UsersDetailsAdminView from './components/pages/UsersDetailsAdminView';
-<<<<<<< HEAD
-=======
 import TimeTable from './components/pages/TimeTable/TimeTable';
 import TimeTableAdmin from './components/pages/TimeTable/TimeTableAdmin';
->>>>>>> chinthana
 
 
 
@@ -102,8 +99,6 @@ function App() {
           <UsersDetailsAdminView/>
         }
        />
-<<<<<<< HEAD
-=======
 
       <Route
         path='/timetableAdmin/:classId'
@@ -119,7 +114,6 @@ function App() {
         }
        />
        
->>>>>>> chinthana
       </Routes>
     </Router>
   );
