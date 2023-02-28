@@ -44,7 +44,7 @@ const RemovedUser:React.FC= () => {
 
   const handleRemove = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to remove this user from system?');
+      const confirmed = window.confirm('Are you sure you want to delete this pre-user deteils permenently from the system?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
@@ -58,7 +58,7 @@ const RemovedUser:React.FC= () => {
       });
   
       if (response.ok) {
-        alert('User removed successfully');
+        alert('User details removed successfully');
       }
     } catch (error) {
       console.error(error);
@@ -67,7 +67,7 @@ const RemovedUser:React.FC= () => {
 
   const handleRestoreUser = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to remove this user from system?');
+      const confirmed = window.confirm('Are you sure you want to restore this user to the system?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
@@ -183,7 +183,7 @@ const RemovedUser:React.FC= () => {
       </span>
      </span>
      <div className="flex w-[25vw] ml-[55%] xs:ml-[25%]">
-     <div className="basis-1/2"><button className="pt-7 ml-[70%]" onClick={handleRestoreUser}><BackLink url={`http://localhost:3000/UDAdminView`}><RestoreUserButton/></BackLink></button></div>
+     <div className="basis-1/2"><button className="pt-7 ml-[70%]" onClick={handleRestoreUser}><BackLink url={`http://localhost:3000/RemovedUsers`}><RestoreUserButton/></BackLink></button></div>
      <div className="basis-1/2"><button className="pt-7 ml-[70%]" onClick={handleRemove}><BackLink url={`http://localhost:3000/UDAdminView`}><DeletePermanentlyrButton/></BackLink></button></div>
      </div>
      <div className="w-[100%] top-[120%] pt-7">

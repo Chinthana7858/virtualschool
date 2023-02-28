@@ -49,17 +49,23 @@ const UserProfile:React.FC= () => {
   }, [userid]);
 
 
-  const handleDelete = async () => {
+  const handleReject = async () => {
     try {
+      const confirmed = window.confirm('Are you sure you want to reject this request?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
       const response = await fetch(`http://localhost:8080/api/vi/users/${userid}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         },
       });
+  
       if (response.ok) {
-        alert("Request rejected successfully")
-       
+        alert('Request rejected successfully');
       }
     } catch (error) {
       console.error(error);
@@ -68,7 +74,13 @@ const UserProfile:React.FC= () => {
 
   const handleUpdateState = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/vi/users/userState/${userid}`, {
+      const confirmed = window.confirm('Are you sure you want to accept this request?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/vi/users/userStateTo1/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -181,8 +193,8 @@ const UserProfile:React.FC= () => {
     
      </span>
      <div className="flex w-[25vw] ml-[65%] xs:ml-[25%]"> 
-     <div className="basis-1/2"><button onClick={handleUpdateState}><BackLink url={`http://localhost:3000/${userid}`}><AcceptButton/></BackLink></button> </div>
-     <div className="basis-1/2"><button onClick={handleDelete}><BackLink url={`http://localhost:3000/UsersRequests`}><RejectButton/></BackLink></button></div>
+     <div className="basis-1/2"><button onClick={handleUpdateState}><BackLink url={`http://localhost:3000/UsersRequests`}><AcceptButton/></BackLink></button> </div>
+     <div className="basis-1/2"><button onClick={handleReject}><BackLink url={`http://localhost:3000/UsersRequests`}><RejectButton/></BackLink></button></div>
      </div>
 
 
