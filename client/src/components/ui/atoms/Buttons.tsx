@@ -2,8 +2,9 @@ import React from 'react'
 import { AiFillDelete, AiFillEdit, AiOutlineRight } from "react-icons/ai";
 import { BiCheck } from "react-icons/bi";
 import { FiCheckSquare } from "react-icons/fi";
-import { HiArrowRightCircle } from 'react-icons/hi2';
 import { RxCross2 } from "react-icons/rx";
+import { CgArrowUpR } from "react-icons/cg";
+import { HiArrowRightCircle } from "react-icons/hi2";
 export  function ViewButton() {
   return (
     <div>
@@ -169,3 +170,24 @@ export  function RestoreUserButton() {
     
       }
 
+      export  function NewDiscussion() {
+        return (
+          <div>
+            <button className="px-10 py-4 text-sm font-semibold text-white bg-blue-800 rounded-xl hover:bg-blue-900">
+              <div className='flex'><span className="pr-5 text-base font-normal">Add new discussion topic</span> <span className=''><CgArrowUpR size="1.5em"/></span> </div>
+            </button>
+          </div>
+        )
+      
+      
+      }
+      
+      export  function AddReply() {
+        return (
+          <div>
+            <button className="px-10 py-4 text-sm font-semibold text-white bg-blue-800 rounded-xl hover:bg-blue-900">
+              <div className='flex'><span className="pr-5 text-base font-normal">Add a Reply</span> <span className=''><CgArrowUpR size="1.5em"/></span> </div>
+            </button>
+          </div>
+        )
+        }
