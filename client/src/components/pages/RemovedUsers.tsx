@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
+import { AccessButton, ViewButton } from '../ui/atoms/Buttons';
 import NavBar from '../ui/templates/NavBar/NavBar';
-import { AccessButton, RemovedUsersButton, ViewButton } from '../ui/atoms/Buttons';
 import SideBarAdmin from '../ui/templates/SideBar/SideBar-Admin';
+
+interface ViewLinkProps {
+  url: string;
+  children?: React.ReactNode;
+}
 
 
 interface Users {
@@ -17,26 +22,21 @@ interface Users {
   
 }
 
-interface ViewLinkProps {
-  url: string;
-  children?: React.ReactNode;
-}
 
-
-const UserList: React.FC = () => {
+const RemovedUses: React.FC = () => {
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
   const [usersPrincipal, setUsersPrincipal] = useState<Users[]>([]);
   const [open, setOpen] = useState(true);
 
-  
+
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
   );
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/STUDENT/state/1'); 
+      const result = await fetch('http://localhost:8080/api/vi/users/role/STUDENT/state/2'); 
       const data = await result.json();
       setUsersStudent(data);
     };
@@ -46,7 +46,7 @@ const UserList: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/TEACHER/state/1'); 
+      const result = await fetch('http://localhost:8080/api/vi/users/role/TEACHER/state/2'); 
       const data = await result.json();
       setUsersTeacher(data);
     };
@@ -56,7 +56,7 @@ const UserList: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/PRINCIPAL/state/1'); 
+      const result = await fetch('http://localhost:8080/api/vi/users/role/PRINCIPAL/state/2'); 
       const data = await result.json();
       setUsersPrincipal(data);
     };
@@ -83,11 +83,8 @@ const UserList: React.FC = () => {
      
      <div className="flex">
 
-    <div className="bg-slate-300 p-[5%] mt-[7%] ml-[5%] w-[93vw] rounded-md">
-        <h1 className="text-3xl p-[2%] text-slate-700 font-medium">User details</h1>
-        <div className='p-3'>
-        <ViewLink url={`http://localhost:3000/RemovedUsers`}><RemovedUsersButton/></ViewLink>
-        </div>
+    <div className="bg-slate-300 p-[5%] mt-[3%] ml-[5%] w-[93vw] rounded-md">
+        <h1 className="text-3xl p-[2%] text-slate-700 font-medium">Removed Users</h1>
    
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Principals
@@ -99,16 +96,17 @@ const UserList: React.FC = () => {
           <th className="  w-[18vw] p-[1.5vh]">Name</th>
           <th className="w-[18vw] p-[1.5vh]">Phone No</th>
           <th className=" w-[18vw] p-[1.5vh]">Email</th>
-            </tr>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
         {usersPrincipal.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white ">
             <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-center ">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/RemovedUser/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -121,11 +119,12 @@ const UserList: React.FC = () => {
     <table>
       <thead>
         <tr className="">
-        <th className="  w-[18vw] p-[1.5vh]">UserID</th>
+          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
           <th className="  w-[18vw] p-[1.5vh]">Name</th>
           <th className="w-[18vw] p-[1.5vh]">Phone No</th>
           <th className=" w-[18vw] p-[1.5vh]">Email</th>
-            </tr>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
         {usersTeacher.map(user => (
@@ -133,8 +132,8 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-center ">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/RemovedUser/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -151,6 +150,7 @@ const UserList: React.FC = () => {
           <th className="  w-[18vw] p-[1.5vh]">Name</th>
           <th className="w-[18vw] p-[1.5vh]">Phone No</th>
           <th className=" w-[18vw] p-[1.5vh]">Email</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -161,7 +161,7 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/RemovedUser/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
   
         ))}
@@ -181,4 +181,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default RemovedUses;

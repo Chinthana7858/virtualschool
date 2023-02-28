@@ -2,6 +2,7 @@ import React from 'react'
 import { AiFillDelete, AiFillEdit, AiOutlineRight } from "react-icons/ai";
 import { BiCheck } from "react-icons/bi";
 import { FiCheckSquare } from "react-icons/fi";
+import { HiArrowRightCircle } from 'react-icons/hi2';
 import { RxCross2 } from "react-icons/rx";
 export  function ViewButton() {
   return (
@@ -133,4 +134,38 @@ export  function CloseButton() {
 
 }
 
+
+
+export  function RestoreUserButton() {
+  return (
+    <div>
+      <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
+        <div className='flex'><span className="text-lg font-normal text-left">Restore User</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
+      </button>
+    </div>
+  )
+
+  }
+
+  export  function DeletePermanentlyrButton() {
+    return (
+      <div>
+        <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
+          <div className='flex'><span className="text-lg font-normal text-left">Delete permenently</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
+        </button>
+      </div>
+    )
+  
+    }
+
+    export  function RemovedUsersButton() {
+      return (
+        <div>
+          <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            <div className='flex'><span className="text-lg font-normal text-left">Removed Users</span> <span className='px-3 pt-0'><HiArrowRightCircle size="1.8em"/></span> </div>
+          </button>
+        </div>
+      )
+    
+      }
 
