@@ -1,17 +1,15 @@
 
+import Footer from "../ui/templates/Footer/Footer";
+import NavBar from "../ui/templates/NavBar/NavBar";
 import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
 import React, {useEffect } from 'react';
-import NavBar from "../ui/templates/NavBar/NavBar";
-import Footer from "../ui/templates/Footer/Footer";
-import { AcceptButton } from "../ui/atoms/Buttons";
-import { RejectButton } from "../ui/atoms/Buttons";
 import SideBarAdmin from "../ui/templates/SideBar/SideBar-Admin";
 import{useParams} from "react-router-dom";
+import { DeletePermanentlyrButton, RemoveUserButton, RestoreUserButton } from "../ui/atoms/Buttons";
 
 interface User {
-  userid: string; 
-  userState:string;
+  userid: string;
   userRole:string;
   nameWithInitials:string;
   fullName:string;
@@ -19,27 +17,23 @@ interface User {
   dateOfBirth:string;
   email:string;
   nic:string;
-  address:string;
  
 }
 
 interface BackLinkProps {
-  url: string;
-  children?: React.ReactNode;
-}
+    url: string;
+    children?: React.ReactNode;
+  }
 
-
-const UserProfile:React.FC= () => {
+const RemovedUser:React.FC= () => {
   const [open, setOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
 
-
-
+  
   const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
   );
-  
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/vi/users/${userid}`)
@@ -48,10 +42,9 @@ const UserProfile:React.FC= () => {
       .catch(error => console.error(error));
   }, [userid]);
 
-
-  const handleReject = async () => {
+  const handleRemove = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to reject this request?');
+      const confirmed = window.confirm('Are you sure you want to delete this pre-user deteils permenently from the system?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
@@ -65,16 +58,16 @@ const UserProfile:React.FC= () => {
       });
   
       if (response.ok) {
-        alert('Request rejected successfully');
+        alert('User details removed successfully');
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleUpdateState = async () => {
+  const handleRestoreUser = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to accept this request?');
+      const confirmed = window.confirm('Are you sure you want to restore this user to the system?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
@@ -86,14 +79,16 @@ const UserProfile:React.FC= () => {
           'Content-Type': 'application/json'
         },
       });
+  
       if (response.ok) {
-        alert("Request accepted successfully")
-       
+        alert('User restored successfully');
       }
     } catch (error) {
       console.error(error);
     }
   };
+  
+
   return (
     <div>
 
@@ -106,7 +101,7 @@ const UserProfile:React.FC= () => {
 
     <div className="flex">
       
-      <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 pt-20`} >
+      <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
          <SideBarAdmin/>
       </div>
    
@@ -130,17 +125,18 @@ const UserProfile:React.FC= () => {
   
 
     
-    <div className="max-w-[100vw] bg-slate-400 mt-1 relative rounded-l-[20px] h-auto ">
+    <div className="sm:max-w-[400px] md:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1250px] 
+    2xl:max-w-[1300px] bg-slate-400 mt-1 relative rounded-l-[20px] h-auto ">
       <h2 className="text-xl pl-[10%]  py-5 2xl:mr-[64%] xl:mr-[500px] lg:mr-[600px] sm:mr-[400px]">
-      User request
+      User Information
       </h2>
     </div>
      
-     <span className="flex max-w-[100vw]
-      bg-slate-200 mt-1 relative rounded-l-[20px] h-auto mb-[2%] ">
-      <span className="w-8 h-auto basis-7/12 ml-[10%] ">
+     <span className="flex sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1250px] 2xl:max-w-[1300px]
+      bg-slate-200 mt-1 relative rounded-l-[20px] h-auto ">
+      <span className="w-8 h-auto basis-7/12 ml-[10%]">
         <div className="flex-col ">
-          <div className=""> 
+          <div className="">
             <h6 className="p-3 text-left">User ID</h6>
           </div>
           <div>
@@ -157,9 +153,6 @@ const UserProfile:React.FC= () => {
           </div>
           <div>
             <h6 className="p-3 text-left ">NIC</h6>
-          </div>
-          <div>
-            <h6 className="p-3 text-left ">Address</h6>
           </div>
 
         </div>
@@ -184,21 +177,16 @@ const UserProfile:React.FC= () => {
           <div>
             <h6 className="p-3 text-left">:{user?.nic}</h6>
           </div>
-          <div>
-            <h6 className="p-3 text-left">:{user?.address}</h6>
-          </div>
+         
+
         </div>
-
       </span>
-    
      </span>
-     <div className="flex w-[25vw] ml-[65%] xs:ml-[25%]"> 
-     <div className="basis-1/2"><button onClick={handleUpdateState}><BackLink url={`http://localhost:3000/UsersRequests`}><AcceptButton/></BackLink></button> </div>
-     <div className="basis-1/2"><button onClick={handleReject}><BackLink url={`http://localhost:3000/UsersRequests`}><RejectButton/></BackLink></button></div>
+     <div className="flex w-[25vw] ml-[55%] xs:ml-[25%]">
+     <div className="basis-1/2"><button className="pt-7 ml-[70%]" onClick={handleRestoreUser}><BackLink url={`http://localhost:3000/RemovedUsers`}><RestoreUserButton/></BackLink></button></div>
+     <div className="basis-1/2"><button className="pt-7 ml-[70%]" onClick={handleRemove}><BackLink url={`http://localhost:3000/UDAdminView`}><DeletePermanentlyrButton/></BackLink></button></div>
      </div>
-
-
-     <div className="w-[100%] top-[120%] pt-8">
+     <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
       </div>
       </div>
@@ -209,4 +197,4 @@ const UserProfile:React.FC= () => {
     
   );
 };
-export default UserProfile;
+export default RemovedUser;

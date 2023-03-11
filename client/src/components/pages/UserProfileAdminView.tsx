@@ -42,22 +42,30 @@ const UserProfile:React.FC= () => {
       .catch(error => console.error(error));
   }, [userid]);
 
+
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/vi/users/${userid}`, {
-        method: 'DELETE',
+      const confirmed = window.confirm('Are you sure you want to Remove this user from the system?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/vi/users/userStateTo2/${userid}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
       });
+  
       if (response.ok) {
-        alert("Request rejected successfully")
-       
+        alert('User removed successfully');
       }
     } catch (error) {
       console.error(error);
     }
   };
+
 
   return (
     <div>

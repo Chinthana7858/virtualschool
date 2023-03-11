@@ -27,6 +27,8 @@ const UserList: React.FC = () => {
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
   const [usersPrincipal, setUsersPrincipal] = useState<Users[]>([]);
+  const [usersSectionHead, setUsersSectionHead] = useState<Users[]>([]);
+  const [usersParent, setUsersParent] = useState<Users[]>([]);
   const [open, setOpen] = useState(true);
 
   
@@ -59,6 +61,26 @@ const UserList: React.FC = () => {
       const result = await fetch('http://localhost:8080/api/vi/users/role/PRINCIPAL/state/1'); 
       const data = await result.json();
       setUsersPrincipal(data);
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch('http://localhost:8080/api/vi/users/role/PARENT/state/1'); 
+      const data = await result.json();
+      setUsersParent(data);
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch('http://localhost:8080/api/vi/users/role/SECTION_HEAD/state/1'); 
+      const data = await result.json();
+      setUsersSectionHead(data);
     };
 
     fetchData();
@@ -99,6 +121,30 @@ const UserList: React.FC = () => {
       </thead>
       <tbody>
         {usersPrincipal.map(user => (
+          <tr key={user.userid} className="cursor-pointer hover:bg-white ">
+            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/${user.userid}`}><ViewButton/></ViewLink></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <div className="py-[3vh]"></div>  
+    <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
+        Section Heads
+    </h1>
+    <table>
+      <thead>
+        <tr className="">
+          <th className="  w-[18vw] p-[1.5vh]">Name</th>
+          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
+          <th className=" w-[18vw] p-[1.5vh]">Email</th>
+            </tr>
+      </thead>
+      <tbody>
+        {usersSectionHead.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white ">
             <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
@@ -156,7 +202,35 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
             <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
-  
+
+        ))}
+      </tbody>
+    </table>
+
+    <div className="py-[3vh]"></div>
+    <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
+        Parents
+    </h1>
+    <table>
+      <thead>
+        <tr className="">
+          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
+          <th className="  w-[18vw] p-[1.5vh]">Name</th>
+          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
+          <th className=" w-[18vw] p-[1.5vh]">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {usersParent.map(user => (
+            
+          <tr key={user.userid} className="cursor-pointer hover:bg-white">
+            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/${user.userid}`}><ViewButton/></ViewLink></td>
+          </tr>
+
         ))}
       </tbody>
     </table>

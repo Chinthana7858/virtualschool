@@ -19,6 +19,10 @@ import UserProfileAdminView from './components/pages/UserProfileAdminView';
 import UsersDetailsAdminView from './components/pages/UsersDetailsAdminView';
 import TimeTable from './components/pages/TimeTable/TimeTable';
 import TimeTableAdmin from './components/pages/TimeTable/TimeTableAdmin';
+import RemovedUsers from './components/pages/RemovedUsers';
+import RemovedUser from './components/pages/RemovedUser';
+import DiscussionForuminside from './components/pages/DiscussionForum/DiscussionForumInside';
+import DiscussionForums from './components/pages/DiscussionForum/DiscussionForums';
 
 
 
@@ -111,6 +115,35 @@ function App() {
         path='/timetable/:classId'
         element={
           <TimeTable/>
+        }
+       />
+
+      <Route
+        path='/RemovedUsers'
+        element={
+          <RemovedUsers/>
+        }
+       />
+
+        <Route
+        path='/RemovedUser/:userid'
+        element={
+          <RemovedUser/>
+        }
+       />
+
+       
+        <Route
+        path='/Discussions/:classId/:subjectId/:userid'
+        element={
+          <DiscussionForums/>
+        }
+       />
+
+        <Route
+        path='/Discussion/:classId/:subjectId/:userid/:id'
+        element={
+          <DiscussionForuminside/>
         }
        />
        

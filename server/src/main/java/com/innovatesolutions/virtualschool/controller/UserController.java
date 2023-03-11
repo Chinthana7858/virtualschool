@@ -68,16 +68,28 @@ public class UserController {
 
     }
 
-    //Update userState by userid
-    @PutMapping("api/vi/users/userState/{userid}")
-    public ResponseEntity<String> updateUserState(@PathVariable("userid") String userid){
-        if(userService.updateUserState(userid)){
+    //Update userStateTo1 by userid
+    @PutMapping("api/vi/users/userStateTo1/{userid}")
+    public ResponseEntity<String> updateUserStateTo1(@PathVariable("userid") String userid){
+        if(userService.updateUserStateTo1(userid)){
             return new ResponseEntity<>("UserState with userid " + userid + " has been updated.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("User with userid " + userid + " not found.", HttpStatus.NOT_FOUND);
         }
 
     }
+
+    //Update userStateTo2 by userid
+    @PutMapping("api/vi/users/userStateTo2/{userid}")
+    public ResponseEntity<String> updateUserStateTo2(@PathVariable("userid") String userid){
+        if(userService.updateUserStateTo2(userid)){
+            return new ResponseEntity<>("UserState with userid " + userid + " has been updated.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User with userid " + userid + " not found.", HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 
 
 }

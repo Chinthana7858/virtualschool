@@ -3,6 +3,8 @@ import { AiFillDelete, AiFillEdit, AiOutlineRight } from "react-icons/ai";
 import { BiCheck } from "react-icons/bi";
 import { FiCheckSquare } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
+import { CgArrowUpR } from "react-icons/cg";
+import { HiArrowRightCircle } from "react-icons/hi2";
 export  function ViewButton() {
   return (
     <div>
@@ -134,3 +136,58 @@ export  function CloseButton() {
 }
 
 
+
+export  function RestoreUserButton() {
+  return (
+    <div>
+      <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
+        <div className='flex'><span className="text-lg font-normal text-left">Restore User</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
+      </button>
+    </div>
+  )
+
+  }
+
+  export  function DeletePermanentlyrButton() {
+    return (
+      <div>
+        <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
+          <div className='flex'><span className="text-lg font-normal text-left">Delete Permenently</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
+        </button>
+      </div>
+    )
+  
+    }
+
+    export  function RemovedUsersButton() {
+      return (
+        <div>
+          <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            <div className='flex'><span className="text-lg font-normal text-left">Removed Users</span> <span className='px-3 pt-0'><HiArrowRightCircle size="1.8em"/></span> </div>
+          </button>
+        </div>
+      )
+    
+      }
+
+      export  function NewDiscussion() {
+        return (
+          <div>
+            <button className="px-10 py-4 text-sm font-semibold text-white bg-blue-800 rounded-xl hover:bg-blue-900">
+              <div className='flex'><span className="pr-5 text-base font-normal">Add new discussion topic</span> <span className=''><CgArrowUpR size="1.5em"/></span> </div>
+            </button>
+          </div>
+        )
+      
+      
+      }
+      
+      export  function AddReply() {
+        return (
+          <div>
+            <button className="px-10 py-4 text-sm font-semibold text-white bg-blue-800 rounded-xl hover:bg-blue-900">
+              <div className='flex'><span className="pr-5 text-base font-normal">Add a Reply</span> <span className=''><CgArrowUpR size="1.5em"/></span> </div>
+            </button>
+          </div>
+        )
+        }

@@ -62,7 +62,7 @@ public class UserService {
         }
     }
 
-    public boolean updateUserState(String userid) {
+    public boolean updateUserStateTo1(String userid) {
         List<User> usersToUpdate = userRepository.findByUserid(userid);
         if (!usersToUpdate.isEmpty()) {
             User userToUpdate = usersToUpdate.get(0);
@@ -74,6 +74,20 @@ public class UserService {
             throw new IllegalArgumentException("Invalid user Id:" + userid);
         }
     }
+
+    public boolean updateUserStateTo2(String userid) {
+        List<User> usersToUpdate = userRepository.findByUserid(userid);
+        if (!usersToUpdate.isEmpty()) {
+            User userToUpdate = usersToUpdate.get(0);
+
+            userToUpdate.setUserState("2");
+            userRepository.save(userToUpdate);
+            return true;
+        } else {
+            throw new IllegalArgumentException("Invalid user Id:" + userid);
+        }
+    }
+
 
 
 }
