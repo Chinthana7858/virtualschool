@@ -1,15 +1,14 @@
 
-import Footer from "../ui/templates/Footer/Footer";
-import NavBar from "../ui/templates/NavBar/NavBar";
 import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
-import SideBarStudent from "../ui/templates/SideBar/SideBar-Student";
 import React, {useEffect } from 'react';
-import SideBarAdmin from "../ui/templates/SideBar/SideBar-Admin";
-import SideBarTeacher from "../ui/templates/SideBar/SideBar-Teacher";
-import SideBarPrincipal from "../ui/templates/SideBar/SideBar-Principal";
-import SideBarParent from "../ui/templates/SideBar/SideBar-Parent";
 import{useParams} from "react-router-dom";
+import NavBar from "../../../ui/templates/NavBar/NavBar";
+import SideBarAdmin from "../../../ui/templates/SideBar/SideBar-Admin";
+import Footer from "../../../ui/templates/Footer/Footer";
+import Button from "../../../ui/atoms/Buttons";
+import { FiUserPlus } from "react-icons/fi";
+
 
 interface User {
   userid: string;
@@ -23,10 +22,21 @@ interface User {
  
 }
 
-const UserProfile:React.FC= () => {
+interface BackLinkProps {
+    url: string;
+    children?: React.ReactNode;
+  }
+
+const AssignTeacherInCharge2:React.FC= () => {
   const [open, setOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
+  const { classId } = useParams<{ classId: string }>();
+
+  
+  const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
+    <a href={url}>{children}</a>
+  );
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/vi/users/${userid}`)
@@ -34,6 +44,31 @@ const UserProfile:React.FC= () => {
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
+
+
+  const handleAddTeacherInCharge = async () => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to add this user as teacher in charge?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/vi/classrooms/${classId}/teacher/${userid}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('User added successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   return (
     <div>
@@ -45,13 +80,13 @@ const UserProfile:React.FC= () => {
       <NavBar/>
     </div>
 
-    <div className="flex">
+    <div className={`flex `}>
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarParent/>
+         <SideBarAdmin/>
       </div>
    
-      
+      <div className={`${open ? "w-[85vw]" : "w-[100vw]"}`}>
     <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
     <div className="text-[#ffffff] rounded-b-3xl bg-gradient-to-r from-[#577794] to-transparent h-[280px]">
         <div className=" pl-[10%]">
@@ -128,7 +163,15 @@ const UserProfile:React.FC= () => {
         </div>
       </span>
      </span>
-     <div className="w-[100%] top-[120%] pt-3">
+     <div className="pt-7 ml-[80%]">
+        <Button name={'Assign'} 
+                buttonType={'secondary'} 
+                size={'md'}
+                padding={'3'}
+                onClick={handleAddTeacherInCharge}
+                icon={FiUserPlus}/>
+      </div>
+     <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
       </div>
       </div>
@@ -136,7 +179,8 @@ const UserProfile:React.FC= () => {
       </div>
       
     </div>
+    </div>
     
   );
 };
-export default UserProfile;
+export default AssignTeacherInCharge2;
