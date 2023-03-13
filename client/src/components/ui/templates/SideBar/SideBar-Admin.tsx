@@ -1,16 +1,14 @@
-import { useHref } from "react-router-dom";
-
 
 const SideBarAdmin = () => {
 
   const Menus = [
-    { title: "Home", src: "Home"},
+    { title: "Home", src: "Home" },
     { title: "Sections", src: "Classroom" },
     { title: "Results", src: "Results" },
-    { title: "Requests ", src: "Requests" },
+    { title: "Requests", src: "Requests" },
     { title: "Users", src: "Users" },
     { title: "Profile", src: "Profile" },
-    { title: "SignOut", src: "SignOut" , gap: true },
+    { title: "SignOut", src: "SignOut", gap: true },
   ];
 
   return (
@@ -35,8 +33,8 @@ const SideBarAdmin = () => {
 
               <img src={`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} alt="logo" width="30" height="30"/> 
               <span className={` hover:bg-slate-700 `}>
-                {Menu.title }
-              </span>
+                  {Menu.title }
+                </span>
             </li>
           ))}
         </ol>

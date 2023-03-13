@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { AiFillDelete } from 'react-icons/ai';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
-import { AddReply, CloseButton, NewDiscussion, ViewButton } from '../../ui/atoms/Buttons';
+import Button, {CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import DiscussionReplyPopup from './DiscussionReplyPopup';
@@ -47,6 +48,46 @@ function GetNameByuserid({ userid }: { userid?: string }): JSX.Element | null{
   return user ? <span>{user.nameWithInitials}</span> : null;
 }
 
+function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
+  interface ClassRoom {
+
+    classRoomId:string;
+  
+  }
+  const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+      .then(res => res.json())
+      .then(data => setClassRoom(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  return classRoom ? <span>{classRoom.classRoomId}</span> : null;
+}
+
+
+function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
+  interface Section {
+    subjectName:string;
+  }
+  const [section, setSection] = useState<Section | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      .then(res => res.json())
+      .then(data => setSection(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  return section ? <span>{section.subjectName}</span> : null;
+}
+
+interface BackLinkProps {
+  url: string;
+  children?: React.ReactNode;
+}
+const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
 
 const DiscussionForuminside: React.FC = () => {
   const [DiscussionForuminside, setDiscussionForuminside] = useState<DiscussionForuminside | null>(null);
@@ -59,23 +100,47 @@ const DiscussionForuminside: React.FC = () => {
   const { classId } = useParams<{ classId: string }>();
   const{subjectId}=useParams<{subjectId:string}>();
   const{userid}=useParams<{userid:string}>();
-  const {id } = useParams<{id: string }>();;
+  const {discussionForumId } = useParams<{discussionForumId: string }>();;
   const [visibleAdd, setVisibleAdd] = useState(false);
+  const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
+  const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultsubjectId}/>
 
 
-
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this discussion? ');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/vi/discussionForum/${discussionForumId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Section removed successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+    
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/discussionForum/${id}`)
+    fetch(`http://localhost:8080/api/vi/discussionForum/${discussionForumId}`)
       .then(res => res.json())
       .then(data => setDiscussionForuminside(data))
       .catch(error => console.error(error));
-  }, [id]);
+  }, [discussionForumId]);
 
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/discussionForum/motherDiscussion/${id}`); 
+      const result = await fetch(`http://localhost:8080/api/vi/discussionForum/motherDiscussion/${discussionForumId}`); 
       const data = await result.json();
       setDiscussionForum(data);
     };
@@ -96,20 +161,20 @@ const DiscussionForuminside: React.FC = () => {
 
     <div className="flex">
       
-      <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
+      <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] duration-100`} >
          <SideBarStudent/>
       </div>
    
      
-     <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} pt-[0vh] z-10 duration-100 flex`}>
+     <div className={`${open ? "w-[85vw]" : "w-[100vw]"} duration-100 flex`}>
 
     <div className="bg-slate-300 p-[5%] mt-[13vh] ">
-        <h1 className={`text-3xl p-[2%] text-slate-700 font-medium ${visibleAdd ? "blur-sm" : "blur-0"}`}> {classId}</h1>
+        <h1 className={`text-3xl p-[2%] text-slate-700 font-medium ${visibleAdd ? "blur-sm" : "blur-0"}`}> {classRoomName}</h1>
    
 
         
     <h1 className={`pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl font-medium text-white rounded-xl ${visibleAdd ? "blur-sm" : "blur-0"}`}>
-    {subjectId} Discussion Forum
+    {subjectName} Discussion Forum
     </h1>
 
     <div className="pt-3">
@@ -143,14 +208,33 @@ const DiscussionForuminside: React.FC = () => {
 </tbody>
     </table>
     </div>
-
+ 
     
     <div className={`bg-cyan-100 pl-[5vw] rounded-lg mt-[2vh] min-h-[20vh] ${visibleAdd ? "blur-sm" : "blur-0"}`}>
     <p className={`p-6 `}>{DiscussionForuminside?.message}</p>
     </div>
 
-    <div >
-    <button onClick={() => { setVisibleAdd(true)}} className={` ${visibleAdd ? "blur-sm" : "blur-0"} py-5`}><AddReply/></button>
+    <div className={`flex ${visibleAdd ? "blur-sm" : "blur-0"}`}>
+    <div className='p-4 basis-11/12'>
+    <Button name="Add a reply" 
+            buttonType={'secondary'}  
+            size={'lg'} 
+            padding={'4'} 
+            onClick={() => { setVisibleAdd(true)}}
+    />
+    </div>
+
+    <div className='p-4 basis-1/12'>
+      <BackLink url={`http://localhost:3000/Discussions/${classId}/${subjectId}/${userid}`}>
+      <Button name="Remove" 
+            buttonType={'secondary-red'}  
+            size={'lg'} 
+            padding={'4'} 
+            onClick={handleDelete}
+            icon={AiFillDelete}
+    />
+    </BackLink>
+    </div>
     </div>
 
    <div className="pt-10">
@@ -187,7 +271,7 @@ const DiscussionForuminside: React.FC = () => {
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
           <div className="w-full h-[60%] max-w-2xl p-4 rounded-lg bg-blue-50">
           <div className='pl-[95%]'><button onClick={() => setVisibleAdd(false)}><CloseButton/></button></div>
-          <DiscussionReplyPopup classId={classId ?? defaultClassId} subjectId={subjectId ?? defaultsubjectId} userid={userid ?? defaultuserid} id={id??defaultid} />
+          <DiscussionReplyPopup classId={classId ?? defaultClassId} subjectId={subjectId ?? defaultsubjectId} userid={userid ?? defaultuserid} id={discussionForumId??defaultid} />
           </div>
         </div>
       )}

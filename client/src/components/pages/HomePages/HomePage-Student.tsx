@@ -4,7 +4,7 @@ import NavBar from "../../ui/templates/NavBar/NavBar";
 import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
-import { AccessButton, AttemptButton, ViewButton } from "../../ui/atoms/Buttons";
+import { AccessButton,ViewButton } from "../../ui/atoms/Buttons";
 import HomePageDescription from "../../ui/organisms/HomePageDescription";
 
 const HomePageStudent = () => {
@@ -51,7 +51,7 @@ const HomePageStudent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Classroom</a></div>
-                        <div className="pl-[45%]"><AttemptButton/></div>
+                        <div className="pl-[45%]"><AccessButton/></div>
                       </div>
                       <img src="./images/YourClassroom.jpg"className="w-[450px] h-[300px] basis-11/12"/>
                    </div>

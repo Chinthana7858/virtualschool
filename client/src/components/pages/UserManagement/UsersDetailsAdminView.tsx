@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
-import NavBar from '../ui/templates/NavBar/NavBar';
-import { AccessButton, RemovedUsersButton, ViewButton } from '../ui/atoms/Buttons';
-import SideBarAdmin from '../ui/templates/SideBar/SideBar-Admin';
+import Button, {ViewButton } from '../../ui/atoms/Buttons';
+import NavBar from '../../ui/templates/NavBar/NavBar';
+import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+
 
 
 interface Users {
@@ -102,12 +103,16 @@ const UserList: React.FC = () => {
       </div>
    
      
-     <div className="flex">
-
-    <div className="bg-slate-300 p-[5%] mt-[7%] ml-[5%] w-[93vw] rounded-md">
+    <div className={`flex  ${open ? "w-[85vw]" : "w-[100vw]"}`}>
+    <div className="bg-slate-300 p-[5%] mt-[7%]  w-[100vw] rounded-md">
         <h1 className="text-3xl p-[2%] text-slate-700 font-medium">User details</h1>
         <div className='p-3'>
-        <ViewLink url={`http://localhost:3000/RemovedUsers`}><RemovedUsersButton/></ViewLink>
+        <a href={`http://localhost:3000/RemovedUsers`}>
+        <Button name={'Removed users'} 
+                buttonType={'secondary'} 
+                size={'lg'}
+                padding={'4'}/>
+        </a>
         </div>
    
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
@@ -116,20 +121,20 @@ const UserList: React.FC = () => {
     <table>
       <thead>
         <tr className="">
-        <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
-            </tr>
+          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
+       </tr>
       </thead>
       <tbody>
         {usersPrincipal.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white ">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -142,19 +147,19 @@ const UserList: React.FC = () => {
     <table>
       <thead>
         <tr className="">
-        <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
+          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
             </tr>
       </thead>
       <tbody>
         {usersSectionHead.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white ">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
             <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
@@ -167,20 +172,20 @@ const UserList: React.FC = () => {
         </h1>
     <table>
       <thead>
-        <tr className="">
-        <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
-            </tr>
+      <tr className="">
+          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
+       </tr>
       </thead>
       <tbody>
         {usersTeacher.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
             <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
@@ -193,23 +198,22 @@ const UserList: React.FC = () => {
     </h1>
     <table>
       <thead>
-        <tr className="">
-          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
-        </tr>
+      <tr className="">
+          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
+       </tr>
       </thead>
       <tbody>
         {usersStudent.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
             <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
-  
         ))}
       </tbody>
     </table>
@@ -220,23 +224,22 @@ const UserList: React.FC = () => {
     </h1>
     <table>
       <thead>
-        <tr className="">
-          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
-        </tr>
+      <tr className="">
+          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
+       </tr>
       </thead>
       <tbody>
         {usersParent.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
             <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
-  
         ))}
       </tbody>
     </table>

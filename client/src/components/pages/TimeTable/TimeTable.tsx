@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
 import NavBar from '../../ui/templates/NavBar/NavBar';
-import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 
 ;
@@ -21,6 +20,23 @@ interface TimeTable {
   fridaySubject: string;
 }
 
+function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
+  interface ClassRoom {
+
+    classRoomId:string;
+  
+  }
+  const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+      .then(res => res.json())
+      .then(data => setClassRoom(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  return classRoom ? <span>{classRoom.classRoomId}</span> : null;
+}
+
 
 const TimeTable: React.FC = () => {
   const [timetable, setTimetable] = useState<TimeTable[]>([]);
@@ -28,6 +44,7 @@ const TimeTable: React.FC = () => {
   const sortedTimetable = timetable.sort((a, b) => a.rowNo - b.rowNo);
   const defaultClassId = '';
   const { classId } = useParams<{ classId: string }>();
+  const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
 
 
 
@@ -62,8 +79,8 @@ const TimeTable: React.FC = () => {
      
      <div className="flex">
 
-    <div className="bg-slate-300 p-[5%] mt-[3%]  ">
-        <h1 className="text-3xl p-[2%] text-slate-700 font-medium"> {classId}</h1>
+    <div className="bg-slate-300 p-[5%] mt-[3%] min-h-screen">
+        <h1 className="text-3xl p-[2%] text-slate-700 font-medium"> {classRoomName}</h1>
    
 
         

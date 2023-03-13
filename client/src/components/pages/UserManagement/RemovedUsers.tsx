@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
-import { AccessButton, ViewButton } from '../ui/atoms/Buttons';
-import NavBar from '../ui/templates/NavBar/NavBar';
-import SideBarAdmin from '../ui/templates/SideBar/SideBar-Admin';
+import { ViewButton } from '../../ui/atoms/Buttons';
+import NavBar from '../../ui/templates/NavBar/NavBar';
+import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 
 interface ViewLinkProps {
   url: string;
@@ -103,9 +103,8 @@ const RemovedUses: React.FC = () => {
       </div>
    
      
-     <div className="flex">
-
-    <div className="bg-slate-300 p-[5%] mt-[3%] ml-[5%] w-[93vw] rounded-md">
+     <div className={`flex  ${open ? "w-[85vw]" : "w-[100vw]"}`}>
+    <div className={`bg-slate-300 p-[5%] mt-[3%] rounded-md `}>
         <h1 className="text-3xl p-[2%] text-slate-700 font-medium">Removed Users</h1>
    
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>

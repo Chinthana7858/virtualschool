@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
-import { AccessButton, AddNewRowButton, CloseButton, SubmitButton, TimeTableDeleteButton, TimeTableEditButton, ViewButton } from '../../ui/atoms/Buttons';
+import Button, {CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewRowPopup from './AddNewRowPopup';
@@ -23,6 +24,24 @@ interface TimeTable {
 }
 
 
+function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
+  interface ClassRoom {
+
+    classRoomId:string;
+  
+  }
+  const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+      .then(res => res.json())
+      .then(data => setClassRoom(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  return classRoom ? <span>{classRoom.classRoomId}</span> : null;
+}
+
+
 const TimeTableAdmin: React.FC = () => {
   const [timetable, setTimetable] = useState<TimeTable[]>([]);
   const [open, setOpen] = useState(true); 
@@ -39,8 +58,9 @@ const TimeTableAdmin: React.FC = () => {
   const[rowNo,setRowNo]=useState(0);
   const sortedTimetable = timetable.sort((a, b) => a.rowNo - b.rowNo);
   const defaultClassId = '';
-
   const { classId } = useParams<{ classId: string }>();
+  const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
+
 
 
   const handleDelete = ( rowNo: number) => {
@@ -94,10 +114,10 @@ const TimeTableAdmin: React.FC = () => {
       </div>
    
      
-     <div className={`flex`}>
+     <div className={`flex  ${open ? "w-[85vw]" : "w-[100vw]"}`}>
 
-    <div className={`bg-slate-300 p-[5%] mt-[3%] ml-[5%] `}>
-        <h1 className={`text-3xl p-[2%] text-slate-700 font-medium  ${visibleAdd||visibleEdit ? "blur-sm" : "blur-0"}`}> {classId}</h1>
+    <div className={`bg-slate-300 p-[5%] mt-[3%]  min-h-screen`}>
+        <h1 className={`text-3xl p-[2%] text-slate-700 font-medium  ${visibleAdd||visibleEdit ? "blur-sm" : "blur-0"}`}> {classRoomName}</h1>
    
 
         
@@ -127,14 +147,40 @@ const TimeTableAdmin: React.FC = () => {
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.wednesdaySubject}</td>
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.thursdaySubject}</td>
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.fridaySubject}</td>
-      <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'><button onClick={() => { setVisibleEdit(true); setId(timetable.id);setClassIds(timetable.classId);setRowNo(timetable.rowNo);setTimePeriod(timetable.timePeriod);setMondaySubject(timetable.mondaySubject);setTuesdaySubject(timetable.tuesdaySubject);setWednesdaySubject(timetable.wednesdaySubject);setThursdaySubject(timetable.thursdaySubject);setFridaySubject(timetable.fridaySubject)}}><TimeTableEditButton /></button></td>
-      <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'><button onClick={() => handleDelete( timetable.rowNo)}><TimeTableDeleteButton /></button></td>
+      <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
+        <Button 
+            name="Edit" 
+            buttonType={'tab'} 
+            size={'md'} 
+            padding={'4'} 
+            icon={AiFillEdit}
+            onClick={() => { setVisibleEdit(true); setId(timetable.id);setClassIds(timetable.classId);setRowNo(timetable.rowNo);setTimePeriod(timetable.timePeriod);setMondaySubject(timetable.mondaySubject);setTuesdaySubject(timetable.tuesdaySubject);setWednesdaySubject(timetable.wednesdaySubject);setThursdaySubject(timetable.thursdaySubject);setFridaySubject(timetable.fridaySubject)}}
+         />
+      </td>
+      <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
+        <Button 
+            name="Delete" 
+            buttonType={'tab-red'} 
+            size={'md'} 
+            padding={'4'} 
+            icon={AiFillDelete}
+            onClick={() => handleDelete( timetable.rowNo)}
+            />
+      </td>
     </tr>
   ))}
-</tbody>
-    
+</tbody> 
     </table>
-
+    <div className={` ${visibleAdd||visibleEdit ? "blur-sm" : "blur-0"}`}>
+    <Button 
+            name="Add new row" 
+            buttonType={'tab'} 
+            size={'xl-long'} 
+            padding={'4'} 
+            icon={AiFillEdit}
+            onClick={() => { setVisibleAdd(true)}}
+            />
+    </div>
     {visibleEdit && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen ">
           <div className="w-full max-w-md p-4 rounded-lg bg-blue-50">
@@ -154,7 +200,6 @@ const TimeTableAdmin: React.FC = () => {
         </div>
       )}
 
-<button onClick={() => { setVisibleAdd(true)}} className={` ${visibleAdd||visibleEdit ? "blur-sm" : "blur-0"}`}><AddNewRowButton/></button>
     
     {visibleAdd && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
