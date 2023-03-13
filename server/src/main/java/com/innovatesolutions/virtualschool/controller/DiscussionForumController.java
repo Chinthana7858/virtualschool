@@ -65,4 +65,10 @@ public class DiscussionForumController {
             @PathVariable("motherDiscussionId") String motherDiscussionId) {
         return discussionForumService.getDiscussionForumsByClassSubjectAndMotherDiscussion(classId, subjectId, motherDiscussionId);
     }
+
+    @DeleteMapping("api/vi/discussionForum/{id}")
+    public ResponseEntity<?> deleteDiscussionForumById(@PathVariable String id) {
+        discussionForumService.deleteDiscussionForumById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

@@ -4,7 +4,6 @@ import com.innovatesolutions.virtualschool.repository.DiscussionForumRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +46,9 @@ public class DiscussionForumService {
 
     public List<DiscussionForum> getDiscussionForumsByClassSubjectAndMotherDiscussion(String classId, String subjectId, String motherDiscussionId) {
         return discussionForumRepository.findByClassIdAndSubjectIdAndMotherDiscussionId(classId, subjectId, motherDiscussionId);
+    }
+
+    public void deleteDiscussionForumById(String id) {
+        discussionForumRepository.deleteById(id);
     }
 }

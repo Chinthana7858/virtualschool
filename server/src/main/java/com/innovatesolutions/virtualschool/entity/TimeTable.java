@@ -19,6 +19,8 @@ public class TimeTable {
     private String ThursdaySubject;
     private String FridaySubject;
 
+    public TimeTable() {
+    }
     public TimeTable(String classId,
                      int rowNo,
                      String timePeriod,
