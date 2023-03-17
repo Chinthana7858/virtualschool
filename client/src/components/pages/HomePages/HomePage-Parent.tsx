@@ -2,7 +2,7 @@ import Footer from "../../ui/templates/Footer/Footer";
 import NavBar from "../../ui/templates/NavBar/NavBar";
 import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
-import { AccessButton, AttemptButton, ViewButton } from "../../ui/atoms/Buttons";
+import { ViewButton } from "../../ui/atoms/Buttons";
 import HomePageDescription from "../../ui/organisms/HomePageDescription";
 import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
 

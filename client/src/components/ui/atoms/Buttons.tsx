@@ -1,10 +1,13 @@
 import React from 'react'
-import { AiFillDelete, AiFillEdit, AiOutlineRight } from "react-icons/ai";
-import { BiCheck } from "react-icons/bi";
-import { FiCheckSquare } from "react-icons/fi";
+import { AiOutlineRight } from "react-icons/ai";
+import { FiCheckSquare} from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { CgArrowUpR } from "react-icons/cg";
-import { HiArrowRightCircle } from "react-icons/hi2";
+import { BsFillPencilFill } from "react-icons/bs";
+import { IconType } from 'react-icons';
+
+
+
 export  function ViewButton() {
   return (
     <div>
@@ -19,96 +22,10 @@ export  function AccessButton() {
   return (
     <div>
       <button className="pt-1 pb-2 pl-5 text-sm font-semibold text-white bg-cyan-600 rounded-3xl hover:bg-cyan-800 ">
-        <div className='flex'><span>Access</span> <span className='px-2 pt-1'><AiOutlineRight/></span> </div>
+        <div className='flex'><span>Access</span> <span className='px-3 pt-1'><AiOutlineRight/></span> </div>
       </button>
     </div>
   )
-}
-export  function AttemptButton() {
-    return (
-      <div>
-        <button className="pt-1 pb-2 pl-5 text-sm font-semibold text-white bg-cyan-600 rounded-3xl hover:bg-cyan-800 ">
-          <div className='flex'><span>Attempt</span> <span className='px-3 pt-1'><AiOutlineRight/></span> </div>
-        </button>
-      </div>
-    )
-
-
-}
-
-export  function AcceptButton() {
-  return (
-    <div>
-      <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white rounded-md hover:bg-cyan-900 bg-cyan-700">
-        <div className='flex'><span className="text-lg font-normal">Accept</span> <span className='px-3 pt-0'><BiCheck size="2em"/></span> </div>
-      </button>
-    </div>
-  )
-
-
-}
-
-export  function RejectButton() {
-  return (
-    <div>
-      <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-[#586B7D] rounded-md hover:bg-slate-700">
-        <div className='flex'><span className="text-lg font-normal">Reject</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
-      </button>
-    </div>
-  )
-
-
-}
-
-
-export  function RemoveUserButton() {
-  return (
-    <div>
-      <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
-        <div className='flex'><span className="text-lg font-normal">Remove User</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
-      </button>
-    </div>
-  )
-
-
-}
-
-
-
-export  function TimeTableDeleteButton() {
-  return (
-    <div>
-      <button className="pt-3 pb-4 pl-6 pr-2 text-sm font-semibold text-white bg-[#794848] rounded-md hover:bg-[#5a3131]">
-        <div className='flex'><span className="font-normal text-md">Delete</span> <span className='px-3 pt-0'><AiFillDelete size="1.5em"/></span> </div>
-      </button>
-    </div>
-  )
-
-
-}
-
-export  function TimeTableEditButton() {
-  return (
-    <div>
-      <button className="pt-3 pb-4 pl-10 pr-2 text-sm font-semibold text-white bg-[#407c43] rounded-md hover:bg-[#264828]">
-        <div className='flex'><span className="font-normal text-md">Edit</span> <span className='px-3 pt-0'><AiFillEdit size="1.5em"/></span> </div>
-      </button>
-    </div>
-  )
-
-
-}
-
-export  function AddNewRowButton() {
-  return (
-    <div>
-      <button className="pt-3 pb-4 px-[25vw] text-sm font-semibold text-white bg-[#4e407c] rounded-md hover:bg-[#362648]">
-        <div className='flex'><span className="font-normal text-md">Add New Row</span> <span className='px-3 pt-0'><AiFillEdit size="1.5em"/></span> </div>
-      </button>
-    </div>
-  )
-
-
 }
 
 export  function SubmitButton() {
@@ -135,59 +52,87 @@ export  function CloseButton() {
 
 }
 
-
-
-export  function RestoreUserButton() {
+export  function ResultsAdd() {
   return (
-    <div>
-      <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
-        <div className='flex'><span className="text-lg font-normal text-left">Restore User</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
-      </button>
-    </div>
+      <div>
+          <button className="p-2 bg-blue-100 rounded-lg hover:bg-blue-600">
+          <div className="text-black hover:text-[#f5f0f0]"><BsFillPencilFill size="1em"/></div>
+         </button>
+     </div>
   )
+}
 
+
+
+interface ButtonProps {
+  name: any;
+  type?: any;
+  buttonType: string;
+  onClick?: () => void;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xl-long';
+  padding?: string;
+  other?: any;
+  icon?: IconType;
+}
+
+const Button: React.FunctionComponent<ButtonProps> = ({
+  name,
+  type = 'button',
+  buttonType,
+  onClick,
+  size = 'md',
+  padding = '3',
+  icon: Icon = CgArrowUpR,
+}) => {
+  let width;
+  let buttonProperty;
+
+  if (size === 'xs') {
+    width = 'w-16';
+  } else if (size === 'sm') {
+    width = 'w-24';
+  } else if (size === 'md') {
+    width = 'w-38';
+  } else if (size === 'lg') {
+    width = 'w-52';
+  } else if (size === 'xl') {
+    width = 'w-72';
+  } else if (size === 'xl-long') {
+    width = 'w-[75%]';
   }
 
-  export  function DeletePermanentlyrButton() {
-    return (
-      <div>
-        <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
-          <div className='flex'><span className="text-lg font-normal text-left">Delete Permenently</span> <span className='px-3 pt-0'><AiFillDelete size="1.8em"/></span> </div>
-        </button>
-      </div>
-    )
+  if (buttonType === 'primary') {
+    buttonProperty =
+      'bg-cyan-700 text-white rounded-xl hover:bg-cyan-800 text-sm';
+  }
+  else if (buttonType === 'primary-red') {
+        buttonProperty =
+          'bg-red-700 text-white rounded-xl hover:bg-red-800 text-sm';
+  } else if (buttonType === 'secondary') {
+    buttonProperty =
+      'bg-blue-700 hover:bg-blue-800 border rounded-lg text-white text-base';
+  } else if (buttonType === 'secondary-red') {
+    buttonProperty =
+    'bg-red-700 hover:bg-red-800 border rounded-lg text-white text-base';
+  }else if (buttonType === 'tab') {
+    buttonProperty =
+    'bg-sky-700 hover:bg-sky-900 text-white text-sm border rounded';
+  }else if (buttonType === 'tab-red') {
+    buttonProperty =
+    'bg-red-700 hover:bg-red-900 text-white text-sm border rounded';
+  }
   
-    }
 
-    export  function RemovedUsersButton() {
-      return (
-        <div>
-          <button className="pt-3 pb-4 pl-8 pr-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
-            <div className='flex'><span className="text-lg font-normal text-left">Removed Users</span> <span className='px-3 pt-0'><HiArrowRightCircle size="1.8em"/></span> </div>
-          </button>
-        </div>
-      )
-    
-      }
+  return (
+    <button
+      name={name}
+      type={type}
+      onClick={onClick}
+      className={` ${buttonProperty} ${width} px-${padding} py-${padding}`}
+    >
+     <span className='flex'><span className='pl-3'> {name} </span><span className='px-3'><Icon size="1.5em"/></span></span>
+    </button>
+  );
+};
 
-      export  function NewDiscussion() {
-        return (
-          <div>
-            <button className="px-10 py-4 text-sm font-semibold text-white bg-blue-800 rounded-xl hover:bg-blue-900">
-              <div className='flex'><span className="pr-5 text-base font-normal">Add new discussion topic</span> <span className=''><CgArrowUpR size="1.5em"/></span> </div>
-            </button>
-          </div>
-        )
-      
-      
-      }
-      
-      export  function AddReply() {
-        return (
-          <div>
-            <button className="px-10 py-4 text-sm font-semibold text-white bg-blue-800 rounded-xl hover:bg-blue-900">
-              <div className='flex'><span className="pr-5 text-base font-normal">Add a Reply</span> <span className=''><CgArrowUpR size="1.5em"/></span> </div>
-            </button>
-          </div>
-        )
-        }
+export default Button;

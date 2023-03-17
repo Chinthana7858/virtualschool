@@ -20,6 +20,7 @@ public class DiscussionForum {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateTime;
 
+    public DiscussionForum(){}
     public DiscussionForum(
             String id,
             String discussionTopic,

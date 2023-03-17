@@ -75,16 +75,16 @@ function AddRowPopup(props: { classId: string }) {
             
               <input type="text" name="rowNo" value={formValues.rowNo} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
               <input type="text" name="timePeriod" value={formValues.timePeriod} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
-      <input type="text" name="mondaySubject" value={formValues.mondaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
-      <input type="text" name="tuesdaySubject" value={formValues.tuesdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
-      <input type="text" name="wednesdaySubject" value={formValues.wednesdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
-      <input type="text" name="thursdaySubject" value={formValues.thursdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
-      <input type="text" name="fridaySubject" value={formValues.fridaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
-      <button type="submit" onClick={() => window.location.reload()}><SubmitButton/></button>
-    </form>
-      </div>
-      </div>
-      </div>
+              <input type="text" name="mondaySubject" value={formValues.mondaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+              <input type="text" name="tuesdaySubject" value={formValues.tuesdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+              <input type="text" name="wednesdaySubject" value={formValues.wednesdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+              <input type="text" name="thursdaySubject" value={formValues.thursdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+              <input type="text" name="fridaySubject" value={formValues.fridaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+              <button type="submit" onClick={() => window.location.reload()}><SubmitButton/></button>
+            </form>
+         </div>
+        </div>
+       </div>
     </>
   )
 }

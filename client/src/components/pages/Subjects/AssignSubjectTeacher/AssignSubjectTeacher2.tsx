@@ -1,12 +1,14 @@
 
-import Footer from "../ui/templates/Footer/Footer";
-import NavBar from "../ui/templates/NavBar/NavBar";
 import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
 import React, {useEffect } from 'react';
-import SideBarAdmin from "../ui/templates/SideBar/SideBar-Admin";
 import{useParams} from "react-router-dom";
-import { RemoveUserButton } from "../ui/atoms/Buttons";
+import NavBar from "../../../ui/templates/NavBar/NavBar";
+import SideBarAdmin from "../../../ui/templates/SideBar/SideBar-Admin";
+import Footer from "../../../ui/templates/Footer/Footer";
+import Button  from "../../../ui/atoms/Buttons";
+import { FiUserPlus } from "react-icons/fi";
+
 
 interface User {
   userid: string;
@@ -25,10 +27,11 @@ interface BackLinkProps {
     children?: React.ReactNode;
   }
 
-const UserProfile:React.FC= () => {
+const AssignSubjectTeacher2:React.FC= () => {
   const [open, setOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
+  const { subjectId } = useParams<{ subjectId: string }>();
 
   
   const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
@@ -43,15 +46,15 @@ const UserProfile:React.FC= () => {
   }, [userid]);
 
 
-  const handleDelete = async () => {
+  const handleAddToSubject = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to Remove this user from the system?');
+      const confirmed = window.confirm('Are you sure you want to add this user to class?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/userStateTo2/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/vi/subjects/${subjectId}/teacher/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +62,7 @@ const UserProfile:React.FC= () => {
       });
   
       if (response.ok) {
-        alert('User removed successfully');
+        alert('User added successfully');
       }
     } catch (error) {
       console.error(error);
@@ -77,13 +80,13 @@ const UserProfile:React.FC= () => {
       <NavBar/>
     </div>
 
-    <div className="flex">
+    <div className={`flex `}>
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
          <SideBarAdmin/>
       </div>
    
-      
+      <div className={`${open ? "w-[85vw]" : "w-[100vw]"}`}>
     <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
     <div className="text-[#ffffff] rounded-b-3xl bg-gradient-to-r from-[#577794] to-transparent h-[280px]">
         <div className=" pl-[10%]">
@@ -160,7 +163,14 @@ const UserProfile:React.FC= () => {
         </div>
       </span>
      </span>
-     <div><button className="pt-7 ml-[70%]" onClick={handleDelete}><BackLink url={`http://localhost:3000/UDAdminView`}><RemoveUserButton/></BackLink></button></div>
+     <div className="ml-[80%] p-4">
+        <Button name={'Assign'} 
+                buttonType={'secondary'} 
+                size={'md'}
+                padding={'3'}
+                onClick={handleAddToSubject}
+                icon={FiUserPlus}/>
+     </div>
      <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
       </div>
@@ -169,7 +179,8 @@ const UserProfile:React.FC= () => {
       </div>
       
     </div>
+    </div>
     
   );
 };
-export default UserProfile;
+export default AssignSubjectTeacher2;
