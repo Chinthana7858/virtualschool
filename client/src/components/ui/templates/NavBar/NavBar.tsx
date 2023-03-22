@@ -12,7 +12,9 @@ export default function NavBar() {
           </span>
 
           <span className=" basis-2/12 text-">
-              <img src="./images/logo.png" alt="logo" width="100" height="100" />
+             
+              <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="logo" width="107" height="107"/>
+              
           </span>
        
       </span>
