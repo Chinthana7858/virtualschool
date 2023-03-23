@@ -11,8 +11,10 @@ import java.util.List;
 public interface UserRepository extends MongoRepository<User, String> {
    void deleteByUserid(String userid);
    List<User> findByUserRole(UserRole userRole);
+
    List<User> findByUserid(String userid);
    List<User> findByUserRoleAndUserState(UserRole role, String state);
-   List<User> findByClassIds(String classId);
+   User findByUseremail(String email);
+
 }
 
