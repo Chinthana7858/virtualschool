@@ -47,6 +47,12 @@ public class UserController {
         return "Profile created";
     }
 
+    @PostMapping("api/vi/users/login")
+    public String Login(@RequestBody User user){
+        userService.loginUser(user);
+        return "Logged in";
+    }
+
     //Delete users by userid
     @DeleteMapping("api/vi/users/{userid}")
     public ResponseEntity<String> deleteUser(@PathVariable String userid) {

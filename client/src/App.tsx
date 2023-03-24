@@ -35,6 +35,8 @@ import AssignSubjectTeacher2 from './components/pages/Subjects/AssignSubjectTeac
 import AssignTeacherInCharge2 from './components/pages/ClassRooms/AssignTeacherInCharge/AssignTeacherInCharge2';
 import ClassStudentProfile from './components/pages/ClassRooms/AddStudentToClass/ClassStudentProfile';
 import SubjectResults from './components/pages/Subjects/SubjectResults';
+import Login from './components/pages/Login/Login';
+import Registration from './components/pages/Login/Registration';
 
 
 
@@ -42,6 +44,18 @@ function App() {
   return (
     <Router>
       <Routes>
+      <Route
+        path='/'
+        element={
+          <Login/> 
+        }
+       />
+      <Route
+        path='/Registration'
+        element={
+          <Registration/> 
+        }
+       />
         <Route
         path='/:userid'
         element={

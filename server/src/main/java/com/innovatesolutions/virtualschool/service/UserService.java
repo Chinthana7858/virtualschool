@@ -1,11 +1,13 @@
 package com.innovatesolutions.virtualschool.service;
 import com.innovatesolutions.virtualschool.enums.UserRole;
+import com.innovatesolutions.virtualschool.repository.LoginResponse;
 import com.innovatesolutions.virtualschool.repository.UserRepository;
 import com.innovatesolutions.virtualschool.entity.User;
 import lombok.AllArgsConstructor;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,13 +21,33 @@ public class UserService {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
     public void addNewUser(User user) {
+        User user1 = new User(
+                user.getUserid(),
+                user.getUserState(),
+                user.getUserRole(),
+                null,
+                user.getFullName(),
+                user.getPhoneNo(),
+                
+                user.getDateOfBirth(),
+                user.getEmail(),
+                user.getNIC(),
+                null,
+                user.getAddress(),
+                null,
+                this.passwordEncoder.encode(user.getpassword()),
+                user.getstUserid() 
+        );
 
-        userRepository.save(user);
+        userRepository.save(user1);
     }
     public Optional<User> getUserById(String userid) {
         return userRepository.findById(userid);
@@ -133,6 +155,34 @@ public class UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    public LoginResponse  loginUser(User user) {
+        String msg = "";
+        User user1 = userRepository.findByUseremail(user.getEmail());
+        if (user1 != null) {
+            String password = user1.getpassword();
+            String encodedPassword = user1.getpassword();
+            Boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
+            UserRole urole = user1.getUserRole();
+            String role = urole.toString();
+            
+            if (isPwdRight) {
+                
+                if (user1.getUserState()=="approved" || role=="ADMIN") {
+                    return new LoginResponse("Login Success", true,role);
+                } else {
+                    return new LoginResponse("Your registration request not approved yet", false,role);
+                }
+            } else {
+ 
+                return new LoginResponse("password Not Match", false,role);
+            }
+        }else {
+            return new LoginResponse("Email not exits", false, "");
+        }
+ 
+ 
     }
 }
 
