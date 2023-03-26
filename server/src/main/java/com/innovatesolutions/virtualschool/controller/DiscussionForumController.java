@@ -12,53 +12,61 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 
 @RestController
-@RequestMapping
+@RequestMapping("api/v1/discussionForum")
 @AllArgsConstructor
 public class DiscussionForumController {
     public final DiscussionForumService discussionForumService;
     private final DiscussionForumRepository discussionForumRepository;
 
-    @PostMapping("api/vi/discussionForum")
+    //Create new discussion
+    @PostMapping
     public String AddNewDiscussionForum(@RequestBody DiscussionForum discussionForum){
         discussionForumService.addDiscussionForum(discussionForum);
         return "Discussion created";
     }
 
-    @GetMapping("api/vi/discussionForum")
+    //Get all discussions
+    @GetMapping
     public List<DiscussionForum>fetchAllDiscussionForums(){
         return discussionForumService.getAllDiscussionForums();
     }
 
-    @GetMapping("api/vi/discussionForum/{classId}/{subjectId}")
+    //Get discussions by class and subject
+    @GetMapping("{classId}/{subjectId}")
     public ResponseEntity<List<DiscussionForum>> getDiscussionForumsByClassIdAndSubjectId(@PathVariable String classId, @PathVariable String subjectId) {
         List<DiscussionForum> discussionForums = discussionForumService.findByClassIdAndSubjectId(classId, subjectId);
         return new ResponseEntity<>(discussionForums, HttpStatus.OK);
     }
 
-    @DeleteMapping("api/vi/discussionForum/{classId}/{subjectId}/{userId}")
+    //Delete discussion by class,subject and user
+    @DeleteMapping("/{classId}/{subjectId}/{userId}")
     public ResponseEntity<Void> deleteDiscussionForumByClassIdAndSubjectIdAndUserId(@PathVariable String classId, @PathVariable String subjectId, @PathVariable String userId) {
         discussionForumService.deleteByClassIdAndSubjectIdAndUserid(classId, subjectId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("api/vi/discussionForum/{classId}/{subjectId}")
+    //Create discussion by class and subject
+    @PostMapping("/{classId}/{subjectId}")
     public String saveDiscussionForum(@PathVariable String classId, @PathVariable String subjectId, @RequestBody DiscussionForum discussionForum) {
         DiscussionForum savedDiscussionForum = discussionForumService.saveDiscussionForum(classId, subjectId, discussionForum);
         return "created";
     }
 
-    @GetMapping("api/vi/discussionForum/{id}")
+    //Get discussion by id
+    @GetMapping("/{id}")
     public Optional<DiscussionForum> getDiscussionForumById(@PathVariable String id) {
         return discussionForumService.getDiscussionForumById(id);
 
     }
 
-    @GetMapping("api/vi/discussionForum/motherDiscussion/{motherDiscussionId}")
+    //Get replies by main discussion
+    @GetMapping("/motherDiscussion/{motherDiscussionId}")
     public List<DiscussionForum> getDiscussionForumsByMotherDiscussionId(@PathVariable String motherDiscussionId) {
         return discussionForumService.getDiscussionForumsByMotherDiscussionId(motherDiscussionId);
     }
 
-    @GetMapping("api/vi/discussionForum/{classId}/{subjectId}/{motherDiscussionId}")
+    //Get reply by class,subject and main discussion
+    @GetMapping("/{classId}/{subjectId}/{motherDiscussionId}")
     public List<DiscussionForum> getDiscussionForumsByClassSubjectAndMotherDiscussion(
             @PathVariable("classId") String classId,
             @PathVariable("subjectId") String subjectId,
@@ -66,7 +74,8 @@ public class DiscussionForumController {
         return discussionForumService.getDiscussionForumsByClassSubjectAndMotherDiscussion(classId, subjectId, motherDiscussionId);
     }
 
-    @DeleteMapping("api/vi/discussionForum/{id}")
+    //Delete discussion by id
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDiscussionForumById(@PathVariable String id) {
         discussionForumService.deleteDiscussionForumById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
