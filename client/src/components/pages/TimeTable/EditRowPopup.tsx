@@ -38,7 +38,7 @@ function EditRowPopup(props: {  id: string;
       event.preventDefault();
   
       // Send the form data to the backend using an HTTP request
-      const response = await fetch(`http://localhost:8080/api/vi/timetables/${props.classId}/${props.rowNo}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/timetables/${props.classId}/${props.rowNo}`, {
         method: 'PUT',
         body: JSON.stringify(formValues),
         headers: {

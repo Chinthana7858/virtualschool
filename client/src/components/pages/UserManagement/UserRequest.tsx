@@ -29,27 +29,25 @@ interface BackLinkProps {
   children?: React.ReactNode;
 }
 
+const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
 
-const UserProfile:React.FC= () => {
+
+const UserRequest:React.FC= () => {
   const [open, setOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
 
-
-
-  const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
-  
-
+//Get users details by userid
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
 
-
+//Delete (User request reject)
   const handleReject = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to reject this request?');
@@ -58,7 +56,7 @@ const UserProfile:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/${userid}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -73,6 +71,7 @@ const UserProfile:React.FC= () => {
     }
   };
 
+//Update userState 0 to 1 (Accept user request)  
   const handleUpdateState = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to accept this request?');
@@ -81,7 +80,7 @@ const UserProfile:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/userStateTo1/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/userStateTo1/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -129,7 +128,6 @@ const UserProfile:React.FC= () => {
             </div>
         </div>
   
-
     
     <div className="max-w-[100vw] bg-slate-400 mt-1 relative rounded-l-[20px] h-auto ">
       <h2 className="text-xl pl-[10%]  py-5 2xl:mr-[64%] xl:mr-[500px] lg:mr-[600px] sm:mr-[400px]">
@@ -193,6 +191,7 @@ const UserProfile:React.FC= () => {
       </span>
     
      </span>
+
      <div className="flex w-[25vw] ml-[65%] xs:ml-[25%]"> 
      <div className="basis-1/2">
      <BackLink url={`http://localhost:3000/UsersRequests`}>
@@ -232,4 +231,4 @@ const UserProfile:React.FC= () => {
     
   );
 };
-export default UserProfile;
+export default UserRequest;

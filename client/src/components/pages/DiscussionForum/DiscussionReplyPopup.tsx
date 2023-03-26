@@ -15,9 +15,6 @@ function DiscussionReplyPopup(props: { classId: string, subjectId:string ,userid
     motherDiscussionId:props.id,
     dateTime:  new Date().toISOString(),
   });
-
-  const { classId } = useParams<{ classId: string }>();
-  const { subjectId } = useParams<{ subjectId: string }>();
   
 
   // Handle form submission
@@ -25,7 +22,7 @@ function DiscussionReplyPopup(props: { classId: string, subjectId:string ,userid
     event.preventDefault();
 
     // Send the form data to the backend using an HTTP request
-    const response = await fetch(`http://localhost:8080/api/vi/discussionForum`, {
+    const response = await fetch(`http://localhost:8080/api/v1/discussionForum`, {
       method: 'POST',
       body: JSON.stringify(formValues),
       headers: {
@@ -51,14 +48,6 @@ function DiscussionReplyPopup(props: { classId: string, subjectId:string ,userid
   };
   
 
-  // Handle input field changes
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormValues((prevState: any) => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
 
   const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = event.target;

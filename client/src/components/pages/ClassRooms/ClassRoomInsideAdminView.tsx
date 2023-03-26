@@ -213,7 +213,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
 
     
   <div className={`p-5  ${visibleAdd? "blur-sm" : "blur-0"}`}>
-    <a href={`http://localhost:3000/timetableAdmin/${classId}`}>
+    <a href={`http://localhost:3000/timetable/${classId}`}>
     <Button name={'Time table'} 
                 buttonType={'secondary'} 
                 size={'md'}
