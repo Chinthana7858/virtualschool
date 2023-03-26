@@ -37,12 +37,13 @@ const RemovedUser:React.FC= () => {
   );
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
 
+  //Delete user permenently
   const handleRemove = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to delete this pre-user deteils permenently from the system?');
@@ -51,7 +52,7 @@ const RemovedUser:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/${userid}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -66,6 +67,7 @@ const RemovedUser:React.FC= () => {
     }
   };
 
+  //Restore user (change userState to 1)
   const handleRestoreUser = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to restore this user to the system?');
@@ -74,7 +76,7 @@ const RemovedUser:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/userStateTo1/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/userStateTo1/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

@@ -24,7 +24,7 @@ interface ViewLinkProps {
 }
 
 
-const UserList: React.FC = () => {
+const UsersDetails: React.FC = () => {
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
   const [usersPrincipal, setUsersPrincipal] = useState<Users[]>([]);
@@ -37,9 +37,10 @@ const UserList: React.FC = () => {
     <a href={url}>{children}</a>
   );
 
+  //Get students data
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/STUDENT/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/STUDENT/state/1'); 
       const data = await result.json();
       setUsersStudent(data);
     };
@@ -47,9 +48,10 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get teachers data
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/TEACHER/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/TEACHER/state/1'); 
       const data = await result.json();
       setUsersTeacher(data);
     };
@@ -57,9 +59,10 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get principals details
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/PRINCIPAL/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/PRINCIPAL/state/1'); 
       const data = await result.json();
       setUsersPrincipal(data);
     };
@@ -67,9 +70,10 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get section heads details
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/SECTION_HEAD/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/SECTION_HEAD/state/1'); 
       const data = await result.json();
       setUsersSectionHead(data);
     };
@@ -77,16 +81,17 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get patents details
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/PARENT/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/PARENT/state/1'); 
       const data = await result.json();
       setUsersParent(data);
     };
 
     fetchData();
   }, []);
-  return (
+  return ( 
     <div>
 
     <div className="fixed z-20 w-[100%]">
@@ -134,7 +139,7 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-left rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/user/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -160,7 +165,7 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/user/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -186,7 +191,7 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/user/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -212,7 +217,7 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/user/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -238,7 +243,7 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UPAdminView/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/user/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
         ))}
       </tbody>
@@ -257,4 +262,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default UsersDetails;

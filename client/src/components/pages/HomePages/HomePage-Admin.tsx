@@ -79,7 +79,7 @@ const HomePageAdmin = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">User Profiles</a></div>
-                        <div className="pl-[45%]"><ViewLink url={`http://localhost:3000/UDAdminView`}><AccessButton/></ViewLink></div>
+                        <div className="pl-[45%]"><ViewLink url={`http://localhost:3000/Users`}><AccessButton/></ViewLink></div>
                       </div>
                       <img src={`${process.env.PUBLIC_URL}/images/UserProfiles.jpg`} className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>

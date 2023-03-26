@@ -8,17 +8,11 @@ import HomePageParent from './components/pages/HomePages/HomePage-Parent';
 import HomePagePrincipal from './components/pages/HomePages/HomePage-Principal';
 import HomePageStudent from './components/pages/HomePages/HomePage-Student';
 import HomePageTeacher from './components/pages/HomePages/HomePage-Teacher';
-import UserProfileAdminView from './components/pages/UserManagement/UserProfileAdminView';
-import TimeTable from './components/pages/TimeTable/TimeTable';
-import TimeTableAdmin from './components/pages/TimeTable/TimeTableAdmin';
 import RemovedUsers from './components/pages/UserManagement/RemovedUsers';
 import RemovedUser from './components/pages/UserManagement/RemovedUser';
 import DiscussionForuminside from './components/pages/DiscussionForum/DiscussionForumInside';
 import DiscussionForums from './components/pages/DiscussionForum/DiscussionForums';
-import UserProfile from './components/pages/UserManagement/UserProfile';
-import UsersDetails from './components/pages/UserManagement/UsersDetails';
 import UserRequest from './components/pages/UserManagement/UserRequest';
-import UsersDetailsAdminView from './components/pages/UserManagement/UsersDetailsAdminView';
 import UsersRequests from './components/pages/UserManagement/UsersRequests';
 import SectionsAdminview from './components/pages/Sections/SectionsAdminView';
 import ClassRoomsAdminview from './components/pages/ClassRooms/ClassRoomsAdminView';
@@ -33,8 +27,11 @@ import AssignSectionHead2 from './components/pages/Sections/AssignSectionHead.ts
 import AssignSubjectTeacher1 from './components/pages/Subjects/AssignSubjectTeacher/AssignSubjectTeacher1';
 import AssignSubjectTeacher2 from './components/pages/Subjects/AssignSubjectTeacher/AssignSubjectTeacher2';
 import AssignTeacherInCharge2 from './components/pages/ClassRooms/AssignTeacherInCharge/AssignTeacherInCharge2';
-import ClassStudentProfile from './components/pages/ClassRooms/AddStudentToClass/ClassStudentProfile';
 import SubjectResults from './components/pages/Subjects/SubjectResults';
+import ClassStudentProfile from './components/pages/ClassRooms/AddStudentToClass/ClassStudentProfile';
+import UsersList from './components/pages/UserManagement/UsersList';
+import UserProfilemanage from './components/pages/UserManagement/UserProfilemanage';
+import ClassTimeTable from './components/pages/TimeTable/ClassTimeTable';
 
 
 
@@ -42,18 +39,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-        path='/:userid'
-        element={
-          <UserProfile/> 
-        }
-       />
-        <Route
-        path='/UsersDetails'
-        element={
-          <UsersDetails/>
-        }
-       />
           <Route
         path='/HomePageStudent'
         element={
@@ -86,6 +71,13 @@ function App() {
         }
        />
 
+       <Route
+        path='/Users'
+        element={
+          <UsersList/>
+        }
+       />
+
       <Route
         path='/UsersRequests'
         element={
@@ -101,32 +93,20 @@ function App() {
        />
 
       <Route
-        path='/UPAdminView/:userid'
-        element={
-          <UserProfileAdminView/>
+        path='/user/:userid'
+        element={  
+          <UserProfilemanage/>
         }
        />
+      
 
       <Route
-        path='/UDAdminView'
-        element={
-          <UsersDetailsAdminView/>
-        }
-       />
-
-      <Route
-        path='/timetableAdmin/:classId'
-        element={
-          <TimeTableAdmin/>
-        }
-       />
-
-       <Route
         path='/timetable/:classId'
         element={
-          <TimeTable/>
+          <ClassTimeTable/>
         }
        />
+
 
       <Route
         path='/RemovedUsers'

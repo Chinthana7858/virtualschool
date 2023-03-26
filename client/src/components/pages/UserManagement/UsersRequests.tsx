@@ -9,6 +9,9 @@ interface ViewLinkProps {
   url: string;
   children?: React.ReactNode;
 }
+const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
 
 
 interface Users {
@@ -32,14 +35,10 @@ const UserList: React.FC = () => {
   const [usersParent, setUsersParent] = useState<Users[]>([]);
   const [open, setOpen] = useState(true);
 
-
-  const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
-
+// Get user requests as students
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/STUDENT/state/0'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/STUDENT/state/0'); 
       const data = await result.json();
       setUsersStudent(data);
     };
@@ -47,9 +46,10 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  // Get user requests as teachers
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/TEACHER/state/0'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/TEACHER/state/0'); 
       const data = await result.json();
       setUsersTeacher(data);
     };
@@ -57,9 +57,10 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  // Get user requests as principals
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/PRINCIPAL/state/0'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/PRINCIPAL/state/0'); 
       const data = await result.json();
       setUsersPrincipal(data);
     };
@@ -67,9 +68,10 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  // Get user requests as section heads
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/SECTION_HEAD/state/0'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/SECTION_HEAD/state/0'); 
       const data = await result.json();
       setUsersSectionHead(data);
     };
@@ -77,9 +79,10 @@ const UserList: React.FC = () => {
     fetchData();
   }, []);
 
+  // Get user requests as parents
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/PARENT/state/0'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/PARENT/state/0'); 
       const data = await result.json();
       setUsersParent(data);
     };
@@ -97,18 +100,17 @@ const UserList: React.FC = () => {
       <NavBar/>
     </div>
 
-    <div className="flex">
-      
+    <div className="flex"> 
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
          <SideBarAdmin/>
       </div>
    
      
      <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"}`}>
-
-    <div className="bg-slate-300 p-[5%] mt-[3%]  w-[100vw] rounded-md">
+      <div className="bg-slate-300 p-[5%] mt-[3%]  w-[100vw] rounded-md">
         <h1 className="text-3xl p-[2%] text-slate-700 font-medium">User requests</h1>
    
+   {/*Display principals details */}
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Principals
     </h1>
@@ -134,6 +136,7 @@ const UserList: React.FC = () => {
       </tbody>
     </table>
 
+     {/*Display section heads details */}
     <div className="py-[3vh]"></div>   
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
        Section Heads
@@ -160,6 +163,7 @@ const UserList: React.FC = () => {
       </tbody>
     </table>
 
+       {/*Display teachers details */}
        <div className="py-[3vh]"></div>
         <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
             Teachers
@@ -186,6 +190,7 @@ const UserList: React.FC = () => {
       </tbody>
     </table>
 
+     {/*Display students details */}
     <div className="py-[3vh]"></div>
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Students
@@ -200,8 +205,7 @@ const UserList: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {usersStudent.map(user => (
-            
+        {usersStudent.map(user => (   
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
             <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
@@ -214,6 +218,7 @@ const UserList: React.FC = () => {
       </tbody>
     </table>
 
+     {/*Display parents details */}
     <div className="py-[3vh]"></div>
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Parent
@@ -228,8 +233,7 @@ const UserList: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {usersParent.map(user => (
-            
+        {usersParent.map(user => (  
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
             <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
@@ -237,7 +241,6 @@ const UserList: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-left">{user.email}</td>
             <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/UserRequest/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
-  
         ))}
       </tbody>
     </table>

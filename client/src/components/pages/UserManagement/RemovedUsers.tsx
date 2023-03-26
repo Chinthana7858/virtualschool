@@ -9,6 +9,9 @@ interface ViewLinkProps {
   children?: React.ReactNode;
 }
 
+const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
 
 interface Users {
   userid: string;
@@ -31,14 +34,10 @@ const RemovedUses: React.FC = () => {
   const [usersParent, setUsersParent] = useState<Users[]>([]);
   const [open, setOpen] = useState(true);
 
-
-  const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
-
+//Get removed students
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/STUDENT/state/2'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/STUDENT/state/2'); 
       const data = await result.json();
       setUsersStudent(data);
     };
@@ -46,9 +45,10 @@ const RemovedUses: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get removed teachers
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/TEACHER/state/2'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/TEACHER/state/2'); 
       const data = await result.json();
       setUsersTeacher(data);
     };
@@ -56,9 +56,10 @@ const RemovedUses: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get removed principals
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/PRINCIPAL/state/2'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/PRINCIPAL/state/2'); 
       const data = await result.json();
       setUsersPrincipal(data);
     };
@@ -66,9 +67,10 @@ const RemovedUses: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get removed section heads
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/SECTION_HEAD/state/2'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/SECTION_HEAD/state/2'); 
       const data = await result.json();
       setUsersSectionHead(data);
     };
@@ -76,9 +78,10 @@ const RemovedUses: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get removed parents
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/PARENT/state/2'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/PARENT/state/2'); 
       const data = await result.json();
       setUsersParent(data);
     };
