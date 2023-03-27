@@ -25,7 +25,7 @@ interface ViewLinkProps {
   children?: React.ReactNode;
 }
 
-
+//Get classroom name by id
 function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
   interface ClassRoom {
 
@@ -34,7 +34,7 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
   }
   const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+    fetch(`http://localhost:8080/api/v1/classrooms/${classId}/classroom`)
       .then(res => res.json())
       .then(data => setClassRoom(data))
       .catch(error => console.error(error));
@@ -57,9 +57,10 @@ const AssignTeacherInCharge1: React.FC = () => {
     <a href={url}>{children}</a>
   );
 
+  //Get all teachers
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/TEACHER/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/TEACHER/state/1'); 
       const data = await result.json();
       setUsersTeacher(data);
     };
@@ -97,10 +98,10 @@ const AssignTeacherInCharge1: React.FC = () => {
     <table>
       <thead>
         <tr className="">
-          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
+          <th className="w-[18vw] p-[1.5vh]">UserID</th>
+          <th className="w-[18vw] p-[1.5vh]">Name</th>
           <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
+          <th className="w-[18vw] p-[1.5vh]">Email</th>
         </tr>
       </thead>
       <tbody>

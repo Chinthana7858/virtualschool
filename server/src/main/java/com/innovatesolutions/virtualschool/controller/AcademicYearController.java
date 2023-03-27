@@ -10,12 +10,13 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping
+@RequestMapping("api/v1/academic")
 @AllArgsConstructor
 public class AcademicYearController {
     private final AcademicYearService academicYearService;
 
-    @PostMapping("api/vi/academic/create")
+    //Create a new academic year
+    @PostMapping("/create")
     public ResponseEntity<Object> createAcademicYear(@RequestBody AcademicYear academicYear) {
         try {
             AcademicYear savedAcademicYear = academicYearService.createAcademicYear(academicYear);
@@ -25,14 +26,15 @@ public class AcademicYearController {
         }
     }
 
-    @GetMapping("api/vi/academic/{sectionId}")
+    //Get academic years by sectionId
+    @GetMapping("/{sectionId}")
     public List<AcademicYear> getAcademicYearsBySectionId(@PathVariable String sectionId) {
         return academicYearService.getAcademicYearsBySectionId(sectionId);
     }
 
-
-    @DeleteMapping("api/vi/academic/{year}/{sectionId}")
-    public ResponseEntity<Void> deleteAcademicYear(@PathVariable String year, @PathVariable String sectionId) {
+    //Delete academic year by sectionId and year
+    @DeleteMapping("/{year}/{sectionId}")
+    public ResponseEntity<Void> deleteAcademicYear(@PathVariable Integer year, @PathVariable String sectionId) {
         academicYearService.deleteAcademicYear(year, sectionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

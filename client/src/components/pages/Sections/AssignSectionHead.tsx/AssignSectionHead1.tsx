@@ -25,13 +25,19 @@ interface ViewLinkProps {
   children?: React.ReactNode;
 }
 
+  
+const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
+
+//Get section name by sectionId
 function GetSectionNameBysectionId({ sectionId }: { sectionId: string }): JSX.Element | null{
     interface Section {
       sectionName:string;
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/sections/${sectionId}`)
+      fetch(`http://localhost:8080/api/v1/sections/${sectionId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -48,15 +54,10 @@ const AssignSectionHead1: React.FC = () => {
   const{sectionId}=useParams<{sectionId:string}>();
   const sectionName=<GetSectionNameBysectionId sectionId={sectionId??defaultSectionId} />
 
-
-  
-  const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
-
+//Get all Section Heads
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/SECTION_HEAD/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/SECTION_HEAD/state/1'); 
       const data = await result.json();
       setUsersSectionHead(data);
     };
@@ -95,20 +96,20 @@ const AssignSectionHead1: React.FC = () => {
 
       <thead>
         <tr className="">
-          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
         </tr>
       </thead>
       <tbody>
         {usersSectionHead.map(user => (
             
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
             <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/AssignSecH2/${sectionId}/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
 

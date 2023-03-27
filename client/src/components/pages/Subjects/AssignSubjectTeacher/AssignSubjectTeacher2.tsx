@@ -38,8 +38,9 @@ const AssignSubjectTeacher2:React.FC= () => {
     <a href={url}>{children}</a>
   );
 
+  //Get user details by user id
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
@@ -54,7 +55,7 @@ const AssignSubjectTeacher2:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/subjects/${subjectId}/teacher/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/subjects/${subjectId}/teacher/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

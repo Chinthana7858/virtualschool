@@ -6,8 +6,6 @@ import NavBar from '../../../ui/templates/NavBar/NavBar';
 import SideBarStudent from '../../../ui/templates/SideBar/SideBar-Student';
 
 
-
-
 interface Users {
   userid: string;
   userRole:string;
@@ -25,14 +23,14 @@ interface ViewLinkProps {
   children?: React.ReactNode;
 }
 
-
+//Get subject name by subject id
 function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
     interface Section {
       subjectName:string;
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -57,7 +55,7 @@ const AssignSubjectTeacher1: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/TEACHER/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/TEACHER/state/1'); 
       const data = await result.json();
       setUsersTeacher(data);
     };

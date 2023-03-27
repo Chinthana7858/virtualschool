@@ -9,5 +9,5 @@ import java.util.List;
 public interface ClassRoomRepository extends MongoRepository<ClassRoom,String> {
     ClassRoom findByClassRoomId(String classRoomId);
 
-    List<ClassRoom> findBySectionIdAndAcademicYear(String sectionId,String academicYear);
+    List<ClassRoom> findBySectionIdAndAcademicYear(String sectionId,Integer academicYear);
 }

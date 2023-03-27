@@ -23,6 +23,10 @@ interface ViewLinkProps {
   url: string;
   children?: React.ReactNode;
 }
+  
+const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
 
 
 const AddStudentsToClass: React.FC = () => {
@@ -32,15 +36,10 @@ const AddStudentsToClass: React.FC = () => {
   const{sectionId}=useParams<{sectionId:string}>();
   const{year}=useParams<{year:string}>();
 
-
-  
-  const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
-
+  //Get all students
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/vi/users/role/STUDENT/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/STUDENT/state/1'); 
       const data = await result.json();
       setUsersStudent(data);
     };

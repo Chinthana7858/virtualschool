@@ -38,14 +38,15 @@ const AssignSectionHead2:React.FC= () => {
     <a href={url}>{children}</a>
   );
 
+  //Get user details by userId
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
 
-
+//Assign Section head
   const handleAssignSectionHead = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to add this user as the section head?');
@@ -54,7 +55,7 @@ const AssignSectionHead2:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/sections/${sectionId}/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/sections/${sectionId}/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -164,7 +165,7 @@ const AssignSectionHead2:React.FC= () => {
       </span>
      </span>
      <div className="pt-7 ml-[80%]">
-      <BackLink url={`http://localhost:3000/AccYearAdmin/${sectionId}`}>
+      <BackLink url={`http://localhost:3000/AcademicYears/${sectionId}`}>
         <Button name={'Assign'} 
                 buttonType={'secondary'} 
                 size={'md'}

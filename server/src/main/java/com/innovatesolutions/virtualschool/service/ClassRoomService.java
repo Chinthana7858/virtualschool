@@ -17,7 +17,7 @@ public class ClassRoomService {
     @Autowired
     private final ClassRoomRepository classRoomRepository;
 
-
+    //Add new classRoom
     public void addClassRoom(ClassRoom classRoom) {
 
         try {
@@ -26,21 +26,27 @@ public class ClassRoomService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to add subject.", ex);
         }
     }
+
+    //Get classRoom by classRoomId
     public ClassRoom getClassRoomByClassRoomId(String classRoomId) {
         return classRoomRepository.findByClassRoomId(classRoomId);
     }
 
+    //Get classRoom byId
     public Optional<ClassRoom> getClassRoomById(String id) {
         return classRoomRepository.findById(id);
     }
+    //Delete classRoom byId
     public void deleteClassRoomById(String classRoomId) {
         classRoomRepository.deleteById(classRoomId);
     }
 
-    public List<ClassRoom> getClassroomsBySectionIdAndAcademicYear(String sectionId,String academicYear) {
+    //Get classRoom by section and academic year
+    public List<ClassRoom> getClassroomsBySectionIdAndAcademicYear(String sectionId,Integer academicYear) {
         return classRoomRepository.findBySectionIdAndAcademicYear(sectionId,academicYear);
     }
 
+    //Update/Assign a teacher in charge
     public void updateTeacherInChargeId(String classRoomId, String teacherInChargeId) {
         Optional<ClassRoom> optionalClassRoom = classRoomRepository.findById(classRoomId);
         if (optionalClassRoom.isPresent()) {

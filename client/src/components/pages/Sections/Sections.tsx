@@ -17,41 +17,16 @@ interface ViewLinkProps {
     url: string;
     children?: React.ReactNode;
   }
-
-const SectionsAdminview: React.FC = () => {
-  const [section, setSection] = useState<Section[]>([]);
-  const [open, setOpen] = useState(true); 
-  const [visibleAdd, setVisibleAdd] = useState(false);
-  const [sectionId, setSectionId] = useState('');
-
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
   );
 
-    
-const handleDelete = async () => {
-  try {
-    const confirmed = window.confirm('Are you sure you want to Remove this section? You will lose all details related to this section');
+const Sections: React.FC = () => {
+  const [section, setSection] = useState<Section[]>([]);
+  const [open, setOpen] = useState(true); 
+  const [visibleAdd, setVisibleAdd] = useState(false);
 
-    if (!confirmed) {
-      return; // user clicked cancel, so do nothing
-    }
-
-    const response = await fetch(`http://localhost:8080/api/vi/sections/${sectionId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    });
-
-    if (response.ok) {
-      alert('Section removed successfully');
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
+//Get user name by UserId
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
     interface User {
   
@@ -60,7 +35,7 @@ const handleDelete = async () => {
     }
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/users/${userid}`)
+      fetch(`http://localhost:8080/api/v1/users/${userid}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(error => console.error(error));
@@ -69,10 +44,10 @@ const handleDelete = async () => {
     return user ? <span>{user.nameWithInitials}</span> : null;
   }
   
-
+// Get all Sections
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/sections`); 
+      const result = await fetch(`http://localhost:8080/api/v1/sections`); 
       const data = await result.json();
       setSection(data);
     };
@@ -123,7 +98,7 @@ const handleDelete = async () => {
       <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-center">{section.sectionId}</td>
       <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-center">{section.sectionName}</td>
       <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-center"><GetNameByuserid userid={section.sectionHeadId}/></td>
-      <td className='sm:w-[0vw] md:w-[5vw] xl:w-[15vw] h-[15vh] text-center"'> <ViewLink url={`http://localhost:3000/AccYearAdmin/${section.sectionId}`}><AccessButton/></ViewLink></td>
+      <td className='sm:w-[0vw] md:w-[5vw]  xl:w-[15vw] h-[15vh] text-center"'> <ViewLink url={`http://localhost:3000/AcademicYears/${section.sectionId}`}><AccessButton/></ViewLink></td>
     </tr>
   ))}
 </tbody>
@@ -159,4 +134,4 @@ const handleDelete = async () => {
   );
 };
 
-export default SectionsAdminview;
+export default Sections;
