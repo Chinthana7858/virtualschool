@@ -13,8 +13,9 @@ public class AcademicYearService {
     @Autowired
     private final AcademicYearRepository academicYearRepository;
 
+    //Create new academic year
     public AcademicYear createAcademicYear(AcademicYear academicYear) throws Exception {
-        String year = academicYear.getYear();
+        Integer year = academicYear.getYear();
         String sectionId = academicYear.getSectionId();
 
         // Check if the academic year already exists
@@ -26,13 +27,13 @@ public class AcademicYearService {
         return academicYearRepository.save(academicYear);
     }
 
-
+    //Get academic years by section
     public List<AcademicYear> getAcademicYearsBySectionId(String sectionId) {
         return academicYearRepository.findBySectionId(sectionId);
     }
 
-
-    public void deleteAcademicYear(String year, String sectionId) {
+    //Delete academic year
+    public void deleteAcademicYear(Integer year, String sectionId) {
         academicYearRepository.deleteByYearAndSectionId(year, sectionId);
     }
 }

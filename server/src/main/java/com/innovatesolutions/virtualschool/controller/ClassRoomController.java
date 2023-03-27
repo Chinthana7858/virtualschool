@@ -10,19 +10,21 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping
+@RequestMapping("api/v1/classrooms")
 @AllArgsConstructor
 public class ClassRoomController {
     private final ClassRoomService classRoomService;
 
-    @PostMapping("api/vi/classrooms")
+    //Add new classRoom
+    @PostMapping
     public String AddNewClassRoom(@RequestBody ClassRoom classRoom){
         classRoomService.addClassRoom(classRoom);
         return "new classroom added";
 
     }
 
-    @GetMapping("api/vi/classrooms/{classRoomId}")
+    //Get classRoom by classRoomId
+    @GetMapping("/{classRoomId}")
     public ResponseEntity<ClassRoom> getClassRoomByClassRoomId(@PathVariable String classRoomId) {
         ClassRoom classRoom = classRoomService.getClassRoomByClassRoomId(classRoomId);
         if (classRoom == null) {
@@ -31,26 +33,30 @@ public class ClassRoomController {
         return new ResponseEntity<>(classRoom, HttpStatus.OK);
     }
 
-    @GetMapping("api/vi/classrooms/{id}/classroom")
+    //Get classRoom byId
+    @GetMapping("/{id}/classroom")
     public ResponseEntity<ClassRoom> getClassRoomById(@PathVariable String id) {
         return classRoomService.getClassRoomById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("api/vi/classrooms/{classRoomId}")
+    //Delete classRoom byId
+    @DeleteMapping("/{classRoomId}")
     public ResponseEntity<Void> deleteClassRoomById(@PathVariable String classRoomId) {
         classRoomService.deleteClassRoomById(classRoomId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("api/vi/classrooms/sectionId/{sectionId}/Academic/{academicYear}")
-    public ResponseEntity<List<ClassRoom>> getClassroomsBySectionIdAndAcademicYear(@PathVariable String sectionId,@PathVariable String academicYear) {
+    //Get classRoom by section and academic year
+    @GetMapping("/sectionId/{sectionId}/Academic/{academicYear}")
+    public ResponseEntity<List<ClassRoom>> getClassroomsBySectionIdAndAcademicYear(@PathVariable String sectionId,@PathVariable Integer academicYear) {
         List<ClassRoom> classrooms = classRoomService.getClassroomsBySectionIdAndAcademicYear(sectionId,academicYear);
         return new ResponseEntity<>(classrooms, HttpStatus.OK);
     }
 
-    @PutMapping("api/vi/classrooms/{classRoomId}/teacher/{teacherInChargeId}")
+    //Update/Assign teacher in charge
+    @PutMapping("/{classRoomId}/teacher/{teacherInChargeId}")
     public ResponseEntity<String> updateTeacherInChargeId(@PathVariable String classRoomId, @PathVariable String teacherInChargeId) {
         classRoomService.updateTeacherInChargeId(classRoomId, teacherInChargeId);
         return ResponseEntity.ok("Teacher in charge updated for classroom id: " + classRoomId);

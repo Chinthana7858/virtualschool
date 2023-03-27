@@ -7,6 +7,6 @@ import java.util.List;
 @Repository
 public interface AcademicYearRepository extends MongoRepository<AcademicYear,String> {
     List<AcademicYear> findBySectionId(String sectionId);
-    AcademicYear findByYearAndSectionId(String year, String sectionId);
-    void deleteByYearAndSectionId(String year, String sectionId);
+    AcademicYear findByYearAndSectionId(Integer year, String sectionId);
+    void deleteByYearAndSectionId(Integer year, String sectionId);
 }

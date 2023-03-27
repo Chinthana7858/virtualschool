@@ -11,11 +11,11 @@ public class ClassRoom {
     private String classRoomId;
     private String sectionId;
     private String teacherInChargeId;
-    private String academicYear;
+    private Integer academicYear;
 
     public ClassRoom() {}
 
-    public ClassRoom(String classRoomId, String sectionId, String teacherInChargeId , String academicYear) {
+    public ClassRoom(String classRoomId, String sectionId, String teacherInChargeId , Integer academicYear) {
         this.classRoomId=classRoomId;
         this.sectionId = sectionId;
         this.teacherInChargeId = teacherInChargeId;
