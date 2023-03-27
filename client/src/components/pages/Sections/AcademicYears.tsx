@@ -85,7 +85,7 @@ const AcademicYears: React.FC = () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/v1/sections/api/vi/sections/${sectionId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/sections/${sectionId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
