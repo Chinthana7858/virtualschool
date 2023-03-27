@@ -30,16 +30,14 @@ interface DiscussionForums {
   dateTime: Date
 }
 
-
+//Get users name by userid
 function GetNameByuserid({ userid }: { userid?: string }): JSX.Element | null{
   interface User {
-
     nameWithInitials:string;
-  
   }
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
@@ -48,6 +46,7 @@ function GetNameByuserid({ userid }: { userid?: string }): JSX.Element | null{
   return user ? <span>{user.nameWithInitials}</span> : null;
 }
 
+//Get classRoom name by classRoomId
 function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
   interface ClassRoom {
 
@@ -56,7 +55,7 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
   }
   const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+    fetch(`http://localhost:8080/api/v1/classrooms/${classId}/classroom`)
       .then(res => res.json())
       .then(data => setClassRoom(data))
       .catch(error => console.error(error));
@@ -65,20 +64,20 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
   return classRoom ? <span>{classRoom.classRoomId}</span> : null;
 }
 
-
+//Get subject name by subjectId
 function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
-  interface Section {
+  interface Subject {
     subjectName:string;
   }
-  const [section, setSection] = useState<Section | null>(null);
+  const [subject, setSubject] = useState<Subject | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+    fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
       .then(res => res.json())
-      .then(data => setSection(data))
+      .then(data => setSubject(data))
       .catch(error => console.error(error));
   }, []);
 
-  return section ? <span>{section.subjectName}</span> : null;
+  return subject ? <span>{subject.subjectName}</span> : null;
 }
 
 interface BackLinkProps {
@@ -105,7 +104,7 @@ const DiscussionForuminside: React.FC = () => {
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultsubjectId}/>
 
-
+//Delete discussion
   const handleDelete = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to Remove this discussion? ');
@@ -114,7 +113,7 @@ const DiscussionForuminside: React.FC = () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/discussionForum/${discussionForumId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/discussionForum/${discussionForumId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -131,7 +130,7 @@ const DiscussionForuminside: React.FC = () => {
     
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/discussionForum/${discussionForumId}`)
+    fetch(`http://localhost:8080/api/v1/discussionForum/${discussionForumId}`)
       .then(res => res.json())
       .then(data => setDiscussionForuminside(data))
       .catch(error => console.error(error));
@@ -140,7 +139,7 @@ const DiscussionForuminside: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/discussionForum/motherDiscussion/${discussionForumId}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/discussionForum/motherDiscussion/${discussionForumId}`); 
       const data = await result.json();
       setDiscussionForum(data);
     };

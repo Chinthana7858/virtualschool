@@ -23,7 +23,7 @@ interface TimeTable {
   fridaySubject: string;
 }
 
-
+//Get classroom name by classId
 function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
   interface ClassRoom {
 
@@ -32,7 +32,7 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
   }
   const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+    fetch(`http://localhost:8080/api/v1/classrooms/${classId}/classroom`)
       .then(res => res.json())
       .then(data => setClassRoom(data))
       .catch(error => console.error(error));
@@ -42,7 +42,7 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
 }
 
 
-const TimeTableAdmin: React.FC = () => {
+const TimeTable: React.FC = () => {
   const [timetable, setTimetable] = useState<TimeTable[]>([]);
   const [open, setOpen] = useState(true); 
   const [visibleEdit, setVisibleEdit] = useState(false);
@@ -63,31 +63,30 @@ const TimeTableAdmin: React.FC = () => {
 
 
 
+  //Delete row function
   const handleDelete = ( rowNo: number) => {
-    fetch(`http://localhost:8080/api/vi/timetables/${classId}/${rowNo}`, {
+    fetch(`http://localhost:8080/api/v1/timetables/${classId}/${rowNo}`, {
       method: 'DELETE'
     })
     .then(response => {
       if (response.ok) {
-        alert("deleted")
+        alert("Deleted")
         window.location.reload();
-        // handle success
       } else {
-        // handle error
+        alert("Failed to delete")
       }
      
     })
     .catch(error => {
       // handle error
-    
     });
   };
 
 
-
+//Get timetables by classId
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/timetables/${classId}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/timetables/${classId}`); 
       const data = await result.json();
       setTimetable(data);
     };
@@ -222,4 +221,4 @@ const TimeTableAdmin: React.FC = () => {
   );
 };
 
-export default TimeTableAdmin;
+export default TimeTable;
