@@ -20,7 +20,7 @@ function AddNewClassPopup(props: AddNewClassPopupProps) {
     event.preventDefault();
 
     // Send the form data to the backend using an HTTP request
-    const response = await fetch(`http://localhost:8080/api/vi/classrooms`, {
+    const response = await fetch(`http://localhost:8080/api/v1/classrooms`, {
       method: 'POST',
       body: JSON.stringify(formValues),
       headers: {
