@@ -41,7 +41,7 @@ public class SectionController {
     }
 
     //Delete section by sectionId
-    @DeleteMapping("api/vi/sections/{sectionId}")
+    @DeleteMapping("/{sectionId}")
     public ResponseEntity<Void> deleteSectionById(@PathVariable String sectionId) {
         sectionService.deleteSectionById(sectionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
