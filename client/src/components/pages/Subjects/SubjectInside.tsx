@@ -84,6 +84,29 @@ const SubjectInside: React.FC = () => {
     }
   };
 
+   
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this subject ? You will lose all details related to this subject');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Class room removed successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
@@ -208,6 +231,17 @@ const SubjectInside: React.FC = () => {
                 icon={BiBook}/>
       </a>
     </div>
+    </div>
+
+    <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+       <div className=" ml-[68%]">
+        <Button name={'Remove subject'} 
+                buttonType={'secondary-red'} 
+                size={'md'}
+                padding={'3'}
+                onClick={handleDelete}
+                icon={AiFillDelete }/>
+        </div>
     </div>
 
     {visibleAdd && (
