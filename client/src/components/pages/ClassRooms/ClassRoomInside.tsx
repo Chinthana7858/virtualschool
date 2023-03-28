@@ -163,6 +163,29 @@ const ClassRoomInside: React.FC = () => {
     fetchData();
   }, []);
 
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this class room ? You will lose all details related to this class room');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/classrooms/${classId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Class room removed successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   return (
     <div>
@@ -291,6 +314,19 @@ const ClassRoomInside: React.FC = () => {
         ))}
       </tbody>
     </table>
+
+    <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+       <div className=" ml-[68%]">
+        <BackLink url={`http://localhost:3000/classes/${sectionId}/${year}`}>
+        <Button name={'Remove class'} 
+                buttonType={'secondary-red'} 
+                size={'md'}
+                padding={'3'}
+                onClick={handleDelete}
+                icon={AiFillDelete }/>
+        </BackLink>
+        </div>
+    </div>
 
 
     {visibleAdd && (
