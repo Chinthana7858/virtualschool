@@ -18,6 +18,7 @@ public class SubjectService {
     @Autowired
     private final SubjectRepository subjectRepository;
 
+    //Add new subject
     public void addSubject(Subject subject) {
         if (subjectRepository.findBySubjectId(subject.getSubjectId()) != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Subject with subjectId " + subject.getSubjectId() + " already exists.");
@@ -30,18 +31,22 @@ public class SubjectService {
         }
     }
 
+    //Get subject by subjectId
     public Subject getSubjectById(String subjectId) {
         return subjectRepository.findBySubjectId(subjectId);
     }
 
+    //Delete subject by subjectId
     public void deleteSubjectById(String subjectId) {
         subjectRepository.deleteById(subjectId);
     }
 
+    //Get subjects by classRoomId
     public List<Subject> findByClassRoomId(String classRoomId) {
         return subjectRepository.findByClassRoomId(classRoomId);
     }
 
+    //Update/Assign teacher for a subject
     public Optional<Subject> addTeacherIdToSubject(String subjectId, String teacherId) {
         Optional<Subject> optionalSubject = subjectRepository.findById(subjectId);
         if (optionalSubject.isPresent()) {

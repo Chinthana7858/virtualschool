@@ -12,6 +12,11 @@ interface ViewLinkProps {
   children?: React.ReactNode;
 }
 
+const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
+
+
 interface DiscussionForums {
   id:string,
   discussionTopic: string,
@@ -23,7 +28,7 @@ interface DiscussionForums {
   dateTime: Date
 }
 
-
+//Get users name by userid
 function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
   interface User {
 
@@ -32,7 +37,7 @@ function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
   }
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
@@ -43,7 +48,7 @@ function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
 
 
 
-
+//Get classRoom name by classRoomId
 function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
   interface ClassRoom {
 
@@ -52,7 +57,7 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
   }
   const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+    fetch(`http://localhost:8080/api/v1/classrooms/${classId}/classroom`)
       .then(res => res.json())
       .then(data => setClassRoom(data))
       .catch(error => console.error(error));
@@ -61,19 +66,20 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
   return classRoom ? <span>{classRoom.classRoomId}</span> : null;
 }
 
+//Get subject name by subjectId
 function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
-  interface Section {
+  interface Subject {
     subjectName:string;
   }
-  const [section, setSection] = useState<Section | null>(null);
+  const [subject, setSubject] = useState<Subject | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+    fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
       .then(res => res.json())
-      .then(data => setSection(data))
+      .then(data => setSubject(data))
       .catch(error => console.error(error));
   }, []);
 
-  return section ? <span>{section.subjectName}</span> : null;
+  return subject ? <span>{subject.subjectName}</span> : null;
 }
 
 
@@ -91,18 +97,10 @@ const DiscussionForums: React.FC = () => {
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultsubjectId}/>
 
-  
-
-
-  const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
-
-
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/discussionForum/${classId}/${subjectId}/0`); 
+      const result = await fetch(`http://localhost:8080/api/v1/discussionForum/${classId}/${subjectId}/0`); 
       const data = await result.json();
       setDiscussionForum(data);
     };
@@ -183,8 +181,6 @@ const DiscussionForums: React.FC = () => {
   ))}
 </tbody>
     </table>
-
-   
 
     {visibleAdd && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">

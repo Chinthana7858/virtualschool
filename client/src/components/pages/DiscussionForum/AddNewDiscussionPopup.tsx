@@ -15,16 +15,13 @@ function AddNewDiscussionPopup(props: { classId: string, subjectId:string ,useri
     motherDiscussionId: '0',
     dateTime:  new Date().toISOString(),
   });
-
-  const { classId } = useParams<{ classId: string }>();
-  const { subjectId } = useParams<{ subjectId: string }>();
-
+  
   // Handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     // Send the form data to the backend using an HTTP request
-    const response = await fetch(`http://localhost:8080/api/vi/discussionForum`, {
+    const response = await fetch(`http://localhost:8080/api/v1/discussionForum`, {
       method: 'POST',
       body: JSON.stringify(formValues),
       headers: {
@@ -75,7 +72,7 @@ function AddNewDiscussionPopup(props: { classId: string, subjectId:string ,useri
             <p className="p-[13.5px]">Discussion Topic</p>
             <p className="p-[13.5px]">Message</p>
           </div>
-          <div className="basis-2/3 ">
+          <div className="basis-2/3 "> 
             <form onSubmit={handleSubmit}>
                 <div className='pt-3'>
             <input  type="text" name="discussionTopic" value={formValues.discussionTopic} className="border rounded-md border-slate-400  w-[350px]" onChange={handleInputChange} />

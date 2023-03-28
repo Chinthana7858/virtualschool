@@ -11,25 +11,27 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping
+@RequestMapping("api/v1/sections")
 @AllArgsConstructor
 public class SectionController {
     private final SectionService sectionService;
 
-    @GetMapping("api/vi/sections")
+    //Get all sections
+    @GetMapping
     public List<Section> fetchAllSections(){
         return sectionService.getAllSections();
     }
 
-
-    @PostMapping("api/vi/sections")
+    //Add a new section
+    @PostMapping
     public String AddNewDiscussion(@RequestBody Section section){
         sectionService.addSection(section);
             return "new section added";
 
     }
 
-    @GetMapping("api/vi/sections/{sectionId}")
+    //Get section by sectionId
+    @GetMapping("/{sectionId}")
     public ResponseEntity<Section> getSectionById(@PathVariable String sectionId) {
         Section section = sectionService.getSectionById(sectionId);
         if (section == null) {
@@ -38,19 +40,22 @@ public class SectionController {
         return new ResponseEntity<>(section, HttpStatus.OK);
     }
 
-    @DeleteMapping("api/vi/sections/{sectionId}")
+    //Delete section by sectionId
+    @DeleteMapping("/{sectionId}")
     public ResponseEntity<Void> deleteSectionById(@PathVariable String sectionId) {
         sectionService.deleteSectionById(sectionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("api/vi/sections/{sectionId}/sectionName")
+    //Get section name by sectionId
+    @GetMapping("/{sectionId}/sectionName")
     public ResponseEntity<String> getSectionNameBySectionId(@PathVariable String sectionId) {
         String sectionName = sectionService.getSectionNameBySectionId(sectionId);
         return new ResponseEntity<>(sectionName, HttpStatus.OK);
     }
 
-    @PutMapping("api/vi/sections/{sectionId}/{sectionHeadId}")
+    //Update/Assign section head
+    @PutMapping("/{sectionId}/{sectionHeadId}")
     public Section updateSectionHeadId(@PathVariable String sectionId, @PathVariable String sectionHeadId) {
         return sectionService.updateSectionHeadId(sectionId, sectionHeadId);
     }

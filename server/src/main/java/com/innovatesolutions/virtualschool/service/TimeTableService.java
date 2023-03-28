@@ -15,22 +15,27 @@ public class TimeTableService {
     private final TimeTableRepository timeTableRepository;
 
 
+    //Get timetables by class
     public List<TimeTable> getTimeTablesByClassId(String classId) {
         return timeTableRepository.findByClassId(classId);
     }
 
+    //Get timetables by class and row number
     public List<TimeTable> getTimeTablesByClassIdAndRowNo(String classId, int rowNo) {
         return timeTableRepository.findByClassIdAndRowNo(classId, rowNo);
     }
 
+    //Get all timetables
     public List<TimeTable> getAllTimeTables(){
         return timeTableRepository.findAll();
     }
 
+    //Add new timetable
     public TimeTable addTimeTable(TimeTable timeTable) {
         return timeTableRepository.save(timeTable);
     }
 
+    //Edit timetable details by class and row number
     public TimeTable editTimeTableByClassIdAndRowNo(String classId, int rowNo, TimeTable updatedTimeTable) {
         Optional<TimeTable> existingTimeTableOptional = timeTableRepository.findByClassIdAndRowNo(classId, rowNo).stream().findFirst();
         if (existingTimeTableOptional.isPresent()) {
@@ -47,6 +52,7 @@ public class TimeTableService {
         }
     }
 
+    //Delete timetable by class and Row number
     public void deleteTimeTableByClassIdAndRowNo(String classId, int rowNo) {
         Optional<TimeTable> existingTimeTableOptional = timeTableRepository.findByClassIdAndRowNo(classId, rowNo).stream().findFirst();
         if (existingTimeTableOptional.isPresent()) {

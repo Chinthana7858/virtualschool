@@ -8,33 +8,34 @@ import HomePageParent from './components/pages/HomePages/HomePage-Parent';
 import HomePagePrincipal from './components/pages/HomePages/HomePage-Principal';
 import HomePageStudent from './components/pages/HomePages/HomePage-Student';
 import HomePageTeacher from './components/pages/HomePages/HomePage-Teacher';
-import UserProfileAdminView from './components/pages/UserManagement/UserProfileAdminView';
-import TimeTable from './components/pages/TimeTable/TimeTable';
-import TimeTableAdmin from './components/pages/TimeTable/TimeTableAdmin';
 import RemovedUsers from './components/pages/UserManagement/RemovedUsers';
 import RemovedUser from './components/pages/UserManagement/RemovedUser';
 import DiscussionForuminside from './components/pages/DiscussionForum/DiscussionForumInside';
 import DiscussionForums from './components/pages/DiscussionForum/DiscussionForums';
-import UserProfile from './components/pages/UserManagement/UserProfile';
-import UsersDetails from './components/pages/UserManagement/UsersDetails';
 import UserRequest from './components/pages/UserManagement/UserRequest';
-import UsersDetailsAdminView from './components/pages/UserManagement/UsersDetailsAdminView';
 import UsersRequests from './components/pages/UserManagement/UsersRequests';
-import SectionsAdminview from './components/pages/Sections/SectionsAdminView';
-import ClassRoomsAdminview from './components/pages/ClassRooms/ClassRoomsAdminView';
+import ClassRoomsAdminview from './components/pages/ClassRooms/ClassRooms';
 import AddStudentsToClass from './components/pages/ClassRooms/AddStudentToClass/AddStudentsToClass';
 import AddStudentToClass from './components/pages/ClassRooms/AddStudentToClass/AddStudentToClass';
-import SubjectInsideAdminView from './components/pages/Subjects/SubjectInsideAdminView';
+import SubjectInsideAdminView from './components/pages/Subjects/SubjectInside';
 import AssignTeacherInCharge1 from './components/pages/ClassRooms/AssignTeacherInCharge/AssignTeacherInCharge1';
-import AcademicYearAdmin from './components/pages/Sections/AcademicYearsAdminView';
-import ClassRoomInsideAdminview from './components/pages/ClassRooms/ClassRoomInsideAdminView';
+import AcademicYearAdmin from './components/pages/Sections/AcademicYears';
+import ClassRoomInsideAdminview from './components/pages/ClassRooms/ClassRoomInside';
 import AssignSectionHead1 from './components/pages/Sections/AssignSectionHead.tsx/AssignSectionHead1';
 import AssignSectionHead2 from './components/pages/Sections/AssignSectionHead.tsx/AssignSectionHead2';
 import AssignSubjectTeacher1 from './components/pages/Subjects/AssignSubjectTeacher/AssignSubjectTeacher1';
 import AssignSubjectTeacher2 from './components/pages/Subjects/AssignSubjectTeacher/AssignSubjectTeacher2';
 import AssignTeacherInCharge2 from './components/pages/ClassRooms/AssignTeacherInCharge/AssignTeacherInCharge2';
-import ClassStudentProfile from './components/pages/ClassRooms/AddStudentToClass/ClassStudentProfile';
 import SubjectResults from './components/pages/Subjects/SubjectResults';
+import ClassStudentProfile from './components/pages/ClassRooms/AddStudentToClass/ClassStudentProfile';
+import UsersList from './components/pages/UserManagement/UsersList';
+import UserProfilemanage from './components/pages/UserManagement/UserProfilemanage';
+import ClassTimeTable from './components/pages/TimeTable/ClassTimeTable';
+import Sections from './components/pages/Sections/Sections';
+import AcademicYears from './components/pages/Sections/AcademicYears';
+import ClassRooms from './components/pages/ClassRooms/ClassRooms';
+import ClassRoomInside from './components/pages/ClassRooms/ClassRoomInside';
+import SubjectInside from './components/pages/Subjects/SubjectInside';
 
 
 
@@ -42,18 +43,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-        path='/:userid'
-        element={
-          <UserProfile/> 
-        }
-       />
-        <Route
-        path='/UsersDetails'
-        element={
-          <UsersDetails/>
-        }
-       />
           <Route
         path='/HomePageStudent'
         element={
@@ -86,6 +75,13 @@ function App() {
         }
        />
 
+       <Route
+        path='/Users'
+        element={
+          <UsersList/>
+        }
+       />
+
       <Route
         path='/UsersRequests'
         element={
@@ -101,32 +97,20 @@ function App() {
        />
 
       <Route
-        path='/UPAdminView/:userid'
-        element={
-          <UserProfileAdminView/>
+        path='/user/:userid'
+        element={  
+          <UserProfilemanage/>
         }
        />
+      
 
       <Route
-        path='/UDAdminView'
-        element={
-          <UsersDetailsAdminView/>
-        }
-       />
-
-      <Route
-        path='/timetableAdmin/:classId'
-        element={
-          <TimeTableAdmin/>
-        }
-       />
-
-       <Route
         path='/timetable/:classId'
         element={
-          <TimeTable/>
+          <ClassTimeTable/>
         }
        />
+
 
       <Route
         path='/RemovedUsers'
@@ -158,23 +142,23 @@ function App() {
        />
 
        <Route
-        path='/sectionsAdmin'
+        path='/sections'
         element={
-          <SectionsAdminview/>
+          <Sections/>
         }
        />
 
         <Route
-        path='/classesAmin/:sectionId/:year'
+        path='/classes/:sectionId/:year'
         element={
-          <ClassRoomsAdminview/>
+          <ClassRooms/>
         }
        />
 
         <Route
-        path='/ClassRoomAdmin/:sectionId/:year/:classId'
+        path='/ClassRoom/:sectionId/:year/:classId'
         element={
-          <ClassRoomInsideAdminview/>
+          <ClassRoomInside/>
         }
        />
        
@@ -193,9 +177,9 @@ function App() {
        />
 
         <Route
-        path='/SubjectAdmin/:classId/:userid/:subjectId'
+        path='/Subject/:classId/:userid/:subjectId'
         element={
-          <SubjectInsideAdminView/>
+          <SubjectInside/>
         }
        />
 
@@ -214,9 +198,9 @@ function App() {
        />
 
         <Route
-        path='/AccYearAdmin/:sectionId'
+        path='/AcademicYears/:sectionId'
         element={
-          <AcademicYearAdmin/>
+          <AcademicYears/>
         }
        />
 

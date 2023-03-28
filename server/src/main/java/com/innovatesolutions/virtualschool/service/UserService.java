@@ -9,7 +9,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,25 +18,31 @@ public class UserService {
     @Autowired
     private final UserRepository userRepository;
 
+    //Get all users
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
+    //Add new user
     public void addNewUser(User user) {
-
         userRepository.save(user);
     }
+    //Get user bu userid
     public Optional<User> getUserById(String userid) {
         return userRepository.findById(userid);
     }
 
+    //Get user by userRole
     public List<User> getUsersByRole(UserRole userRole) {
         return userRepository.findByUserRole(userRole);
     }
 
+    //Get users by userRole and userState
     public List<User> getUsersByRoleAndState(UserRole userRole, String userState) {
         return userRepository.findByUserRoleAndUserState(userRole, userState);
     }
+
+    //Delete user by userid
     public boolean deleteUser(String userid) {
         try {
             userRepository.deleteByUserid(userid);
@@ -47,6 +52,7 @@ public class UserService {
         }
     }
 
+    //Update user details
     public boolean updateUser(String userid, User user) {
         List<User> usersToUpdate = userRepository.findByUserid(userid);
         if (!usersToUpdate.isEmpty()) {
@@ -66,6 +72,9 @@ public class UserService {
         }
     }
 
+    //User states: 0 - Request pending user/ 1 - Request approved user/ 2 - Removed user
+    //
+    //Update user state to 1 (Request approve)
     public boolean updateUserStateTo1(String userid) {
         List<User> usersToUpdate = userRepository.findByUserid(userid);
         if (!usersToUpdate.isEmpty()) {
@@ -79,6 +88,7 @@ public class UserService {
         }
     }
 
+    //Update user state to 2 (User remove)
     public boolean updateUserStateTo2(String userid) {
         List<User> usersToUpdate = userRepository.findByUserid(userid);
         if (!usersToUpdate.isEmpty()) {

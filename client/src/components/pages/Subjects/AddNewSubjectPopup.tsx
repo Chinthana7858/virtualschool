@@ -16,7 +16,7 @@ function AddNewSubjectPopup (props: { classId: string }) {
     event.preventDefault();
 
     // Send the form data to the backend using an HTTP request
-    const response = await fetch(`http://localhost:8080/api/vi/subjects`, {
+    const response = await fetch(`http://localhost:8080/api/v1/subjects`, {
       method: 'POST',
       body: JSON.stringify(formValues),
       headers: {
