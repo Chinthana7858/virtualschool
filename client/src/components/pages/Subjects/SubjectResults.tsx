@@ -36,7 +36,7 @@ interface ViewLinkProps {
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -83,7 +83,7 @@ const SubjectResults: React.FC = () => {
     const [result, setResult] = useState<Result | null>(null);
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/result/${subjectId}/${classId}/${userid}/${term}`)
+      fetch(`http://localhost:8080/api/v1/result/${subjectId}/${classId}/${userid}/${term}`)
         .then(res => res.json())
         .then(data => setResult(data))
         .catch(error => console.error(error));
@@ -95,7 +95,7 @@ const SubjectResults: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/users/class/${classId}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/users/class/${classId}`); 
       const data = await result.json();
       setUsersStudent(data);
     };
@@ -215,10 +215,6 @@ const SubjectResults: React.FC = () => {
 
      </div>
      
-    
- 
-      
-  
     
   );
 };
