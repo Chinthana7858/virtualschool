@@ -10,37 +10,40 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 
 @RestController
-@RequestMapping
+@RequestMapping("api/v1/timetables")
 @AllArgsConstructor
 public class TimeTableController {
 
     private final TimeTableService timeTableService;
 
     //Get all timeTables
-    @GetMapping("api/vi/timetables")
+    @GetMapping
     public List<TimeTable> fetchAllTimeTables(){
         return timeTableService.getAllTimeTables();
     }
 
     //Get all timeTablesBy classId
-    @GetMapping("api/vi/timetables/{classId}")
+    @GetMapping("/{classId}")
     public List<TimeTable> getTimeTablesByClassId(@PathVariable String classId){
         return timeTableService.getTimeTablesByClassId(classId);
     }
 
-    @GetMapping("api/vi/timetables/{classId}/{rowNo}")
+    //Get timetables by classId and Row number
+    @GetMapping("/{classId}/{rowNo}")
     public List<TimeTable> getTimeTablesByClassIdAndRowNo(@PathVariable String classId, @PathVariable int rowNo) {
         return timeTableService.getTimeTablesByClassIdAndRowNo(classId, rowNo);
     }
 
-    @PostMapping("api/vi/timetables")
+    //Add new timetable
+    @PostMapping
     public String addTimeTable(@RequestBody TimeTable timeTable) {
         TimeTable newTimeTable = timeTableService.addTimeTable(timeTable);
         return "Timetable added";
 
     }
 
-    @PutMapping("api/vi/timetables/{classId}/{rowNo}")
+    //Update timetable by class and Row number
+    @PutMapping("/{classId}/{rowNo}")
     public ResponseEntity<TimeTable> updateTimeTableByClassIdAndRowNo(
             @PathVariable String classId,
             @PathVariable int rowNo,
@@ -53,7 +56,8 @@ public class TimeTableController {
         }
     }
 
-    @DeleteMapping("api/vi/timetables/{classId}/{rowNo}")
+    //Delete timetable by class and Row number
+    @DeleteMapping("/{classId}/{rowNo}")
     public ResponseEntity<String> deleteTimeTableByClassIdAndRowNo(
             @PathVariable String classId,
             @PathVariable int rowNo) {

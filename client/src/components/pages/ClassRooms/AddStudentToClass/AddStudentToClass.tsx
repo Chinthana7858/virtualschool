@@ -25,6 +25,10 @@ interface BackLinkProps {
     url: string;
     children?: React.ReactNode;
   }
+    
+  const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
+    <a href={url}>{children}</a>
+  );
 
 const AddStudentToClass:React.FC= () => {
   const [open, setOpen] = useState(true);
@@ -34,19 +38,15 @@ const AddStudentToClass:React.FC= () => {
   const { sectionId } = useParams<{ sectionId: string }>();
   const { year } = useParams<{ year: string }>();
 
-  
-  const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
-
+//Get user details by user id
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
 
-
+  //Add student to class
   const handleAddToClass = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to add this student to class?');
@@ -55,7 +55,7 @@ const AddStudentToClass:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/STUDENT/${userid}/class/${classId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/STUDENT/${userid}/class/${classId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -163,7 +163,7 @@ const AddStudentToClass:React.FC= () => {
       </span>
      </span>
      <div className="pt-7 ml-[70%]">
-      <BackLink url={`http://localhost:3000/ClassRoomAdmin/${sectionId}/${year}/${classId}`}>
+      <BackLink url={`http://localhost:3000/ClassRoom/${sectionId}/${year}/${classId}`}>
         <Button name={'Add to class'} 
                 buttonType={'secondary'} 
                 size={'md'}

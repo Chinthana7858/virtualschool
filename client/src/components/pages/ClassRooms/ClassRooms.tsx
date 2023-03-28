@@ -22,6 +22,7 @@ interface ViewLinkProps {
   }
 
 
+  //Get name by userId
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
     interface User {
   
@@ -30,7 +31,7 @@ interface ViewLinkProps {
     }
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/users/${userid}`)
+      fetch(`http://localhost:8080/api/v1/users/${userid}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(error => console.error(error));
@@ -39,14 +40,14 @@ interface ViewLinkProps {
     return user ? <span>{user.nameWithInitials}</span> : null;
   }
 
-
+  //Get section name by SectionId
   function GetSectionNameBysectionId({ sectionId }: { sectionId: string }): JSX.Element | null{
     interface Section {
       sectionName:string;
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/sections/${sectionId}`)
+      fetch(`http://localhost:8080/api/v1/sections/${sectionId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -64,7 +65,7 @@ interface ViewLinkProps {
   );
 
 
-const ClassRoomsAdminview: React.FC = () => {
+const ClassRooms: React.FC = () => {
   const [classRoom, setClassRoom] = useState<ClassRoom[]>([]);
   const [open, setOpen] = useState(true); 
   const [visibleAdd, setVisibleAdd] = useState(false);
@@ -79,7 +80,7 @@ const ClassRoomsAdminview: React.FC = () => {
   );
 
 
-  
+  //Delete academic year
   const handleDelete = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to Remove this academic year? You will lose all details related to this year');
@@ -88,7 +89,7 @@ const ClassRoomsAdminview: React.FC = () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/academic/${year}/${sectionId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/academic/${year}/${sectionId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -105,10 +106,10 @@ const ClassRoomsAdminview: React.FC = () => {
     
 
 
-
+//Get class room and academic year 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/classrooms/sectionId/${sectionId}/Academic/${year}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/classrooms/sectionId/${sectionId}/Academic/${year}`); 
       const data = await result.json();
       setClassRoom(data);
     };
@@ -169,7 +170,7 @@ const ClassRoomsAdminview: React.FC = () => {
     <tr key={classRoom.id} className="bg-blue-300 border-2 border-blue-400 hover:bg-white sm:text-xs md:text-md xl:text-base">
       <td className="sm:w-[0vw] md:w-[35vw] xl:w-[40vw] h-[10vh] text-center">{classRoom.classRoomId}</td>
       <td className="sm:w-[0vw] md:w-[35vw] xl:w-[40vw] h-[10vh] text-center"><GetNameByuserid userid={classRoom.teacherInChargeId}/></td>
-      <td className='sm:w-[0vw] md:w-[25vw] xl:w-[30vw] h-[10vh] text-center"'> <ViewLink url={`http://localhost:3000/ClassRoomAdmin/${sectionId}/${year}/${classRoom.id}`}><AccessButton/></ViewLink></td>
+      <td className='sm:w-[0vw] md:w-[25vw] xl:w-[30vw] h-[10vh] text-center"'> <ViewLink url={`http://localhost:3000/ClassRoom/${sectionId}/${year}/${classRoom.id}`}><AccessButton/></ViewLink></td>
     </tr>
   ))}
 </tbody>
@@ -178,7 +179,7 @@ const ClassRoomsAdminview: React.FC = () => {
 <div className=''>
 <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
 <div className=" ml-[73%]">
-<BackLink url={`http://localhost:3000/AccYearAdmin/${sectionId}`}>
+<BackLink url={`http://localhost:3000/AcademicYears/${sectionId}`}>
         <Button name={'Remove year'} 
                 buttonType={'secondary-red'} 
                 size={'md'}
@@ -211,4 +212,4 @@ const ClassRoomsAdminview: React.FC = () => {
   );
 };
 
-export default ClassRoomsAdminview;
+export default ClassRooms;

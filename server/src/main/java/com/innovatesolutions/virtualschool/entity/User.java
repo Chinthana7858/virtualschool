@@ -5,7 +5,9 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -18,7 +20,8 @@ public class User {
     private String nameWithInitials;
     private String fullName;
     private String phoneNo;
-    private String dateOfBirth;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
     @Indexed(unique = true)
     private String email;
     @Indexed(unique = true)
@@ -26,6 +29,8 @@ public class User {
     private Gender gender;
     private String address;
     private List<String> classIds;
+    private String passWord;
+    private String studentId;
     public User(){
 
     }
@@ -36,12 +41,14 @@ public class User {
                 String nameWithInitials,
                 String fullName,
                 String phoneNo,
-                String dateOfBirth,
+                LocalDate dateOfBirth,
                 String email,
                 String NIC,
                 Gender gender,
                 String address,
-                List<String> classIds) {
+                List<String> classIds,
+                String passWord,
+                String studentId) {
         this.userid= userid;
         this.userState=userState;
         this.userRole=userRole;
@@ -54,6 +61,8 @@ public class User {
         this.gender = gender;
         this.address = address;
         this.classIds = classIds;
+        this.passWord=passWord;
+        this.studentId=studentId;
     }
 
     public void setClassIds(List<String> classIds) {

@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("api/vi/learning-materials")
+@RequestMapping("api/v1/learning-materials")
 public class LearningMaterialController {
 
     private final LearningMaterialService learningMaterialService;

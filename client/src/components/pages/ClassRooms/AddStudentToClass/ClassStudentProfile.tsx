@@ -26,6 +26,11 @@ interface BackLinkProps {
     url: string;
     children?: React.ReactNode;
   }
+  
+  const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
+    <a href={url}>{children}</a>
+  );
+
 
 const ClassStudentProfile:React.FC= () => {
   const [open, setOpen] = useState(true);
@@ -35,19 +40,15 @@ const ClassStudentProfile:React.FC= () => {
   const { sectionId } = useParams<{ sectionId: string }>();
   const { year } = useParams<{ year: string }>();
 
-  
-  const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
 
-
+//Student remove from class
   const handleRemoveFromClass = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to Remove this student from the class?');
@@ -56,7 +57,7 @@ const ClassStudentProfile:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/${userid}/classes/${classId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/${userid}/classes/${classId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -166,7 +167,7 @@ const ClassStudentProfile:React.FC= () => {
       </span>
      </span>
      <div className="pl-[80%] py-4">
-      <BackLink url={`http://localhost:3000/ClassRoomAdmin/${sectionId}/${year}/${classId}`}>
+      <BackLink url={`http://localhost:3000/ClassRoom/${sectionId}/${year}/${classId}`}>
       <Button name={'Remove from class'} 
                 buttonType={'secondary-red'} 
                 size={'md'}

@@ -23,13 +23,14 @@ interface ViewLinkProps {
     children?: React.ReactNode;
   }
 
+  //Get user name by UserId
   function GetSectionNameBysectionId({ sectionId }: { sectionId: string }): JSX.Element | null{
     interface Section {
       sectionName:string;
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/sections/${sectionId}`)
+      fetch(`http://localhost:8080/api/v1/sections/${sectionId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -38,7 +39,7 @@ interface ViewLinkProps {
     return section ? <span>{section.sectionName}</span> : null;
   }
 
-  
+  //Get section headId
   function GetSectionHeadIdBysectionId({ sectionId }: { sectionId: string }): string {
     interface Section {
       sectionHeadId: string;
@@ -46,7 +47,7 @@ interface ViewLinkProps {
     const [section, setSection] = useState<Section | null>(null);
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/sections/${sectionId}`)
+      fetch(`http://localhost:8080/api/v1/sections/${sectionId}`)
         .then((res) => res.json())
         .then((data) => setSection(data))
         .catch((error) => console.error(error));
@@ -62,7 +63,7 @@ interface ViewLinkProps {
     <a href={url}>{children}</a>
   );
 
-const AcademicYearAdmin: React.FC = () => {
+const AcademicYears: React.FC = () => {
   const [academicYear, setAcademicYear] = useState<AcademicYear[]>([]);
   const [open, setOpen] = useState(true); 
   const [year, setYear] = useState('');
@@ -75,7 +76,7 @@ const AcademicYearAdmin: React.FC = () => {
 
 
 
-  
+  //Section delete 
   const handleDelete = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to Remove this section? You will lose all details related to this section');
@@ -84,7 +85,7 @@ const AcademicYearAdmin: React.FC = () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/sections/${sectionId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/sections/${sectionId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -102,7 +103,7 @@ const AcademicYearAdmin: React.FC = () => {
 
 
   
-  
+  //Remove section head
 const handleRemoveSectionHead = async () => {
   try {
     const confirmed = window.confirm('Are you sure you want to Remove the section head from this section?');
@@ -111,7 +112,7 @@ const handleRemoveSectionHead = async () => {
       return; // user clicked cancel, so do nothing
     }
 
-    const response = await fetch(`http://localhost:8080/api/vi/sections/${sectionId}/null`, {
+    const response = await fetch(`http://localhost:8080/api/v1/sections/${sectionId}/null`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -120,12 +121,13 @@ const handleRemoveSectionHead = async () => {
 
     if (response.ok) {
       alert('Section head removed successfully');
+      window.location.reload();
     }
   } catch (error) {
     console.error(error);
   }
 };
-
+  //Get user name by userId
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
     interface User {
   
@@ -134,7 +136,7 @@ const handleRemoveSectionHead = async () => {
     }
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/users/${sectionHeadId}`)
+      fetch(`http://localhost:8080/api/v1/users/${sectionHeadId}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(error => console.error(error));
@@ -150,10 +152,10 @@ const handleRemoveSectionHead = async () => {
     <a href={url}>{children}</a>
   );
 
-
+//Get academic years by sectionId
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/academic/${sectionId}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/academic/${sectionId}`); 
       const data = await result.json();
       setAcademicYear(data);
     };
@@ -231,7 +233,7 @@ const handleRemoveSectionHead = async () => {
   {academicYear.sort((a, b) => parseInt(b.year) - parseInt(a.year)).map(academicYear => (
     <tr key={academicYear.id} className="bg-blue-300 border-2 border-blue-400 hover:bg-blue-200 sm:text-xs md:text-md xl:text-base">
       <td className="sm:w-[0vw] md:w-[60vw] xl:w-[80vw] h-[10vh] text-left pl-16 text-lg">{academicYear.year}</td>
-      <td className="sm:w-[0vw] md:w-[10vw] xl:w-[10vw] h-[10vh] text-center"> <ViewLink url={`http://localhost:3000/classesAmin/${sectionId}/${academicYear.year}`}><AccessButton/></ViewLink></td>
+      <td className="sm:w-[0vw] md:w-[10vw] xl:w-[10vw] h-[10vh] text-center"> <ViewLink url={`http://localhost:3000/classes/${sectionId}/${academicYear.year}`}><AccessButton/></ViewLink></td>
       <td className="sm:w-[0vw] md:w-[25vw] xl:w-[25vw] h-[10vh] text-left pl-16 text-lg">{}</td>
     </tr>
   ))}
@@ -241,7 +243,7 @@ const handleRemoveSectionHead = async () => {
     </table>
     <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
        <div className=" ml-[68%]">
-        <BackLink url={`http://localhost:3000/sectionsAdmin`}>
+        <BackLink url={`http://localhost:3000/sections`}>
         <Button name={'Remove section'} 
                 buttonType={'secondary-red'} 
                 size={'md'}
@@ -273,4 +275,4 @@ const handleRemoveSectionHead = async () => {
   );
 };
 
-export default AcademicYearAdmin;
+export default AcademicYears

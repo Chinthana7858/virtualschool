@@ -26,7 +26,7 @@ interface BackLinkProps {
     children?: React.ReactNode;
   }
 
-const UserProfile:React.FC= () => {
+const UserProfilemanage:React.FC= () => {
   const [open, setOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
@@ -36,14 +36,15 @@ const UserProfile:React.FC= () => {
     <a href={url}>{children}</a>
   );
 
+  //Get user details
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
 
-
+//Remove user (update user state to 2)
   const handleDelete = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to Remove this user from the system?');
@@ -52,7 +53,7 @@ const UserProfile:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/users/userStateTo2/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/users/userStateTo2/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -162,7 +163,7 @@ const UserProfile:React.FC= () => {
       </span>
      </span>
      <div className="pt-7 ml-[80%]">
-      <BackLink url={`http://localhost:3000/UDAdminView`}>
+      <BackLink url={`http://localhost:3000/Users`}>
       <Button 
       name={'Remove user'} 
       buttonType={"secondary-red"} 
@@ -184,4 +185,4 @@ const UserProfile:React.FC= () => {
     
   );
 };
-export default UserProfile;
+export default UserProfilemanage;

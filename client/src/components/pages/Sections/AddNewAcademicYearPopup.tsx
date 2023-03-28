@@ -7,7 +7,7 @@ function AddNewAcademicYearPopup (props: { sectionId: string }){
   // Define state to hold the input field values
   const [formValues, setFormValues] = useState({
     sectionId:props.sectionId,
-    year: '',
+    year: '2020',
   });
 
   // Handle form submission
@@ -15,7 +15,7 @@ function AddNewAcademicYearPopup (props: { sectionId: string }){
     event.preventDefault();
 
     // Send the form data to the backend using an HTTP request
-    const response = await fetch(`http://localhost:8080/api/vi/academic/create`, {
+    const response = await fetch(`http://localhost:8080/api/v1/academic/create`, {
       method: 'POST',
       body: JSON.stringify(formValues),
       headers: {
@@ -54,7 +54,7 @@ function AddNewAcademicYearPopup (props: { sectionId: string }){
           </div>
           <div className="basis-2/3">
             <form onSubmit={handleSubmit}>
-              <input type="text" name="year" value={formValues.year} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+              <input type="number" name="year" value={formValues.year} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
 
       <button type="submit" onClick={() => window.location.reload()}><SubmitButton/></button>
     </form>

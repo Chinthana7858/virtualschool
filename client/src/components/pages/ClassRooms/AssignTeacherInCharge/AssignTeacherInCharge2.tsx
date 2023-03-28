@@ -39,13 +39,13 @@ const AssignTeacherInCharge2:React.FC= () => {
   );
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/vi/users/${userid}`)
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
   }, [userid]);
 
-
+//Add teacher incharge
   const handleAddTeacherInCharge = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to add this user as teacher in charge?');
@@ -54,7 +54,7 @@ const AssignTeacherInCharge2:React.FC= () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/classrooms/${classId}/teacher/${userid}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/classrooms/${classId}/teacher/${userid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

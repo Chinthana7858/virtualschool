@@ -19,19 +19,18 @@ interface Subject {
 }
 
 
-
 interface ViewLinkProps {
     url: string;
     children?: React.ReactNode;
   }
-
+  //Get subject name by subject id
   function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
     interface Section {
       subjectName:string;
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -49,7 +48,7 @@ interface ViewLinkProps {
     <a href={url}>{children}</a>
   );
 
-const SubjectInsideAdminView: React.FC = () => {
+const SubjectInside: React.FC = () => {
   const [subject, setSubject] = useState<Subject[]>([]);
   const [open, setOpen] = useState(true); 
   const [visibleAdd, setVisibleAdd] = useState(false);
@@ -64,33 +63,56 @@ const SubjectInsideAdminView: React.FC = () => {
   
   const handleRemoveTeacher = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to Remove the section head from this section?');
+      const confirmed = window.confirm('Are you sure you want to Remove the teacher from this subject?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/subjects/${subjectId}/teacher/null`, {
+      const response = await fetch(`http://localhost:8080/api/v1/subjects/${subjectId}/teacher/null`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
-        },
+        }, 
       });
   
       if (response.ok) {
-        alert('Section head removed successfully');
+        alert('teacher removed successfully');
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+   
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this subject ? You will lose all details related to this subject');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Class room removed successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
   );
 
-  
+  //Get teacher id by subject id
   function GetTeacherIdBySubjectId({ subjectId }: { subjectId: string }): string {
     interface Subject {
       teacherId: string;
@@ -98,7 +120,7 @@ const SubjectInsideAdminView: React.FC = () => {
     const [subject, setSubject] = useState<Subject | null>(null);
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
         .then((res) => res.json())
         .then((data) => setSubject(data))
         .catch((error) => console.error(error));
@@ -107,7 +129,7 @@ const SubjectInsideAdminView: React.FC = () => {
     return subject ? subject.teacherId : "";
   }
 
-
+//Get name by user id
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
     interface User {
   
@@ -116,7 +138,7 @@ const SubjectInsideAdminView: React.FC = () => {
     }
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/users/${teacherId}`)
+      fetch(`http://localhost:8080/api/v1/users/${teacherId}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(error => console.error(error));
@@ -166,7 +188,7 @@ const SubjectInsideAdminView: React.FC = () => {
         </a>
        </div>
        <div className='pl-2 basis-1/12'>
-       <BackLink url={`http://localhost:3000/SubjectAdmin/${classId}/uid/${subjectId}`}>
+       <BackLink url={`http://localhost:3000/Subject/${classId}/uid/${subjectId}`}>
        <Button name={'Remove'} 
                 buttonType={'primary-red'} 
                 size={'md'}
@@ -211,6 +233,17 @@ const SubjectInsideAdminView: React.FC = () => {
     </div>
     </div>
 
+    <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+       <div className=" ml-[68%]">
+        <Button name={'Remove subject'} 
+                buttonType={'secondary-red'} 
+                size={'md'}
+                padding={'3'}
+                onClick={handleDelete}
+                icon={AiFillDelete }/>
+        </div>
+    </div>
+
     {visibleAdd && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
           <div className="w-full h-[30%] max-w-2xl p-4 rounded-lg bg-blue-50">
@@ -236,4 +269,4 @@ const SubjectInsideAdminView: React.FC = () => {
   );
 };
 
-export default SubjectInsideAdminView;
+export default SubjectInside;

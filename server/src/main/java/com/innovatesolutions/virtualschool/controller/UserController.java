@@ -11,44 +11,44 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping
+@RequestMapping("api/v1/users")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
 
     //Get all users
-    @GetMapping("api/vi/users")
+    @GetMapping
     public List<User> fetchAllUsers() {
         return userService.getAllUsers();
     }
 
     //Get users by userid
-    @GetMapping("api/vi/users/{userid}")
+    @GetMapping("/{userid}")
     public Optional<User> getUserById(@PathVariable String userid) {
         return userService.getUserById(userid);
     }
 
     //Get users by userRole
-    @GetMapping("api/vi/users/role/{userRole}")
+    @GetMapping("/role/{userRole}")
     public List<User> getUserByRole(@PathVariable UserRole userRole) {
         return userService.getUsersByRole(userRole);
     }
 
     //Get users by userRole and userState
-    @GetMapping("api/vi/users/role/{userRole}/state/{userState}")
+    @GetMapping("/role/{userRole}/state/{userState}")
     public List<User> getUserByRoleAndState(@PathVariable UserRole userRole, @PathVariable String userState) {
         return userService.getUsersByRoleAndState(userRole, userState);
     }
 
     //Save users
-    @PostMapping("api/vi/users")
+    @PostMapping
     public String RegisterNewUser(@RequestBody User user) {
         userService.addNewUser(user);
         return "Profile created";
     }
 
     //Delete users by userid
-    @DeleteMapping("api/vi/users/{userid}")
+    @DeleteMapping("/{userid}")
     public ResponseEntity<String> deleteUser(@PathVariable String userid) {
         if (userService.deleteUser(userid)) {
             return new ResponseEntity<>("User with userid " + userid + " has been deleted.", HttpStatus.OK);
@@ -57,8 +57,9 @@ public class UserController {
         }
     }
 
+
     //Update user by userid
-    @PutMapping("api/vi/users/{userid}")
+    @PutMapping("/{userid}")
     public ResponseEntity<String> updateUser(@PathVariable("userid") String userid, @RequestBody User user) {
         if (userService.updateUser(userid, user)) {
             return new ResponseEntity<>("User with userid " + userid + " has been updated.", HttpStatus.OK);
@@ -68,8 +69,10 @@ public class UserController {
 
     }
 
-    //Update userStateTo1 by userid
-    @PutMapping("api/vi/users/userStateTo1/{userid}")
+    //User states: 0 - Request pending user/ 1 - Request approved user/ 2 - Removed user
+    //
+    //Update user state to 1 (Request approve)
+    @PutMapping("/userStateTo1/{userid}")
     public ResponseEntity<String> updateUserStateTo1(@PathVariable("userid") String userid) {
         if (userService.updateUserStateTo1(userid)) {
             return new ResponseEntity<>("UserState with userid " + userid + " has been updated.", HttpStatus.OK);
@@ -79,8 +82,8 @@ public class UserController {
 
     }
 
-    //Update userStateTo2 by userid
-    @PutMapping("api/vi/users/userStateTo2/{userid}")
+    //Update user state to 2 (User remove)
+    @PutMapping("/userStateTo2/{userid}")
     public ResponseEntity<String> updateUserStateTo2(@PathVariable("userid") String userid) {
         if (userService.updateUserStateTo2(userid)) {
             return new ResponseEntity<>("UserState with userid " + userid + " has been updated.", HttpStatus.OK);
@@ -90,7 +93,7 @@ public class UserController {
 
     }
 
-    @PutMapping("api/vi/users/{userRole}/{userid}/class/{classId}")
+    @PutMapping("/{userRole}/{userid}/class/{classId}")
     public ResponseEntity<String> updateClassIds(
             @PathVariable String userRole,
             @PathVariable String userid,
@@ -106,13 +109,13 @@ public class UserController {
 
 
     //Get users by userRole and classId
-    @GetMapping("api/vi/users/class/{classId}")
+    @GetMapping("/class/{classId}")
     public ResponseEntity<List<User>> getUsersByClassId(@PathVariable String classId) {
         List<User> users = userService.getUsersByClassId(classId);
         return ResponseEntity.ok(users);
     }
 
-    @DeleteMapping("api/vi/users/{userId}/classes/{classId}")
+    @DeleteMapping("/{userId}/classes/{classId}")
     public User removeClassId(@PathVariable String userId, @PathVariable String classId) {
         return userService.removeClassId(userId, classId);
     }
