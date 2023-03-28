@@ -1,4 +1,5 @@
 package com.innovatesolutions.virtualschool.entity;
+import com.innovatesolutions.virtualschool.enums.Term;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,8 +12,8 @@ public class Result {
     private String subjectId;
     private String classId;
     private String userid;
-    private String term;
-    private String result;
+    private Term term;
+    private Float result;
 
     public Result() {}
 
@@ -20,8 +21,8 @@ public class Result {
                   String subjectId,
                   String classId,
                   String userid,
-                  String term,
-                  String result) {
+                  Term term,
+                  Float result) {
         this.resultId=resultId;
         this.subjectId=subjectId;
         this.classId=classId;
