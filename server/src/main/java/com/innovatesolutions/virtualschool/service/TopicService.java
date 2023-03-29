@@ -29,4 +29,7 @@ public class TopicService {
     public void deleteTopic(String topicId) {
         topicRepository.deleteById(topicId);
     }
+    public List<Topic> findBySubjectId(String subjectId) {
+        return topicRepository.findBySubjectId(subjectId);
+    }
 }
