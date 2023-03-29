@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillDelete } from 'react-icons/ai';
-import { BiBook, BiCard } from 'react-icons/bi';
+import { BiBook, BiBulb, BiCameraMovie, BiCard, BiEdit, BiFolderOpen } from 'react-icons/bi';
 import { FiAlignLeft, FiUserPlus } from 'react-icons/fi';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
@@ -16,6 +16,12 @@ interface Subject {
   classRoomId: string;
   subjectName:string;
   teacherId:string;
+}
+interface Topic {
+  topicId:string;
+  topicName:string;
+  subjectId:string;
+  date:Date;
 }
 
 
@@ -49,6 +55,7 @@ interface ViewLinkProps {
   );
 
 const SubjectInside: React.FC = () => {
+  const [topic, setTopic] = useState<Topic[]>([]);
   const [subject, setSubject] = useState<Subject[]>([]);
   const [open, setOpen] = useState(true); 
   const [visibleAdd, setVisibleAdd] = useState(false);
@@ -58,6 +65,7 @@ const SubjectInside: React.FC = () => {
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultclassId}/>
   const teacherId=GetTeacherIdBySubjectId ({ subjectId: subjectId ?? '' });
   const teacherName=<GetNameByuserid userid={teacherId}/>
+  const [topicId, setTopicId] = useState(""); 
 
 
   
@@ -108,6 +116,32 @@ const SubjectInside: React.FC = () => {
     }
   };
 
+     
+  const handleRemoveTopic = async (topicId: string) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this topic ? You will lose all details related to this topic');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/topic/${topicId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Topic removed successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
   );
@@ -146,6 +180,17 @@ const SubjectInside: React.FC = () => {
   
     return user ? <span>{user.nameWithInitials}</span> : null;
   }
+
+  //Get topics
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`http://localhost:8080/api/v1/topic/subject/${subjectId}`); 
+      const data = await result.json();
+      setTopic(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -203,7 +248,7 @@ const SubjectInside: React.FC = () => {
       </div>
     </div>
     
-    <div className='flex'>
+    <div className='flex pb-10'>
     <div className={`py-4 basis-2/12 ${visibleAdd ? "blur-sm" : "blur-0"}`}>
     <Button name={'Create topic'} 
                 buttonType={'tab'} 
@@ -233,6 +278,92 @@ const SubjectInside: React.FC = () => {
     </div>
     </div>
 
+    <div>
+
+    <table className={`${visibleAdd ? "blur-sm" : "blur-0"}`}>
+      <tbody>
+        {topic.map(topic => (
+          <>
+
+          <tr key={topic.topicId} className="bg-cyan-100">
+            <td className="w-[60vw] h-[6vh] text-left p-4 text-xl pb-4 font-semibold text-indigo-800">{topic.topicName}</td>
+            <td className="w-[18vw] h-[6vh] text-center pb-4">{new Date(topic.date).toLocaleDateString()}</td>
+          </tr>
+
+          <tr className="bg-cyan-100 ">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Sessions</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+          <tr className="bg-cyan-100">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Assignments</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+          <tr className="bg-cyan-100">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Documents</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+          <tr className="bg-cyan-100">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Quizzes</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+
+          <tr key={topic.topicId} className="">
+            <div className='flex w-[30vw] pb-10'>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Session'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiCameraMovie}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Assignment'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiEdit}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Document'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiFolderOpen}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Quiz+'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiBulb}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Remove'} 
+                onClick={() => {handleRemoveTopic(topic.topicId)}}
+                buttonType={'tab-red'} 
+                size={'md'}
+                padding={'3'}
+                icon={AiFillDelete}/>
+              </td>
+              </div>
+              </div>
+          </tr>
+
+          </>
+        ))}
+      </tbody>
+    </table>
+    </div>
+  
     <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
        <div className=" ml-[68%]">
         <Button name={'Remove subject'} 
