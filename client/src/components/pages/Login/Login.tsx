@@ -2,7 +2,7 @@ import Axios , {AxiosResponse, AxiosError} from 'axios'
 import React, { Component, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../ui/templates/Footer/Footer";
-import {useLocalState} from "./useLocalState"
+//import {useLocalState} from "./useLocalState"
 
 interface ViewLinkProps {
   url: string;
@@ -28,7 +28,7 @@ const Login = () => {
   const [email,setemail]=useState('');
   const [password,setpassword]=useState('');
 
-  const[jwt,setJwt] =useLocalState("","jwt");
+  //const[jwt,setJwt] =useLocalState("","jwt");
   const navigate = useNavigate();
 
   async function sendLoginRequest(e: { preventDefault: () => void; }) {
@@ -37,7 +37,7 @@ const Login = () => {
           await Axios.post("http://localhost:8085/api/vi/users/login", {
             email: email,
             password: password,
-            }).then((res) => 
+            }).then((res:any) => 
             {
              console.log(res.data);
              
@@ -82,6 +82,7 @@ const Login = () => {
     
      
 <div className="bg-[#dee2e6] 100vh">
+  
   <br></br><br></br><br></br><br></br><br></br>
 <div className="d-flex flex-column align-items-center p-8">
   <h1 className="p-2">Sign in</h1>

@@ -49,7 +49,7 @@ const HomePageParent = () => {
           <div className="basis-1/2 xs:mt-7 ">
                   <div className="flex-col">
                       <div className="flex basis-1/12">
-                        <div><a className="font-semibold text-left">Your Child's Attendance</a></div>
+                        <div><a className="font-semibold text-left">Your Child's Attendance </a></div>
                         <div className="pl-[45%]"><ViewButton/></div>
                       </div>
                       <img src="./images/YourAttendance.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>

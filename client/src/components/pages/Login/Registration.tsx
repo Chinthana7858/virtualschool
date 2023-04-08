@@ -3,11 +3,12 @@ import Footer from "../../ui/templates/Footer/Footer";
 import NavBar from "../../ui/templates/NavBar/NavBar";
 import {  useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
-import { AccessButton, AttemptButton, ViewButton } from "../../ui/atoms/Buttons";
+import { AccessButton, ViewButton } from "../../ui/atoms/Buttons";
 import HomePageDescription from "../../ui/organisms/HomePageDescription";
 import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
 import { useNavigate } from "react-router-dom";
 import Axios , {AxiosResponse, AxiosError} from 'axios'
+import DatePicker from "react-date-picker";
 
 interface ViewLinkProps {
   url: string;
@@ -44,6 +45,7 @@ const Registration = () => {
   const [email,setemail]=useState('');
   const [address,setaddress]=useState('');
   const [dateOfBirth,setdateOfBirth]=useState('');
+  // const [dateOfBirth, onChange] = useState(new Date());
   const [NIC,setNIC]=useState('');
   const [stUserid,setstUserid]=useState('');
   const [userid,setuserid]=useState('');
@@ -66,6 +68,7 @@ const Registration = () => {
       password
     }).then((res: any)=>console.log('post data',res)).catch((err: any)=>console.log(err))
   }
+  
   return (
     
      
@@ -108,18 +111,19 @@ const Registration = () => {
             </div>
             <div className="form-group p-2">
               <label style={{padding:"5px"}}>Date of Birth</label>
+              {/* <DatePicker onChange={onChange} value={dateOfBirth} id="dateOfBirth" name="dateOfBirth"/> */}
               <input type="text" className="form-control" id="dateOfBirth" name="dateOfBirth" value={dateOfBirth} onChange={(e)=> setdateOfBirth(e.target.value)} placeholder="Date of Birth"></input>
             </div>
           </div>
           <div className="p-3 mr-6 ml-5 w-100">
-          <div className="form-group p-2">
-              <label style={{padding:"5px"}}>NIC (Students don't need to fill)</label>
-              <input type="text" className="form-control" id="NIC" name="NIC" value={NIC} onChange={(e)=> setNIC(e.target.value)} placeholder="NIC"></input> 
-            </div>
-            <div className="form-group p-2">
-              <label style={{padding:"5px"}}>Student's User ID (For parents)</label>
-              <input type="text" className="form-control" id="stUserid" name="stUserid" value={stUserid} onChange={(e)=> setstUserid(e.target.value)} placeholder="Student UserID"></input>
-             </div>
+          {userRole != 'STUDENT' && (
+          <><div className="form-group p-2">
+                  <label style={{ padding: "5px" }}>NIC (Students don't need to fill)</label>
+                  <input type="text" className="form-control" id="NIC" name="NIC" value={NIC} onChange={(e) => setNIC(e.target.value)} placeholder="NIC"></input>
+                </div><div className="form-group p-2">
+                    <label style={{ padding: "5px" }}>Student's User ID (For parents)</label>
+                    <input type="text" className="form-control" id="stUserid" name="stUserid" value={stUserid} onChange={(e) => setstUserid(e.target.value)} placeholder="Student UserID"></input>
+                  </div></>)}
             <div className="form-group p-2">
               <label style={{padding:"5px"}}>User ID</label>
               <input type="text" className="form-control" id="userid" name="userid" value={userid} onChange={(e)=> setuserid(e.target.value)} placeholder="User ID"></input>
