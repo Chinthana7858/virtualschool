@@ -46,7 +46,7 @@ const HomePageAdmin = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Sections</a></div>
-                        <div className="pl-[45%]"><ViewLink url={`http://localhost:3000/sectionsAdmin`}><AccessButton/></ViewLink></div>
+                        <div className="pl-[45%]"><ViewLink url={`http://localhost:3000/sections`}><AccessButton/></ViewLink></div>
                       </div>
                     <img src={`${process.env.PUBLIC_URL}/images/Sections.jpg`} className="w-[450px] h-[250px] rounded-2xl basis-11/12 mt-4"/>
                    </div>

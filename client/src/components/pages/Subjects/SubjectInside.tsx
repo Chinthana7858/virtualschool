@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillDelete } from 'react-icons/ai';
-import { BiBook, BiCard } from 'react-icons/bi';
+import { BiBook, BiBulb, BiCameraMovie, BiCard, BiEdit, BiFolderOpen } from 'react-icons/bi';
 import { FiAlignLeft, FiUserPlus } from 'react-icons/fi';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
@@ -17,21 +17,26 @@ interface Subject {
   subjectName:string;
   teacherId:string;
 }
-
+interface Topic {
+  topicId:string;
+  topicName:string;
+  subjectId:string;
+  date:Date;
+}
 
 
 interface ViewLinkProps {
     url: string;
     children?: React.ReactNode;
   }
-
+  //Get subject name by subject id
   function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
     interface Section {
       subjectName:string;
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -49,7 +54,8 @@ interface ViewLinkProps {
     <a href={url}>{children}</a>
   );
 
-const SubjectInsideAdminView: React.FC = () => {
+const SubjectInside: React.FC = () => {
+  const [topic, setTopic] = useState<Topic[]>([]);
   const [subject, setSubject] = useState<Subject[]>([]);
   const [open, setOpen] = useState(true); 
   const [visibleAdd, setVisibleAdd] = useState(false);
@@ -59,26 +65,76 @@ const SubjectInsideAdminView: React.FC = () => {
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultclassId}/>
   const teacherId=GetTeacherIdBySubjectId ({ subjectId: subjectId ?? '' });
   const teacherName=<GetNameByuserid userid={teacherId}/>
+  const [topicId, setTopicId] = useState(""); 
 
 
   
   const handleRemoveTeacher = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to Remove the section head from this section?');
+      const confirmed = window.confirm('Are you sure you want to Remove the teacher from this subject?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/subjects/${subjectId}/teacher/null`, {
+      const response = await fetch(`http://localhost:8080/api/v1/subjects/${subjectId}/teacher/null`, {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        }, 
+      });
+  
+      if (response.ok) {
+        alert('teacher removed successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+   
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this subject ? You will lose all details related to this subject');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         },
       });
   
       if (response.ok) {
-        alert('Section head removed successfully');
+        alert('Class room removed successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+     
+  const handleRemoveTopic = async (topicId: string) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this topic ? You will lose all details related to this topic');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/topic/${topicId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Topic removed successfully');
+        window.location.reload();
       }
     } catch (error) {
       console.error(error);
@@ -90,7 +146,7 @@ const SubjectInsideAdminView: React.FC = () => {
     <a href={url}>{children}</a>
   );
 
-  
+  //Get teacher id by subject id
   function GetTeacherIdBySubjectId({ subjectId }: { subjectId: string }): string {
     interface Subject {
       teacherId: string;
@@ -98,7 +154,7 @@ const SubjectInsideAdminView: React.FC = () => {
     const [subject, setSubject] = useState<Subject | null>(null);
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
         .then((res) => res.json())
         .then((data) => setSubject(data))
         .catch((error) => console.error(error));
@@ -107,7 +163,7 @@ const SubjectInsideAdminView: React.FC = () => {
     return subject ? subject.teacherId : "";
   }
 
-
+//Get name by user id
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
     interface User {
   
@@ -116,7 +172,7 @@ const SubjectInsideAdminView: React.FC = () => {
     }
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/users/${teacherId}`)
+      fetch(`http://localhost:8080/api/v1/users/${teacherId}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(error => console.error(error));
@@ -124,6 +180,17 @@ const SubjectInsideAdminView: React.FC = () => {
   
     return user ? <span>{user.nameWithInitials}</span> : null;
   }
+
+  //Get topics
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`http://localhost:8080/api/v1/topic/subject/${subjectId}`); 
+      const data = await result.json();
+      setTopic(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -166,7 +233,7 @@ const SubjectInsideAdminView: React.FC = () => {
         </a>
        </div>
        <div className='pl-2 basis-1/12'>
-       <BackLink url={`http://localhost:3000/SubjectAdmin/${classId}/uid/${subjectId}`}>
+       <BackLink url={`http://localhost:3000/Subject/${classId}/uid/${subjectId}`}>
        <Button name={'Remove'} 
                 buttonType={'primary-red'} 
                 size={'md'}
@@ -181,7 +248,7 @@ const SubjectInsideAdminView: React.FC = () => {
       </div>
     </div>
     
-    <div className='flex'>
+    <div className='flex pb-10'>
     <div className={`py-4 basis-2/12 ${visibleAdd ? "blur-sm" : "blur-0"}`}>
     <Button name={'Create topic'} 
                 buttonType={'tab'} 
@@ -211,6 +278,103 @@ const SubjectInsideAdminView: React.FC = () => {
     </div>
     </div>
 
+    <div>
+
+    <table className={`${visibleAdd ? "blur-sm" : "blur-0"}`}>
+      <tbody>
+        {topic.map(topic => (
+          <>
+
+          <tr key={topic.topicId} className="bg-cyan-100">
+            <td className="w-[60vw] h-[6vh] text-left p-4 text-xl pb-4 font-semibold text-indigo-800">{topic.topicName}</td>
+            <td className="w-[18vw] h-[6vh] text-center pb-4">{new Date(topic.date).toLocaleDateString()}</td>
+          </tr>
+
+          <tr className="bg-cyan-100 ">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Sessions</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+          <tr className="bg-cyan-100">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Assignments</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+          <tr className="bg-cyan-100">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Documents</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+          <tr className="bg-cyan-100">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Quizzes</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+
+          <tr key={topic.topicId} className="">
+            <div className='flex w-[30vw] pb-10'>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Session'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiCameraMovie}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Assignment'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiEdit}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Document'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiFolderOpen}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Quiz+'} 
+                buttonType={'tab'} 
+                size={'md'}
+                padding={'3'}
+                icon={BiBulb}/>
+              </td>
+              </div>
+              <div>
+              <td className="h-[6vh] text-left opacity-75">
+                <Button name={'Remove'} 
+                onClick={() => {handleRemoveTopic(topic.topicId)}}
+                buttonType={'tab-red'} 
+                size={'md'}
+                padding={'3'}
+                icon={AiFillDelete}/>
+              </td>
+              </div>
+              </div>
+          </tr>
+
+          </>
+        ))}
+      </tbody>
+    </table>
+    </div>
+  
+    <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+       <div className=" ml-[68%]">
+        <Button name={'Remove subject'} 
+                buttonType={'secondary-red'} 
+                size={'md'}
+                padding={'3'}
+                onClick={handleDelete}
+                icon={AiFillDelete }/>
+        </div>
+    </div>
+
     {visibleAdd && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
           <div className="w-full h-[30%] max-w-2xl p-4 rounded-lg bg-blue-50">
@@ -236,4 +400,4 @@ const SubjectInsideAdminView: React.FC = () => {
   );
 };
 
-export default SubjectInsideAdminView;
+export default SubjectInside;

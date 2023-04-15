@@ -10,18 +10,21 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping
+@RequestMapping("api/v1/subjects")
 @AllArgsConstructor
 public class SubjectController {
     private final SubjectService subjectService;
-    @PostMapping("api/vi/subjects")
+
+    //Add a new subject
+    @PostMapping
     public String AddNewSubject(@RequestBody Subject subject){
         subjectService.addSubject(subject);
         return "new subject added";
 
     }
 
-    @GetMapping("api/vi/subjects/{subjectId}")
+    //Get subject by subjectId
+    @GetMapping("/{subjectId}")
     public ResponseEntity<Subject> getSubjectById(@PathVariable String subjectId) {
         Subject subject = subjectService.getSubjectById(subjectId);
         if (subject == null) {
@@ -30,19 +33,22 @@ public class SubjectController {
         return new ResponseEntity<>(subject, HttpStatus.OK);
     }
 
-    @DeleteMapping("api/vi/subjects/{subjectId}")
+    //Delete subject by subjectId
+    @DeleteMapping("/{subjectId}")
     public ResponseEntity<Void> deleteSubjectById(@PathVariable String subjectId) {
         subjectService.deleteSubjectById(subjectId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("api/vi/subjects/classRoomId/{classRoomId}")
+    //Get subjects by classRoom
+    @GetMapping("/classRoomId/{classRoomId}")
     public ResponseEntity<List<Subject>> findByClassRoomId(@PathVariable String classRoomId) {
         List<Subject> subjects = subjectService.findByClassRoomId(classRoomId);
         return ResponseEntity.ok().body(subjects);
     }
 
-    @PutMapping("api/vi/subjects/{id}/teacher/{teacherId}")
+    //Update/Assign teacher to a subject
+    @PutMapping("/{id}/teacher/{teacherId}")
     public ResponseEntity<Subject> addTeacherIdToSubject(
             @PathVariable String teacherId,
             @PathVariable String id

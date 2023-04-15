@@ -34,7 +34,7 @@ interface ViewLinkProps {
     children?: React.ReactNode;
   }
 
-
+//Get class room name by id
   function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | null{
     interface ClassRoom {
   
@@ -43,7 +43,7 @@ interface ViewLinkProps {
     }
     const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+      fetch(`http://localhost:8080/api/v1/classrooms/${classId}/classroom`)
         .then(res => res.json())
         .then(data => setClassRoom(data))
         .catch(error => console.error(error));
@@ -61,7 +61,7 @@ interface ViewLinkProps {
   );
 
 
-const ClassRoomInsideAdminview: React.FC = () => {
+const ClassRoomInside: React.FC = () => {
   const [subject, setSubject] = useState<Subject[]>([]);
   const [open, setOpen] = useState(true); 
   const [visibleAdd, setVisibleAdd] = useState(false);
@@ -75,7 +75,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
 
   const teacherInchargeName=<GetNameByuserid userid={teacherInChargeId??defaultclassRoomId}/>
   
-
+  //Remove teacher incharge
   const handleRemoveTeacherInCharge = async () => {
     try {
       const confirmed = window.confirm('Are you sure you want to Remove the section head from this section?');
@@ -84,7 +84,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/vi/classrooms/${classId}/teacher/null`, {
+      const response = await fetch(`http://localhost:8080/api/v1/classrooms/${classId}/teacher/null`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -105,6 +105,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
     <a href={url}>{children}</a>
   );
 
+  //Get Teacher incharge id by class id
   function GetTeacherInChargeIdbyclassId({classId }: { classId: string }): string | null {
     interface ClassRoom {
       teacherInChargeId: string;
@@ -112,7 +113,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
     const [classRoom, setClassRoom] = useState<ClassRoom | null>(null);
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/classrooms/${classId}/classroom`)
+      fetch(`http://localhost:8080/api/v1/classrooms/${classId}/classroom`)
         .then(res => res.json())
         .then(data => setClassRoom(data))
         .catch(error => console.error(error));
@@ -122,7 +123,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
   }
 
 
-  
+  //Get username by user id
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
     interface User {
   
@@ -131,7 +132,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
     }
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/users/${userid}`)
+      fetch(`http://localhost:8080/api/v1/users/${userid}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(error => console.error(error));
@@ -140,10 +141,10 @@ const ClassRoomInsideAdminview: React.FC = () => {
     return user ? <span>{user.nameWithInitials}</span> : null;
   }
   
-
+  //Get subject by class id
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/subjects/classRoomId/${classId}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/subjects/classRoomId/${classId}`); 
       const data = await result.json();
       setSubject(data);
     };
@@ -151,15 +152,39 @@ const ClassRoomInsideAdminview: React.FC = () => {
     fetchData();
   }, []);
 
+  //Get students by class Id
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/users/class/${classId}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/users/class/${classId}`); 
       const data = await result.json();
       setUsersStudent(data);
     };
 
     fetchData();
   }, []);
+
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this class room ? You will lose all details related to this class room');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/classrooms/${classId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Class room removed successfully');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
   return (
@@ -237,7 +262,7 @@ const ClassRoomInsideAdminview: React.FC = () => {
     <tr key={subject.subjectId} className="bg-slate-400 hover:bg-white sm:text-xs md:text-md xl:text-base">
       <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[10vh] text-left pl-16">{subject.subjectName}</td>
       <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[10vh] text-left pl-16">{<GetNameByuserid userid={subject.teacherId}/>}</td>
-      <td className='sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[10vh] text-center"'> <ViewLink url={`http://localhost:3000/SubjectAdmin/${classId}/uid/${subject.subjectId}`}><AccessButton/></ViewLink></td>
+      <td className='sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[10vh] text-center"'> <ViewLink url={`http://localhost:3000/Subject/${classId}/uid/${subject.subjectId}`}><AccessButton/></ViewLink></td>
     </tr>
   ))}
 </tbody>
@@ -290,6 +315,19 @@ const ClassRoomInsideAdminview: React.FC = () => {
       </tbody>
     </table>
 
+    <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+       <div className=" ml-[68%]">
+        <BackLink url={`http://localhost:3000/classes/${sectionId}/${year}`}>
+        <Button name={'Remove class'} 
+                buttonType={'secondary-red'} 
+                size={'md'}
+                padding={'3'}
+                onClick={handleDelete}
+                icon={AiFillDelete }/>
+        </BackLink>
+        </div>
+    </div>
+
 
     {visibleAdd && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
@@ -312,4 +350,4 @@ const ClassRoomInsideAdminview: React.FC = () => {
   );
 };
 
-export default ClassRoomInsideAdminview;
+export default ClassRoomInside;
