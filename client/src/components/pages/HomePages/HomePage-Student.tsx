@@ -8,7 +8,9 @@ import { AccessButton,ViewButton } from "../../ui/atoms/Buttons";
 import HomePageDescription from "../../ui/organisms/HomePageDescription";
 
 const HomePageStudent = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div>

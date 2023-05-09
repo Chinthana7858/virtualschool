@@ -32,7 +32,9 @@ const RemovedUses: React.FC = () => {
   const [usersPrincipal, setUsersPrincipal] = useState<Users[]>([]);
   const [usersSectionHead, setUsersSectionHead] = useState<Users[]>([]);
   const [usersParent, setUsersParent] = useState<Users[]>([]);
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
 //Get removed students
   useEffect(() => {

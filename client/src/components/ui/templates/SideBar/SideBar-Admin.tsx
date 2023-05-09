@@ -2,13 +2,13 @@
 const SideBarAdmin = () => {
 
   const Menus = [
-    { title: "Home", src: "Home" },
-    { title: "Sections", src: "Classroom" },
-    { title: "Results", src: "Results" },
-    { title: "Requests", src: "Requests" },
-    { title: "Users", src: "Users" },
-    { title: "Profile", src: "Profile" },
-    { title: "SignOut", src: "SignOut", gap: true },
+    { title: "Home", path:"/", src: "Home" },
+    { title: "Sections",path:"/sections", src: "Classroom" },
+    { title: "Results", path:"/", src: "Results" },
+    { title: "Requests", path:"/UsersRequests", src: "Requests" },
+    { title: "Users", path:"/Users", src: "Users" },
+    { title: "Profile", path:"/", src: "Profile" },
+    { title: "SignOut", path:"/", src: "SignOut", gap: true },
   ];
 
   return (
@@ -24,20 +24,22 @@ const SideBarAdmin = () => {
           </h1>
         </div>
         <ol className="pt-6">
-          {Menus.map((Menu, index) => (
-            <li
-             
+          {Menus.map((Menu) => (
+             <a href={Menu.path}>
+           <li
               className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-1 
               ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
             >
-
+             
               <img src={`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} alt="logo" width="30" height="30"/> 
               <span className={` hover:bg-slate-700 `}>
                   {Menu.title }
                 </span>
+      
             </li>
+             </a>
           ))}
-        </ol>
+        </ol> 
       </div>
      
       </div>

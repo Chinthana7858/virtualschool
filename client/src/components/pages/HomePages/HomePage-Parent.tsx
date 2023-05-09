@@ -7,7 +7,9 @@ import HomePageDescription from "../../ui/organisms/HomePageDescription";
 import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
 
 const HomePageParent = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div>

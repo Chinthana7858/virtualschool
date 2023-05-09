@@ -49,7 +49,9 @@ function GetSectionNameBysectionId({ sectionId }: { sectionId: string }): JSX.El
 
 const AssignSectionHead1: React.FC = () => {
   const [usersSectionHead, setUsersSectionHead] = useState<Users[]>([]);
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const defaultSectionId='';
   const{sectionId}=useParams<{sectionId:string}>();
   const sectionName=<GetSectionNameBysectionId sectionId={sectionId??defaultSectionId} />

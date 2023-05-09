@@ -63,7 +63,9 @@ interface ViewLinkProps {
 
 const ClassRoomInside: React.FC = () => {
   const [subject, setSubject] = useState<Subject[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [visibleAdd, setVisibleAdd] = useState(false);
   const defaultclassRoomId='';
   const [usersStudent, setUsersStudent] = useState<User[]>([]);

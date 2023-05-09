@@ -65,7 +65,9 @@ interface ViewLinkProps {
 
 const AcademicYears: React.FC = () => {
   const [academicYear, setAcademicYear] = useState<AcademicYear[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [year, setYear] = useState('');
   const [visibleAdd, setVisibleAdd] = useState(false);
   const { sectionId } = useParams<{ sectionId : string }>();

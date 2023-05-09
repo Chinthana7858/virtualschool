@@ -46,7 +46,9 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
 
 const AssignTeacherInCharge1: React.FC = () => {
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const{classId}=useParams<{classId:string}>();
   const defaultclassRoomId=';'
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultclassRoomId}/>

@@ -44,7 +44,9 @@ function GetClassRoomNameByid({classId }: { classId: string }): JSX.Element | nu
 
 const TimeTable: React.FC = () => {
   const [timetable, setTimetable] = useState<TimeTable[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open)); 
   const [visibleEdit, setVisibleEdit] = useState(false);
   const [visibleAdd, setVisibleAdd] = useState(false);
   const[id,setId]=useState("");

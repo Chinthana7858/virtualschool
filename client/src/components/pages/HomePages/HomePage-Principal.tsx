@@ -7,7 +7,9 @@ import HomePageDescription from "../../ui/organisms/HomePageDescription";
 import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 const HomePagePrincipal = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div>
