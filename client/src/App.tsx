@@ -36,6 +36,8 @@ import AcademicYears from './components/pages/Sections/AcademicYears';
 import ClassRooms from './components/pages/ClassRooms/ClassRooms';
 import ClassRoomInside from './components/pages/ClassRooms/ClassRoomInside';
 import SubjectInside from './components/pages/Subjects/SubjectInside';
+import ClassMonthPicker from './components/pages/Attendance/ClassMonthPicker';
+import MarkAttendance from './components/pages/Attendance/MarkAttendance';
 
 
 
@@ -246,7 +248,18 @@ function App() {
         }
        />
        
-       
+       <Route
+        path='/MonthPick/:classId'
+        element={
+          <ClassMonthPicker/>
+        }
+       />
+        <Route
+        path='/MarkAttendance/:classId/:date'
+        element={
+          <MarkAttendance/>
+        }
+       />
       </Routes>
     </Router>
   );

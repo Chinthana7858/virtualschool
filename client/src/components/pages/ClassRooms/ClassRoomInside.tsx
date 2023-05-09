@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillDelete } from 'react-icons/ai';
-import { BiWindowAlt } from 'react-icons/bi';
+import { BiBody, BiWindowAlt } from 'react-icons/bi';
 import { FiUserPlus } from 'react-icons/fi';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
@@ -239,7 +239,10 @@ const ClassRoomInside: React.FC = () => {
    
 
     
-  <div className={`p-5  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+     
+    <div className={`p-5  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+    <div className='flex'>
+      <div>
     <a href={`http://localhost:3000/timetable/${classId}`}>
     <Button name={'Time table'} 
                 buttonType={'secondary'} 
@@ -248,7 +251,18 @@ const ClassRoomInside: React.FC = () => {
                 icon={BiWindowAlt}
                 />
     </a>
-
+    </div>
+    <div>
+    <a href={`http://localhost:3000/MonthPick/${classId}`}>
+    <Button name={'Attendance'} 
+                buttonType={'secondary'} 
+                size={'md'}
+                padding={'4'}
+                icon={BiBody}
+                />
+    </a>
+    </div>
+    </div>
   </div>
 
     <table className={` ${visibleAdd? "blur-sm" : "blur-0"}`}>
