@@ -34,4 +34,8 @@ public class AttendanceService {
     public Optional<Attendance> getAttendance(String classId, String studentId, LocalDate date) {
         return attendanceRepository.findByClassIdAndStudentIdAndDate(classId, studentId, date);
     }
+
+    public Optional<Attendance> getAttendanceByDateAndUserId(LocalDate date, String userId) {
+        return attendanceRepository.findByDateAndStudentId(date, userId);
+    }
 }

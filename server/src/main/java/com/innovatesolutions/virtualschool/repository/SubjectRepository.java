@@ -9,4 +9,5 @@ import java.util.List;
 public interface SubjectRepository extends MongoRepository<Subject,String> {
     Subject findBySubjectId(String subjectId);
     List<Subject> findByClassRoomId(String classRoomId);
+    List<Subject> findByTeacherId(String teacherId);
 }
