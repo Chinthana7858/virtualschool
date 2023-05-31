@@ -38,6 +38,12 @@ import ClassRoomInside from './components/pages/ClassRooms/ClassRoomInside';
 import SubjectInside from './components/pages/Subjects/SubjectInside';
 import ClassMonthPicker from './components/pages/Attendance/ClassMonthPicker';
 import MarkAttendance from './components/pages/Attendance/MarkAttendance';
+import UserClassRooms from './components/pages/ClassRooms/UserClassRooms';
+import SResults1 from './components/pages/StudentsResults/SResults1';
+import SResults2 from './components/pages/StudentsResults/SResults2';
+import TeachersSubjects from './components/pages/Subjects/TeachersSubjects';
+import AttendanceStudentView from './components/pages/Attendance/AttendanceStudentView';
+import TeacherInChargesClassPage from './components/pages/ClassRooms/TeacherInChargesClassPage';
 
 
 
@@ -260,6 +266,64 @@ function App() {
           <MarkAttendance/>
         }
        />
+
+       <Route
+        path='/MyClasses'
+        element={
+          <UserClassRooms/>
+        }
+       />
+
+        <Route
+        path='/MyClass/:classId'
+        element={
+          <ClassRoomInside/>
+        }
+       />
+
+        <Route
+        path='/SResults1'
+        element={
+          <SResults1/>
+        }
+       />
+
+        <Route
+        path='/SResults2/:classId'
+        element={
+          <SResults2/>
+        }
+       />
+
+        <Route
+        path='/teachersSubjects'
+        element={
+          <TeachersSubjects/>
+        }
+       />
+
+       
+        <Route
+        path='/AttendanceStudent'
+        element={
+          <AttendanceStudentView/>
+        }
+       />
+
+        <Route
+        path='/teachersClasses'
+        element={
+          <TeacherInChargesClassPage/>
+        }
+       />
+
+        <Route
+        path='/ClassRoom/:classId'
+        element={
+          <ClassRoomInside/>
+        }
+       />
+       
       </Routes>
     </Router>
   );

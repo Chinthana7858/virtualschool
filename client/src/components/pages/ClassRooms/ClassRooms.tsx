@@ -108,7 +108,7 @@ const ClassRooms: React.FC = () => {
     
 
 
-//Get class room and academic year 
+//Get class room by section and academic year 
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`http://localhost:8080/api/v1/classrooms/sectionId/${sectionId}/Academic/${year}`); 
