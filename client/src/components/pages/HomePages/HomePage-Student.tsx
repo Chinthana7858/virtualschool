@@ -63,7 +63,7 @@ const HomePageStudent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Feedback</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/StudentFeedback`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourFeedback.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>

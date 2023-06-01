@@ -44,6 +44,9 @@ import SResults2 from './components/pages/StudentsResults/SResults2';
 import TeachersSubjects from './components/pages/Subjects/TeachersSubjects';
 import AttendanceStudentView from './components/pages/Attendance/AttendanceStudentView';
 import TeacherInChargesClassPage from './components/pages/ClassRooms/TeacherInChargesClassPage';
+import TeacherFeedback1 from './components/pages/Feedback/TeacherFeedback1';
+import TeacherFeedback2 from './components/pages/Feedback/TeacherFeedback2';
+import StudentFeedback from './components/pages/Feedback/StudentFeedback';
 
 
 
@@ -323,7 +326,27 @@ function App() {
           <ClassRoomInside/>
         }
        />
+
+        <Route
+        path='/teacherFeedback/:classId/:subjectId'
+        element={
+          <TeacherFeedback1/>
+        }
+       />
+
+        <Route
+        path='/teacherFeedback/:classId/:subjectId/:studentId'
+        element={
+          <TeacherFeedback2/>
+        }
+       />
        
+       <Route
+        path='/StudentFeedback'
+        element={
+          <StudentFeedback/>
+        }
+       />
       </Routes>
     </Router>
   );

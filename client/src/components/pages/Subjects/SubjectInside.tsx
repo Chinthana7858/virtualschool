@@ -8,6 +8,7 @@ import Button, {CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewTopicPopup from './Topic/AddNewTopicPopup';
+import { BsChatLeftDots} from 'react-icons/bs';
 
 
 
@@ -276,6 +277,15 @@ const SubjectInside: React.FC = () => {
                 size={'lg'}
                 padding={'4'}
                 icon={BiBook}/>
+      </a>
+    </div>
+    <div className='py-4 basis-2/12'>
+    <a href={`http://localhost:3000/teacherFeedback/${classId}/${subjectId}`}>
+    <Button name={'Feedback'} 
+                buttonType={'tab'} 
+                size={'lg'}
+                padding={'4'}
+                icon={BsChatLeftDots}/>
       </a>
     </div>
     </div>
