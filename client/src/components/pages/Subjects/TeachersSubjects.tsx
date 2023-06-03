@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { AccessButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 interface Subject {
   subjectId:string;
@@ -58,7 +59,7 @@ const TeachersSubjects: React.FC = () => {
   //Get subject by teacherId
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/v1/subjects/teacher/T0001`); //Hardcoded
+      const result = await fetch(`http://localhost:8080/api/v1/subjects/teacher/2`); //Hardcoded
       const data = await result.json();
       setSubject(data);
     };
@@ -79,7 +80,7 @@ const TeachersSubjects: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+         <SideBarTeacher/>
       </div>
 
      <div className={`flex `}>

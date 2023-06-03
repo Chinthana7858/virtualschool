@@ -6,6 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import NavBar from "../../ui/templates/NavBar/NavBar";
 import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
+import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
 
 
 
@@ -64,7 +65,7 @@ function AttendanceStudentView() {
 
       <div className="flex "> 
         <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 `}>
-          <SideBarAdmin/>
+          <SideBarStudent/>
         </div>
    
         <div className={` ${!open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>

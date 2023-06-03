@@ -57,7 +57,7 @@ const SResults1: React.FC = () => {
 
   // Get users details by userid
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/users/987654`)//Hardcoded
+    fetch(`http://localhost:8080/api/v1/users/56789`)//Hardcoded
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));

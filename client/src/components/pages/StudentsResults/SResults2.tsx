@@ -120,7 +120,7 @@ const SResults2: React.FC = () => {
             <td className="w-[15vw] h-[10vh] text-center border-2 border-blue-600">
               <div className='flex'>
                 <div className='ml-10 basis-3/4'>
-                  <GetResult subjectId={subject.subjectId}userid="987654" classId={classId ?? defaultclassId} term={'term1'}/> {/*Hardcoded*/}
+                  <GetResult subjectId={subject.subjectId}userid="56789" classId={classId ?? defaultclassId} term={'term1'}/> {/*Hardcoded*/}
                 </div>
   
               </div>
@@ -128,7 +128,7 @@ const SResults2: React.FC = () => {
             <td className="w-[15vw] h-[10vh] text-center border-2 border-blue-600">
               <div className='flex'>
                 <div className='ml-10 basis-3/4'>
-                  <GetResult subjectId={subject.subjectId} userid="987654" classId={classId ?? defaultclassId} term={'term2'}/> {/*Hardcoded*/}
+                  <GetResult subjectId={subject.subjectId} userid="56789" classId={classId ?? defaultclassId} term={'term2'}/> {/*Hardcoded*/}
                 </div>
 
               </div>
@@ -136,7 +136,7 @@ const SResults2: React.FC = () => {
             <td className="w-[15vw] h-[10vh] text-center border-2 border-blue-600">
               <div className='flex'>
                 <div className='ml-10 basis-3/4'>
-                  <GetResult subjectId={subject.subjectId} userid="987654" classId={classId ?? defaultclassId} term={'term3'}/> {/*Hardcoded*/}
+                  <GetResult subjectId={subject.subjectId} userid="56789" classId={classId ?? defaultclassId} term={'term3'}/> {/*Hardcoded*/}
                 </div>
               </div>
             </td>

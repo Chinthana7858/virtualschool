@@ -59,7 +59,7 @@ const AssignSectionHead1: React.FC = () => {
 //Get all Section Heads
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/v1/users/role/SECTION_HEAD/state/1'); 
+      const result = await fetch('http://localhost:8080/api/v1/users/role/TEACHER/state/1'); 
       const data = await result.json();
       setUsersSectionHead(data);
     };

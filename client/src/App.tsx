@@ -47,6 +47,7 @@ import TeacherInChargesClassPage from './components/pages/ClassRooms/TeacherInCh
 import TeacherFeedback1 from './components/pages/Feedback/TeacherFeedback1';
 import TeacherFeedback2 from './components/pages/Feedback/TeacherFeedback2';
 import StudentFeedback from './components/pages/Feedback/StudentFeedback';
+import TeachersSections from './components/pages/Sections/TeachersSections';
 
 
 
@@ -345,6 +346,13 @@ function App() {
         path='/StudentFeedback'
         element={
           <StudentFeedback/>
+        }
+       />
+
+        <Route
+        path='/MySections'
+        element={
+          <TeachersSections/>
         }
        />
       </Routes>

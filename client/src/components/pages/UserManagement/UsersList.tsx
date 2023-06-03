@@ -72,16 +72,6 @@ const UsersDetails: React.FC = () => {
     fetchData();
   }, []);
 
-  //Get section heads details
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/v1/users/role/SECTION_HEAD/state/1'); 
-      const data = await result.json();
-      setUsersSectionHead(data);
-    };
-
-    fetchData();
-  }, []);
 
   //Get patents details
   useEffect(() => {
@@ -147,32 +137,7 @@ const UsersDetails: React.FC = () => {
       </tbody>
     </table>
 
-    <div className="py-[3vh]"></div>
-    <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
-        Section Heads
-    </h1>
-    <table>
-      <thead>
-        <tr className="">
-          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
-          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
-          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
-          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
-            </tr>
-      </thead>
-      <tbody>
-        {usersSectionHead.map(user => (
-          <tr key={user.userid} className="cursor-pointer hover:bg-white ">
-            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-left ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/user/${user.userid}`}><ViewButton/></ViewLink></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-
+    
        <div className="py-[3vh]"></div>
         <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
             Teachers

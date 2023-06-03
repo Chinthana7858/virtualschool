@@ -69,16 +69,6 @@ const RemovedUses: React.FC = () => {
     fetchData();
   }, []);
 
-  //Get removed section heads
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetch('http://localhost:8080/api/v1/users/role/SECTION_HEAD/state/2'); 
-      const data = await result.json();
-      setUsersSectionHead(data);
-    };
-
-    fetchData();
-  }, []);
 
   //Get removed parents
   useEffect(() => {
@@ -127,33 +117,6 @@ const RemovedUses: React.FC = () => {
       </thead>
       <tbody>
         {usersPrincipal.map(user => (
-          <tr key={user.userid} className="cursor-pointer hover:bg-white ">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/RemovedUser/${user.userid}`}><ViewButton/></ViewLink></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    
-    <div className="py-[3vh]"></div>
-    <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
-        Section Heads
-    </h1>
-    <table>
-      <thead>
-        <tr className="">
-        <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {usersSectionHead.map(user => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white ">
             <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-center ">{user.nameWithInitials}</td>

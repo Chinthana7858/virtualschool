@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { AccessButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 interface ClassRoom {
     id:string;
@@ -23,7 +24,7 @@ const TeacherInChargesClassPage: React.FC = () => {
   //Get class by teacherId
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/v1/classrooms/teacher/7894573`); //Hardcoded
+      const result = await fetch(`http://localhost:8080/api/v1/classrooms/teacher/2`); //Hardcoded
       const data = await result.json();
       setClassRoom(data);
     };
@@ -44,7 +45,7 @@ const TeacherInChargesClassPage: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+         <SideBarTeacher/>
       </div>
 
      <div className={`flex `}>

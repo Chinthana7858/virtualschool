@@ -144,7 +144,7 @@ const TeacherFeedback2: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {feedbacks.map(feedbacks => (
+        {feedbacks.sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()).map(feedbacks => (
             
           <tr key={feedbacks.Id} className="cursor-pointer hover:bg-white">
 

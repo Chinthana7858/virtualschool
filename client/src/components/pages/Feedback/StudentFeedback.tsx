@@ -5,6 +5,7 @@ import Button, {AccessButton, CloseButton}  from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddFeedbackPopup from './AddFeedbackPopup';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 
 
 
@@ -105,7 +106,7 @@ const StudentFeedback: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+         <SideBarStudent/>
       </div>
    
      
@@ -133,7 +134,7 @@ const StudentFeedback: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {feedbacks.map(feedbacks => (
+        {feedbacks.sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()).map(feedbacks => (
             
           <tr key={feedbacks.Id} className="cursor-pointer hover:bg-white">
 
