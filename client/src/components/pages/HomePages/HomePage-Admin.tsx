@@ -17,7 +17,9 @@ const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
 );
 
 const HomePageAdmin = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div className="font-nunito">

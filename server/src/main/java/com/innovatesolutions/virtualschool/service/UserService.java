@@ -1,4 +1,5 @@
 package com.innovatesolutions.virtualschool.service;
+import com.innovatesolutions.virtualschool.entity.ClassRoom;
 import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.repository.UserRepository;
 import com.innovatesolutions.virtualschool.entity.User;
@@ -6,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -143,6 +145,15 @@ public class UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    public List<String> getClassIdsByUserId(String userId) {
+        User user = userRepository.findClassIdsByUserid(userId);
+        if (user != null) {
+            return (List<String>) user.getClassIds();
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
     }
 }
 

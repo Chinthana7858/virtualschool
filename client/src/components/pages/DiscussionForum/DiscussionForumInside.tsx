@@ -91,7 +91,9 @@ const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
 const DiscussionForuminside: React.FC = () => {
   const [DiscussionForuminside, setDiscussionForuminside] = useState<DiscussionForuminside | null>(null);
   const [DiscussionForum, setDiscussionForum] = useState<DiscussionForums[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const defaultClassId = '';
   const defaultsubjectId='';
   const defaultuserid='';

@@ -1,14 +1,17 @@
+import { BiHome, BiLogOut, BiNotepad, BiUser, BiUserPlus } from "react-icons/bi";
+import { FiUsers } from "react-icons/fi";
+import { GiGraduateCap } from "react-icons/gi";
 
 const SideBarAdmin = () => {
 
   const Menus = [
-    { title: "Home", src: "Home" },
-    { title: "Sections", src: "Classroom" },
-    { title: "Results", src: "Results" },
-    { title: "Requests", src: "Requests" },
-    { title: "Users", src: "Users" },
-    { title: "Profile", src: "Profile" },
-    { title: "SignOut", src: "SignOut", gap: true },
+    { title: "Home", path:"/", icon: <BiHome/> },
+    { title: "Sections",path:"/sections",icon: <GiGraduateCap/> },
+    { title: "Results", path:"/", icon: <BiNotepad/> },
+    { title: "Requests", path:"/UsersRequests", icon: <BiUserPlus/> },
+    { title: "Users", path:"/Users", icon: <FiUsers/>},
+    { title: "Profile", path:"/", icon: <BiUser/> },
+    { title: "SignOut", path:"/", icon: <BiLogOut/>, gap: true },
   ];
 
   return (
@@ -24,20 +27,24 @@ const SideBarAdmin = () => {
           </h1>
         </div>
         <ol className="pt-6">
-          {Menus.map((Menu, index) => (
-            <li
-             
-              className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-1 
-              ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
-            >
-
-              <img src={`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} alt="logo" width="30" height="30"/> 
-              <span className={` hover:bg-slate-700 `}>
+            {Menus.map((Menu) => (
+               <a href={Menu.path}>
+              <li
+               
+                className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
+                ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
+              >
+                <span className={` hover:bg-slate-700 text-2xl`}>
+                {Menu.icon}
+                </span>
+                
+                <span className={` hover:bg-slate-700 text-lg`}>
                   {Menu.title }
                 </span>
-            </li>
-          ))}
-        </ol>
+              </li>
+              </a>
+            ))}
+          </ol>
       </div>
      
       </div>

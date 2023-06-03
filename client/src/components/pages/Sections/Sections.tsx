@@ -23,7 +23,9 @@ interface ViewLinkProps {
 
 const Sections: React.FC = () => {
   const [section, setSection] = useState<Section[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [visibleAdd, setVisibleAdd] = useState(false);
 
 //Get user name by UserId

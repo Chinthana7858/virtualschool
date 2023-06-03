@@ -1,11 +1,17 @@
+import { BiHome, BiHomeAlt, BiLibrary, BiLogOut, BiPaperPlane, BiUser } from "react-icons/bi";
+import { GiGraduateCap } from "react-icons/gi";
+import { SiGoogleclassroom } from "react-icons/si";
+
 const SideBarTeacher = () => {
 
     const Menus = [
-      { title: "Home", src: "Home" },
-      { title: "Classes", src: "Classroom" },
-      { title: "Profile", src: "Profile" },
-      { title: "Contacts", src: "Contacts" },
-      { title: "SignOut", src: "SignOut" , gap: true },
+      { title: "Home",path:"/HomePageTeacher", icon: <BiHome/> },
+      { title: "Subjects",path:"/teachersSubjects",icon: <BiLibrary/> },
+      { title: "Classes",path:"/teachersClasses",icon: <SiGoogleclassroom/> },
+      { title: "Section",path:"/MySections",icon: <GiGraduateCap/> },
+      { title: "Profile",path:"/HomePageTeacher",icon: <BiUser/> },
+      { title: "Contacts",path:"/Users",icon: <BiPaperPlane/> },
+      { title: "SignOut",path:"/HomePageTeacher",icon: <BiLogOut/> , gap: true },
     ];
   
     return (
@@ -21,17 +27,22 @@ const SideBarTeacher = () => {
             </h1>
           </div>
           <ol className="pt-6">
-            {Menus.map((Menu, index) => (
+            {Menus.map((Menu) => (
+              <a href={Menu.path}>
               <li
                
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
               >
-                <img src= {`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} className="w-8 h-8" />
-                <span className={` hover:bg-slate-700 `}>
+                <span className={` hover:bg-slate-700 text-2xl`}>
+                {Menu.icon}
+                </span>
+                
+                <span className={` hover:bg-slate-700 text-lg`}>
                   {Menu.title }
                 </span>
               </li>
+              </a>
             ))}
           </ol>
         </div>

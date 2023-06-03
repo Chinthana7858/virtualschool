@@ -86,7 +86,9 @@ function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.El
 
 const DiscussionForums: React.FC = () => {
   const [DiscussionForum, setDiscussionForum] = useState<DiscussionForums[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open)); 
   const defaultClassId = '';
   const defaultsubjectId='';
   const defaultuserid='';

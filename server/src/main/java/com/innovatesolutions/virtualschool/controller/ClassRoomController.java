@@ -62,4 +62,10 @@ public class ClassRoomController {
         return ResponseEntity.ok("Teacher in charge updated for classroom id: " + classRoomId);
     }
 
+
+    @GetMapping("/teacher/{teacherInChargeId}")
+    public List<ClassRoom> getClassRoomsByTeacherInChargeId(@PathVariable String teacherInChargeId) {
+        return classRoomService.getClassRoomsByTeacherInChargeId(teacherInChargeId);
+    }
+
 }

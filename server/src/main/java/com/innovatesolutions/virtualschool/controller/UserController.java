@@ -119,4 +119,10 @@ public class UserController {
     public User removeClassId(@PathVariable String userId, @PathVariable String classId) {
         return userService.removeClassId(userId, classId);
     }
+
+    @GetMapping("/{userId}/classIds")
+    public List<String> getClassIdsByUserId(@PathVariable String userId) {
+        return userService.getClassIdsByUserId(userId);
+    }
+
 }
