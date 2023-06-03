@@ -41,7 +41,9 @@ function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.El
 
 const AssignSubjectTeacher1: React.FC = () => {
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const{classId}=useParams<{classId:string}>();
   const { subjectId } = useParams<{ subjectId: string }>();
   const defaultsubjectId=';'

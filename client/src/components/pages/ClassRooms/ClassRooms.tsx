@@ -67,7 +67,9 @@ interface ViewLinkProps {
 
 const ClassRooms: React.FC = () => {
   const [classRoom, setClassRoom] = useState<ClassRoom[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [visibleAdd, setVisibleAdd] = useState(false);
   const { sectionId } = useParams<{ sectionId: string }>();
   const { year } = useParams<{ year: string }>();
@@ -106,7 +108,7 @@ const ClassRooms: React.FC = () => {
     
 
 
-//Get class room and academic year 
+//Get class room by section and academic year 
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`http://localhost:8080/api/v1/classrooms/sectionId/${sectionId}/Academic/${year}`); 

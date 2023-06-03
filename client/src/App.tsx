@@ -36,6 +36,18 @@ import AcademicYears from './components/pages/Sections/AcademicYears';
 import ClassRooms from './components/pages/ClassRooms/ClassRooms';
 import ClassRoomInside from './components/pages/ClassRooms/ClassRoomInside';
 import SubjectInside from './components/pages/Subjects/SubjectInside';
+import ClassMonthPicker from './components/pages/Attendance/ClassMonthPicker';
+import MarkAttendance from './components/pages/Attendance/MarkAttendance';
+import UserClassRooms from './components/pages/ClassRooms/UserClassRooms';
+import SResults1 from './components/pages/StudentsResults/SResults1';
+import SResults2 from './components/pages/StudentsResults/SResults2';
+import TeachersSubjects from './components/pages/Subjects/TeachersSubjects';
+import AttendanceStudentView from './components/pages/Attendance/AttendanceStudentView';
+import TeacherInChargesClassPage from './components/pages/ClassRooms/TeacherInChargesClassPage';
+import TeacherFeedback1 from './components/pages/Feedback/TeacherFeedback1';
+import TeacherFeedback2 from './components/pages/Feedback/TeacherFeedback2';
+import StudentFeedback from './components/pages/Feedback/StudentFeedback';
+import TeachersSections from './components/pages/Sections/TeachersSections';
 
 
 
@@ -246,7 +258,103 @@ function App() {
         }
        />
        
+       <Route
+        path='/MonthPick/:classId'
+        element={
+          <ClassMonthPicker/>
+        }
+       />
+        <Route
+        path='/MarkAttendance/:classId/:date'
+        element={
+          <MarkAttendance/>
+        }
+       />
+
+       <Route
+        path='/MyClasses'
+        element={
+          <UserClassRooms/>
+        }
+       />
+
+        <Route
+        path='/MyClass/:classId'
+        element={
+          <ClassRoomInside/>
+        }
+       />
+
+        <Route
+        path='/SResults1'
+        element={
+          <SResults1/>
+        }
+       />
+
+        <Route
+        path='/SResults2/:classId'
+        element={
+          <SResults2/>
+        }
+       />
+
+        <Route
+        path='/teachersSubjects'
+        element={
+          <TeachersSubjects/>
+        }
+       />
+
        
+        <Route
+        path='/AttendanceStudent'
+        element={
+          <AttendanceStudentView/>
+        }
+       />
+
+        <Route
+        path='/teachersClasses'
+        element={
+          <TeacherInChargesClassPage/>
+        }
+       />
+
+        <Route
+        path='/ClassRoom/:classId'
+        element={
+          <ClassRoomInside/>
+        }
+       />
+
+        <Route
+        path='/teacherFeedback/:classId/:subjectId'
+        element={
+          <TeacherFeedback1/>
+        }
+       />
+
+        <Route
+        path='/teacherFeedback/:classId/:subjectId/:studentId'
+        element={
+          <TeacherFeedback2/>
+        }
+       />
+       
+       <Route
+        path='/StudentFeedback'
+        element={
+          <StudentFeedback/>
+        }
+       />
+
+        <Route
+        path='/MySections'
+        element={
+          <TeachersSections/>
+        }
+       />
       </Routes>
     </Router>
   );

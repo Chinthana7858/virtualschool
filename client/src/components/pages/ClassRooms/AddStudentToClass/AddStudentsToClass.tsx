@@ -31,7 +31,9 @@ const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
 
 const AddStudentsToClass: React.FC = () => {
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const{classId}=useParams<{classId:string}>();
   const{sectionId}=useParams<{sectionId:string}>();
   const{year}=useParams<{year:string}>();

@@ -7,7 +7,9 @@ import HomePageDescription from "../../ui/organisms/HomePageDescription";
 import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
 
 const HomePageParent = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div>
@@ -38,7 +40,7 @@ const HomePageParent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Child's Results</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/SResults1`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourResults.jpg"className="w-[450px] h-[300px] basis-11/12"/>
                    </div>

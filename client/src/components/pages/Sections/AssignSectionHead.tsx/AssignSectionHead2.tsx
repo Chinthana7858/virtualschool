@@ -28,7 +28,9 @@ interface BackLinkProps {
   }
 
 const AssignSectionHead2:React.FC= () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
   const { sectionId } = useParams<{ sectionId: string }>();

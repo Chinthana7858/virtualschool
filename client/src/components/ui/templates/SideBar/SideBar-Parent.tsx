@@ -1,15 +1,16 @@
-
-
+import { BiHome, BiLogOut, BiNotepad, BiPaperPlane, BiUser } from "react-icons/bi";
+import { BsChatLeftDots } from "react-icons/bs";
+import { FaChild } from "react-icons/fa";
 const SideBarParent = () => {
 
     const Menus = [
-      { title: "Home", src: "Home" },
-      { title: "Results", src: "Results" },
-      { title: "Attendance ", src: "Attendance" },
-      { title: "Feedback", src: "Feedback" },
-      { title: "Profile", src: "Profile" },
-      { title: "Contacts", src: "Contacts" },
-      { title: "SignOut", src: "SignOut" , gap: true },
+      { title: "Home",path:"/HomePageParent", icon: <BiHome/>},
+      { title: "Results",path:"/HomePageParent", icon: <BiNotepad/> },
+      { title: "Attendance",path:"/HomePageParent", icon: <FaChild/>},
+      { title: "Feedback",path:"/HomePageParent", icon: <BsChatLeftDots/>},
+      { title: "Profile",path:"/HomePageParent", icon: <BiUser/> },
+      { title: "Contacts",path:"/HomePageParent", icon: <BiPaperPlane/>},
+      { title: "SignOut",path:"/HomePageParent", icon: <BiLogOut/>, gap: true },
     ];
   
     return (
@@ -25,17 +26,22 @@ const SideBarParent = () => {
             </h1>
           </div>
           <ol className="pt-6">
-            {Menus.map((Menu, index) => (
+            {Menus.map((Menu) => (
+               <a href={Menu.path}>
               <li
                
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
               >
-                <img src={`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} className="w-7 h-7" />
-                <span className={` hover:bg-slate-700 `}>
+                <span className={` hover:bg-slate-700 text-2xl`}>
+                {Menu.icon}
+                </span>
+                
+                <span className={` hover:bg-slate-700 text-lg`}>
                   {Menu.title }
                 </span>
               </li>
+              </a>
             ))}
           </ol>
         </div>
