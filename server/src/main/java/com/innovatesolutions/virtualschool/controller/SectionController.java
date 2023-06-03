@@ -59,5 +59,11 @@ public class SectionController {
     public Section updateSectionHeadId(@PathVariable String sectionId, @PathVariable String sectionHeadId) {
         return sectionService.updateSectionHeadId(sectionId, sectionHeadId);
     }
+
+    @GetMapping("/sectionHead/{sectionHeadId}")
+    public ResponseEntity<List<Section>> getSectionsBySectionHeadId(@PathVariable("sectionHeadId") String sectionHeadId) {
+        List<Section> sections = sectionService.getSectionsBySectionHeadId(sectionHeadId);
+        return new ResponseEntity<>(sections, HttpStatus.OK);
+    }
 }
 
