@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
-import Button, {AccessButton, CloseButton}  from '../../ui/atoms/Buttons';
+import Button, { CloseButton, ExtraTinyDelete}  from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddFeedbackPopup from './AddFeedbackPopup';
@@ -9,7 +9,7 @@ import AddFeedbackPopup from './AddFeedbackPopup';
 
 
 interface Feedback {
-  Id: string;
+  feedbackId: string;
   studentId:string;
   teacherId:string;
   subjectId:string;
@@ -62,6 +62,31 @@ const TeacherFeedback2: React.FC = () => {
   const { subjectId } = useParams<{ subjectId: string }>();
   const { studentId } = useParams<{ studentId: string }>();
   const classRoomName=<GetClassRoomNameByid classId={classId??''}/>
+
+  //Delete Feedback
+  const handleDeleteFeedback = async (feedbackId: string) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this feedback ?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/feedback/${feedbackId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Feedback removed successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //Get username by user id
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
@@ -146,7 +171,7 @@ const TeacherFeedback2: React.FC = () => {
       <tbody>
         {feedbacks.sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()).map(feedbacks => (
             
-          <tr key={feedbacks.Id} className="cursor-pointer hover:bg-white">
+          <tr key={feedbacks.feedbackId} className="cursor-pointer hover:bg-white">
 
             <td className="w-[12vw] h-[6vh] text-center rounded-l-xl">
             {feedbacks?.dateTime && new Date(feedbacks.dateTime).toLocaleString("en-US", {
@@ -157,7 +182,8 @@ const TeacherFeedback2: React.FC = () => {
             </td>
 
             <td className="w-[12vw] h-[6vh] text-left"><GetNameByuserid userid={feedbacks.teacherId??''} /></td>
-            <td className="w-[48vw] h-[6vh] text-left p-[3vh] rounded-r-xl">{feedbacks.body}</td>
+            <td className="w-[48vw] h-[6vh] text-left p-[3vh]">{feedbacks.body}</td>
+            <td className="w-[8vw] h-[6vh] text-left p-[3vh] rounded-r-xl"><button onClick={() => handleDeleteFeedback(feedbacks.feedbackId)}><ExtraTinyDelete/></button></td>
           </tr>
 
 

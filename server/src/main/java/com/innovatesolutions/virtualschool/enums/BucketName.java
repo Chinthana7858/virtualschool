@@ -1,7 +1,7 @@
 package com.innovatesolutions.virtualschool.enums;
 
 public enum BucketName {
-     LEARNING_MATERIAL("");
+    LEARNING_MATERIAL("");
 
     private final String bucketName;
 

@@ -46,4 +46,10 @@ public class FeedbackController {
         feedback.setSubjectId(subjectId);
         return feedbackService.saveFeedback(studentId,teacherId, classId, subjectId,feedback);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteFeedbackById(@PathVariable("id") String id) {
+        feedbackService.deleteFeedbackById(id);
+        return new ResponseEntity<>("Feedback deleted successfully", HttpStatus.OK);
+    }
 }
