@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -39,4 +40,7 @@ public class FeedbackService {
         return feedbackRepository.save(feedback);
     }
 
+    public void deleteFeedbackById(String feedbackId) {
+        feedbackRepository.deleteByFeedbackId(feedbackId);
+    }
 }

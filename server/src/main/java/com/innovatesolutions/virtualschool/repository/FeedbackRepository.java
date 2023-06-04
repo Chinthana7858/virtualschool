@@ -13,4 +13,6 @@ public interface FeedbackRepository extends MongoRepository<Feedback,String> {
     List<Feedback> findByStudentId(
             String studentId
     );
+
+    void deleteByFeedbackId(String feedbackId);
 }
