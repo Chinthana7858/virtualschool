@@ -32,7 +32,6 @@ public class User {
     private String passWord;
     private String studentId;
     public User(){
-
     }
 
     public User(String userid,
