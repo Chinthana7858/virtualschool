@@ -7,7 +7,6 @@ import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewRowPopup from './AddNewRowPopup';
 import EditRowPopup from './EditRowPopup';
-;
 
 
 
@@ -15,7 +14,8 @@ interface TimeTable {
   id: string;
   classId:string;
   rowNo:number;
-  timePeriod: string;
+  startingTime: string;
+  endingTime: string;
   mondaySubject:string;
   tuesdaySubject:string
   wednesdaySubject:string;
@@ -51,7 +51,8 @@ const TimeTable: React.FC = () => {
   const [visibleAdd, setVisibleAdd] = useState(false);
   const[id,setId]=useState("");
   const[classIds,setClassIds]=useState("");
-  const[timePeriod,setTimePeriod]=useState("");
+  const[startingTime,setStartingTime]=useState("");
+  const[endingTime,setEndingTime]=useState("");
   const[mondaySubject,setMondaySubject]=useState("");
   const[ tuesdaySubject,setTuesdaySubject]=useState("");
   const[ wednesdaySubject,setWednesdaySubject]=useState("");
@@ -129,7 +130,8 @@ const TimeTable: React.FC = () => {
       <thead>
         <tr className="sm:text-xs md:text-md xl:text-base">
           <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh]">Row No</th>
-          <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh]">Time Period</th>
+          <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh]">Starting</th>
+          <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh]">Ending</th>
           <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh]">Monday</th>
           <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh]">Tuesday</th>
           <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh]">Wednesday</th>
@@ -142,7 +144,8 @@ const TimeTable: React.FC = () => {
   {sortedTimetable.map(timetable => (
     <tr key={timetable.id} className="hover:bg-white sm:text-xs md:text-md xl:text-base">
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.rowNo}</td>
-      <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.timePeriod}</td>
+      <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.startingTime}</td>
+      <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.endingTime}</td>
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.mondaySubject}</td>
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.tuesdaySubject}</td>
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.wednesdaySubject}</td>
@@ -150,20 +153,20 @@ const TimeTable: React.FC = () => {
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.fridaySubject}</td>
       <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
         <Button 
-            name="Edit" 
+            name="" 
             buttonType={'tab'} 
-            size={'md'} 
-            padding={'4'} 
+            size={'sm'} 
+            padding={'3'} 
             icon={AiFillEdit}
-            onClick={() => { setVisibleEdit(true); setId(timetable.id);setClassIds(timetable.classId);setRowNo(timetable.rowNo);setTimePeriod(timetable.timePeriod);setMondaySubject(timetable.mondaySubject);setTuesdaySubject(timetable.tuesdaySubject);setWednesdaySubject(timetable.wednesdaySubject);setThursdaySubject(timetable.thursdaySubject);setFridaySubject(timetable.fridaySubject)}}
+            onClick={() => { setVisibleEdit(true); setId(timetable.id);setClassIds(timetable.classId);setRowNo(timetable.rowNo);setStartingTime(timetable.startingTime);setEndingTime(timetable.endingTime);setMondaySubject(timetable.mondaySubject);setTuesdaySubject(timetable.tuesdaySubject);setWednesdaySubject(timetable.wednesdaySubject);setThursdaySubject(timetable.thursdaySubject);setFridaySubject(timetable.fridaySubject)}}
          />
       </td>
       <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
         <Button 
-            name="Delete" 
+            name="" 
             buttonType={'tab-red'} 
-            size={'md'} 
-            padding={'4'} 
+            size={'sm'} 
+            padding={'3'} 
             icon={AiFillDelete}
             onClick={() => handleDelete( timetable.rowNo)}
             />
@@ -190,7 +193,8 @@ const TimeTable: React.FC = () => {
           id={id} 
           classId={classIds} 
           rowNo={rowNo} 
-          timePeriod={timePeriod} 
+          startingTime={startingTime} 
+          endingTime={endingTime} 
           mondaySubject={mondaySubject}
           tuesdaySubject={tuesdaySubject}
           wednesdaySubject={wednesdaySubject}
