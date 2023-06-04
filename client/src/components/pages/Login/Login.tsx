@@ -13,26 +13,62 @@ const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
   <a href={url}>{children}</a>
 );
 
-const required = (value: any) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
+interface FormErrors {
+  email?: string;
+  password?: string;
+}
 
 const Login = () => {
   const [open, setOpen] = useState(true);
   const [email,setemail]=useState('');
   const [password,setpassword]=useState('');
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [showPassword, setShowPassword] = useState(false);
+
+  const validateForm = () => {
+    let errors: FormErrors = {};
+    let isValid = true;
+
+    // Validate email
+    if (!email) {
+      errors.email = 'Email is required';
+      isValid = false;
+    }else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = 'Invalid email format';
+      isValid = false;
+    }
+
+    // Validate password
+    if (!password) {
+      errors.password = 'Password is required';
+      isValid = false;
+    }else if (password.length < 8) {
+      errors.password = 'Password must be at least 8 characters long';
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setemail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setpassword(e.target.value);
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   //const[jwt,setJwt] =useLocalState("","jwt");
   const navigate = useNavigate();
 
+
   async function sendLoginRequest(e: { preventDefault: () => void; }) {
     e.preventDefault();
+    if (validateForm()) {
         try {
           await Axios.post("http://localhost:8085/api/vi/users/login", {
             email: email,
@@ -77,7 +113,7 @@ const Login = () => {
          catch (err) {
           alert(err);
         }
-  }
+  }}
   return (
     
      
@@ -93,13 +129,17 @@ const Login = () => {
         
             <div className="form-group p-2 w-[400px]">
               <label style={{padding:"5px"}}>E-mail</label>
-              <input type="text" className="form-control" id="email" name="email" value={email} onChange={(e)=> setemail(e.target.value)} placeholder="E-mail"></input>
+              <input type="text" className="form-control" id="email" name="email" value={email} onChange={handleEmailChange} placeholder="E-mail"></input>
+              {errors.email && <span style={{color:"#ff0000"}}>{errors.email}</span>}
             </div>
             <div className="form-group p-2">
               <label style={{padding:"5px"}}>Password</label>
-              <input type="password" className="form-control" id="password" name="password" value={password} onChange={(e)=> setpassword(e.target.value)} placeholder="Password"></input>
-            </div>
-            
+              <i className={`password-toggle-icon ${showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'}`}
+            onClick={togglePasswordVisibility}
+          ></i><input type={showPassword ? 'password' : 'text'} className="form-control" id="password" name="password" value={password} onChange={handlePasswordChange} placeholder="Password"></input>
+              
+              {errors.password && <span style={{color:"#ff0000"}}>{errors.password}</span>}
+            </div>    
         </div>
         <div className="d-flex flex-column align-items-center p-5">
           <button type="submit" className="btn btn-primary p-2" onClick={sendLoginRequest} style={{backgroundColor:"#6f42c1",borderRadius:"4px",border:"none",padding:"10px",width:"130px"}}>Sign In</button>
