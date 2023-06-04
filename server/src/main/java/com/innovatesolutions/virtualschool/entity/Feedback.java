@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Document
 public class Feedback {
     @Id
-    private String Id;
+    private String feedbackId;
     private String studentId;
     private String teacherId;
     private String subjectId;
@@ -21,14 +21,14 @@ public class Feedback {
     private String body;
     public Feedback(){}
     public Feedback(
-            String Id,
+            String feedbackId,
             String studentId,
             String teacherId,
             String subjectId,
             String classId,
             LocalDateTime dateTime,
             String body){
-        this.Id=Id;
+        this.feedbackId=feedbackId;
         this.studentId=studentId;
         this.teacherId=teacherId;
         this.subjectId=subjectId;
