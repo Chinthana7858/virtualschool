@@ -10,8 +10,15 @@ import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewTopicPopup from './Topic/AddNewTopicPopup';
 import { BsChatLeftDots} from 'react-icons/bs';
 import AddNewSessionPopup from './Session/AddNewSessionPopup';
+import DocumentUploadPopup from './DocumentUploadPopup';
 
-
+interface LearningMaterial {
+  materialId:string;
+  materialName:string;
+  topicId:string;
+  date:string;
+  materialLink:string;
+}
 
 interface Link {
   sessionId:string;
@@ -62,6 +69,7 @@ const SubjectInside: React.FC = () => {
   localStorage.setItem('sidebar', JSON.stringify(open));
   const [visibleAddTopic, setVisibleAddTopic] = useState(false);
   const [visibleAddSession, setVisibleAddSession] = useState(false);
+  const [visibleAddDoc, setVisibleAddDoc] = useState(false);
   const { classId } = useParams<{ classId: string }>();
   const { subjectId } = useParams<{ subjectId: string }>();
   const defaultclassId='';
@@ -69,7 +77,7 @@ const SubjectInside: React.FC = () => {
   const teacherId=GetTeacherIdBySubjectId ({ subjectId: subjectId ?? '' });
   const teacherName=<GetNameByuserid userid={teacherId}/>
   const [topicId, setTopicId] = useState(""); 
-
+  const [learningMaterial, setLearningMaterial] = useState<LearningMaterial[]>([]);
 
   
   const handleRemoveTeacher = async () => {
@@ -168,6 +176,31 @@ const SubjectInside: React.FC = () => {
     }
   };
 
+  //Delete learning material
+  const handleDeleteMaterial = async (materialId: string) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this document ?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/learning-materials/${materialId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Document removed successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //Get teacher id by subject id
   function GetTeacherIdBySubjectId({ subjectId }: { subjectId: string }): string {
     interface Subject {
@@ -213,6 +246,17 @@ const SubjectInside: React.FC = () => {
 
     fetchData();
   }, []);
+
+         //Get Materials
+         useEffect(() => {
+          const fetchData = async () => {
+            const result = await fetch(`http://localhost:8080/api/v1/learning-materials`); 
+            const data = await result.json();
+            setLearningMaterial(data);
+          };
+      
+          fetchData();
+        }, []);
 
     //Get links
     useEffect(() => {
@@ -337,7 +381,7 @@ const SubjectInside: React.FC = () => {
           <td className="w-[18vw]"></td>
           </tr>
 
-          <table className="ml-[5%] ">
+          <table className="ml-[7%] ">
             <th>
               <td className='pr-[100px]'>Date</td>
             </th>
@@ -377,6 +421,41 @@ const SubjectInside: React.FC = () => {
           <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Documents</td>
           <td className="w-[18vw]"></td>
           </tr>
+
+          <table className="ml-[3%]">
+           
+           <tbody>
+           {learningMaterial
+             .filter((learningMaterial) => learningMaterial.topicId === topic.topicId)
+             .map((learningMaterial) => (
+             <tr key={learningMaterial.materialId}>
+             
+             <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh]  text-left pl-7 rounded-lg"><div className='p-2'>{new Date(learningMaterial.date).toLocaleString("en-US", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+             })}</div>
+             </td>
+
+             <td className='pr-6'>
+             <a href={learningMaterial.materialLink} className="font-medium text-blue-700 ml-[100px]">
+              {learningMaterial.materialName}
+             </a>
+             </td>
+
+             <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
+               <button onClick={() => handleDeleteMaterial(learningMaterial.materialId)}><ExtraTinyDelete/></button>
+             </td>
+            </tr>
+            ))}
+           </tbody>
+         </table>
+
+
           <tr className="">
           <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Quizzes</td>
           <td className="w-[18vw]"></td>
@@ -414,6 +493,7 @@ const SubjectInside: React.FC = () => {
                 buttonType={'tab'} 
                 size={'md'}
                 padding={'3'}
+                onClick={() => { setVisibleAddDoc(true); setTopicId(topic.topicId)}}
                 icon={BiFolderOpen}/>
               </td>
               </div>
@@ -473,6 +553,14 @@ const SubjectInside: React.FC = () => {
         </div>
       )}
     
+    {visibleAddDoc && (
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
+          <div className="w-full h-[40%] max-w-2xl p-4 rounded-lg bg-blue-50">
+          <div className='pl-[95%]'><button onClick={() => setVisibleAddDoc(false)}><CloseButton/></button></div>
+          <DocumentUploadPopup topicId={topicId ?? ''}/>
+          </div>
+        </div>
+      )}
 
     </div>
   
