@@ -4,19 +4,21 @@ import { BiBook, BiBulb, BiCameraMovie, BiCard, BiEdit, BiFolderOpen } from 'rea
 import { FiAlignLeft, FiUserPlus } from 'react-icons/fi';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
-import Button, {CloseButton} from '../../ui/atoms/Buttons';
+import Button, {CloseButton, ExtraTinyDelete} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewTopicPopup from './Topic/AddNewTopicPopup';
 import { BsChatLeftDots} from 'react-icons/bs';
+import AddNewSessionPopup from './Session/AddNewSessionPopup';
 
 
 
-interface Subject {
-  subjectId:string;
-  classRoomId: string;
-  subjectName:string;
-  teacherId:string;
+interface Link {
+  sessionId:string;
+  topicId: string;
+  date:string;
+  startingTime:string;
+  link:string;
 }
 interface Topic {
   topicId:string;
@@ -26,10 +28,7 @@ interface Topic {
 }
 
 
-interface ViewLinkProps {
-    url: string;
-    children?: React.ReactNode;
-  }
+
   //Get subject name by subject id
   function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
     interface Section {
@@ -57,11 +56,12 @@ interface ViewLinkProps {
 
 const SubjectInside: React.FC = () => {
   const [topic, setTopic] = useState<Topic[]>([]);
-  const [subject, setSubject] = useState<Subject[]>([]);
+  const [link, setlink] = useState<Link[]>([]);
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
-  const [visibleAdd, setVisibleAdd] = useState(false);
+  const [visibleAddTopic, setVisibleAddTopic] = useState(false);
+  const [visibleAddSession, setVisibleAddSession] = useState(false);
   const { classId } = useParams<{ classId: string }>();
   const { subjectId } = useParams<{ subjectId: string }>();
   const defaultclassId='';
@@ -144,10 +144,29 @@ const SubjectInside: React.FC = () => {
     }
   };
 
-
-  const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
+  const handleDeleteSession = async (sessionId: string) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this session link ?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/sessions/${sessionId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Topic removed successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //Get teacher id by subject id
   function GetTeacherIdBySubjectId({ subjectId }: { subjectId: string }): string {
@@ -195,6 +214,17 @@ const SubjectInside: React.FC = () => {
     fetchData();
   }, []);
 
+    //Get links
+    useEffect(() => {
+      const fetchData = async () => {
+        const result = await fetch(`http://localhost:8080/api/v1/sessions`); 
+        const data = await result.json();
+        setlink(data);
+      };
+  
+      fetchData();
+    }, []);
+
   return (
     <div>
 
@@ -218,7 +248,7 @@ const SubjectInside: React.FC = () => {
    
 
         
-    <div className={`pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-white  ${visibleAdd ? "blur-sm" : "blur-0"} rounded-lg`}>
+    <div className={`pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-white rounded-lg`}>
      <div className='text-2xl'>
      {subjectName} 
      </div>
@@ -252,16 +282,16 @@ const SubjectInside: React.FC = () => {
     </div>
     
     <div className='flex pb-10'>
-    <div className={`py-4 basis-2/12 ${visibleAdd ? "blur-sm" : "blur-0"}`}>
+    <div className={`py-4 basis-2/12 `}>
     <Button name={'Create topic'} 
                 buttonType={'tab'} 
                 size={'lg'}
                 padding={'4'}
-                onClick={() => { setVisibleAdd(true)}}
+                onClick={() => { setVisibleAddTopic(true)}}
                 icon={BiCard}/>
 
     </div>
-    <div className={`py-4 ${visibleAdd ? "blur-sm" : "blur-0"} basis-2/12`}>
+    <div className={`py-4  basis-2/12`}>
       <a href={`http://localhost:3000/Discussions/${classId}/${subjectId}/00`}>
       <Button name={'Discussion forum'} 
                 buttonType={'tab'} 
@@ -292,7 +322,7 @@ const SubjectInside: React.FC = () => {
 
     <div>
 
-    <table className={`${visibleAdd ? "blur-sm" : "blur-0"}`}>
+    <table className={``}>
       <tbody>
         {topic.map(topic => (
           <>
@@ -302,19 +332,52 @@ const SubjectInside: React.FC = () => {
             <td className="w-[18vw] h-[6vh] text-center pb-4">{new Date(topic.date).toLocaleDateString()}</td>
           </tr>
 
-          <tr className="bg-cyan-100 ">
+          <tr className="">
           <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Sessions</td>
           <td className="w-[18vw]"></td>
           </tr>
-          <tr className="bg-cyan-100">
+
+          <table className="ml-[5%] ">
+            <th>
+              <td className='pr-[100px]'>Date</td>
+            </th>
+            <th>
+              <td className='pr-[100px]'>Time</td>
+            </th>
+            <th>
+              <td className='pr-[100px]'>Link</td>
+            </th>
+            <tbody>
+            {link
+              .filter((link) => link.topicId === topic.topicId)
+              .map((link) => (
+              <tr key={link.sessionId}>
+              
+              <td className='py-3'>{link.date}</td>
+              <td className=''>{link.startingTime}</td>
+              <td className='pr-6'>
+              <a href={link.link} target="_blank" className="font-medium text-blue-700 ">
+               Click here to join the lecture!
+              </a>
+              </td>
+              <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
+                <button onClick={() => handleDeleteSession(link.sessionId)}><ExtraTinyDelete/></button>
+            </td>
+             </tr>
+             ))}
+            </tbody>
+          </table>
+
+
+          <tr className="">
           <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Assignments</td>
           <td className="w-[18vw]"></td>
           </tr>
-          <tr className="bg-cyan-100">
+          <tr className="">
           <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Documents</td>
           <td className="w-[18vw]"></td>
           </tr>
-          <tr className="bg-cyan-100">
+          <tr className="">
           <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Quizzes</td>
           <td className="w-[18vw]"></td>
           </tr>
@@ -327,7 +390,13 @@ const SubjectInside: React.FC = () => {
                 buttonType={'tab'} 
                 size={'md'}
                 padding={'3'}
+                onClick={() => {
+                  setTopicId(topic.topicId);
+                  setVisibleAddSession(true);
+                }}
+                
                 icon={BiCameraMovie}/>
+
               </td>
               </div>
               <div>
@@ -376,7 +445,7 @@ const SubjectInside: React.FC = () => {
     </table>
     </div>
   
-    <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+    <div className={`p-4`}>
        <div className=" ml-[68%]">
         <Button name={'Remove subject'} 
                 buttonType={'secondary-red'} 
@@ -387,11 +456,19 @@ const SubjectInside: React.FC = () => {
         </div>
     </div>
 
-    {visibleAdd && (
+    {visibleAddTopic && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
           <div className="w-full h-[30%] max-w-2xl p-4 rounded-lg bg-blue-50">
-          <div className='pl-[95%]'><button onClick={() => setVisibleAdd(false)}><CloseButton/></button></div>
-          <AddNewTopicPopup subjectId={subjectId ?? defaultclassId}/>
+          <div className='pl-[95%]'><button onClick={() => setVisibleAddTopic(false)}><CloseButton/></button></div>
+          <AddNewTopicPopup subjectId={subjectId ?? ''}/>
+          </div>
+        </div>
+      )}
+      {visibleAddSession && (
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
+          <div className="w-full h-[40%] max-w-2xl p-4 rounded-lg bg-blue-50">
+          <div className='pl-[95%]'><button onClick={() => setVisibleAddSession(false)}><CloseButton/></button></div>
+          <AddNewSessionPopup topicId={topicId ?? ''}/>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AiOutlineRight } from "react-icons/ai";
+import { AiFillDelete, AiOutlineRight } from "react-icons/ai";
 import { FiCheckSquare} from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { CgArrowUpR } from "react-icons/cg";
@@ -62,7 +62,15 @@ export  function ResultsAdd() {
   )
 }
 
-
+export  function ExtraTinyDelete() {
+  return (
+      <div>
+          <button className="p-2 bg-red-400 rounded-lg hover:bg-red-600">
+          <div className="text-red-900 hover:text-[#f5f0f0]"><AiFillDelete size="1em"/></div>
+         </button>
+     </div>
+  )
+}
 
 interface ButtonProps {
   name: any;

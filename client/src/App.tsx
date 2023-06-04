@@ -30,7 +30,6 @@ import SubjectResults from './components/pages/Subjects/SubjectResults';
 import ClassStudentProfile from './components/pages/ClassRooms/AddStudentToClass/ClassStudentProfile';
 import UsersList from './components/pages/UserManagement/UsersList';
 import UserProfilemanage from './components/pages/UserManagement/UserProfilemanage';
-import ClassTimeTable from './components/pages/TimeTable/ClassTimeTable';
 import Sections from './components/pages/Sections/Sections';
 import AcademicYears from './components/pages/Sections/AcademicYears';
 import ClassRooms from './components/pages/ClassRooms/ClassRooms';
@@ -48,6 +47,7 @@ import TeacherFeedback1 from './components/pages/Feedback/TeacherFeedback1';
 import TeacherFeedback2 from './components/pages/Feedback/TeacherFeedback2';
 import StudentFeedback from './components/pages/Feedback/StudentFeedback';
 import TeachersSections from './components/pages/Sections/TeachersSections';
+import TimeTable from './components/pages/TimeTable/TimeTable';
 
 
 
@@ -119,7 +119,7 @@ function App() {
       <Route
         path='/timetable/:classId'
         element={
-          <ClassTimeTable/>
+          <TimeTable/>
         }
        />
 

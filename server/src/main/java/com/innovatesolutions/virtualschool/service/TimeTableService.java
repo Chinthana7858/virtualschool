@@ -40,7 +40,8 @@ public class TimeTableService {
         Optional<TimeTable> existingTimeTableOptional = timeTableRepository.findByClassIdAndRowNo(classId, rowNo).stream().findFirst();
         if (existingTimeTableOptional.isPresent()) {
             TimeTable existingTimeTable = existingTimeTableOptional.get();
-            existingTimeTable.setTimePeriod(updatedTimeTable.getTimePeriod());
+            existingTimeTable.setStartingTime(updatedTimeTable.getStartingTime());
+            existingTimeTable.setEndingTime(updatedTimeTable.getEndingTime());
             existingTimeTable.setMondaySubject(updatedTimeTable.getMondaySubject());
             existingTimeTable.setTuesdaySubject(updatedTimeTable.getTuesdaySubject());
             existingTimeTable.setWednesdaySubject(updatedTimeTable.getWednesdaySubject());
