@@ -1,4 +1,5 @@
 package com.innovatesolutions.virtualschool.controller;
+import com.innovatesolutions.virtualschool.entity.LoginResponse;
 import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.service.UserService;
 import com.innovatesolutions.virtualschool.entity.User;
@@ -41,10 +42,17 @@ public class UserController {
     }
 
     //Save users
-    @PostMapping
+    @PostMapping("/save")
     public String RegisterNewUser(@RequestBody User user) {
         userService.addNewUser(user);
         return "Profile created";
+    }
+
+    //login users
+    @PostMapping("/login")
+    public LoginResponse Login(@RequestBody User user) {
+        LoginResponse logres =  userService.Login(user);
+        return logres;
     }
 
     //Delete users by userid
