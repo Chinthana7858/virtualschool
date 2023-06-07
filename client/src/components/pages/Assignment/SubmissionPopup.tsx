@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import { SubmitButton } from '../../ui/atoms/Buttons';
 
-function DocumentUploadPopup(props: { topicId: string }) {
+function SubmissionPopup(props: { assignmentId: string}) {
+
+const currentDate = new Date();
+const year = currentDate.getFullYear();
+const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+const day = String(currentDate.getDate()).padStart(2, '0');
+const hours = String(currentDate.getHours()).padStart(2, '0');
+const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
   // Define state to hold the input field values
   const [formValues, setFormValues] = useState({
-    topicId: props.topicId,
-    materialName: '',
-    date:new Date().toISOString(),
+    submissionBody: '',
+    submissionDate:  formattedDate,
     file: '' as File | string,
   });
 
@@ -16,9 +26,8 @@ function DocumentUploadPopup(props: { topicId: string }) {
   
     // Create a new FormData object and add the form values to it
     const formData = new FormData();
-    formData.append('topicId', formValues.topicId);
-    formData.append('materialName', formValues.materialName);
-    formData.append('date', formValues.date);
+    formData.append('submissionBody', formValues.submissionBody);
+    formData.append('submissionDate', formValues.submissionDate);
     formData.append('file', formValues.file);
   
     // Create a new XMLHttpRequest object
@@ -53,7 +62,7 @@ function DocumentUploadPopup(props: { topicId: string }) {
     });
   
     // Open and send the XMLHttpRequest
-    xhr.open('POST', `http://localhost:8080/api/v1/learning-materials/${props.topicId}/materialUpload`);
+    xhr.open('POST', `http://localhost:8080/api/v1/assignmentSubmit/${props.assignmentId}/56789`);//Hardcoded
     xhr.send(formData);
   };
   
@@ -90,27 +99,30 @@ function DocumentUploadPopup(props: { topicId: string }) {
 
   return (
     <>
+          <h1 className="pb-6 text-xl font-semibold text-center">Submit Assignment</h1>
     <div className='pl-24'>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
+
         <div  className='p-2'>
+          
         <label>
-          Material Name:
-          <input type="text" name="materialName" value={formValues.materialName} onChange={handleInputChange} />
+          Submission body:
+          <input type="text" name="submissionBody" className='w-[300px]' value={formValues.submissionBody} onChange={handleInputChange} />
         </label>
         </div>
         <br />
         <div  className='p-2'>
         <label>
           File:
-          <input type="file" name="file" onChange={handleFileChange} required/>
+          <input type="file" className='ml-[105px]' name="file" onChange={handleFileChange} required/>
         </label>
         </div>
-        <br />
-        <button type="submit" onClick={() => window.location.reload()}><SubmitButton/></button>
+        <br/>
+        <button type="submit" className='ml-[170px]' onClick={() => window.location.reload()}><SubmitButton/></button>
       </form>
       </div>
     </>
   );
 }
 
-export default DocumentUploadPopup;
+export default SubmissionPopup;

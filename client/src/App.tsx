@@ -48,6 +48,12 @@ import TeacherFeedback2 from './components/pages/Feedback/TeacherFeedback2';
 import StudentFeedback from './components/pages/Feedback/StudentFeedback';
 import TeachersSections from './components/pages/Sections/TeachersSections';
 import TimeTable from './components/pages/TimeTable/TimeTable';
+import Assignment from './components/pages/Assignment/AssignmentPage';
+import NewAssignmentForum from './components/pages/Assignment/AssignmentPage';
+import AssignmentPage from './components/pages/Assignment/AssignmentPage';
+import SubmissionPage from './components/pages/Assignment/SubmissionPage';
+import Login from './components/pages/Login/Login';
+import Registration from './components/pages/Login/Registration';
 
 
 
@@ -55,6 +61,18 @@ function App() {
   return (
     <Router>
       <Routes>
+      <Route
+        path='/'
+        element={
+          <Login/>
+        }
+       />
+        <Route
+        path='/Registration'
+        element={
+          <Registration/>
+        }
+       />
           <Route
         path='/HomePageStudent'
         element={
@@ -81,7 +99,7 @@ function App() {
        />
 
         <Route
-        path='/'
+        path='/HomePageAdmin'
         element={  
           <HomePageAdmin/>
         }
@@ -353,6 +371,20 @@ function App() {
         path='/MySections'
         element={
           <TeachersSections/>
+        }
+       />
+
+        <Route
+        path='/Assignment/:classId/:subjectId/:topicId/:assignmentId'
+        element={
+          <AssignmentPage/>
+        }
+       />
+
+        <Route
+        path='/Submission/:classId/:subjectId/:topicId/:assignmentId/:submissionId'
+        element={
+          <SubmissionPage/>
         }
        />
       </Routes>

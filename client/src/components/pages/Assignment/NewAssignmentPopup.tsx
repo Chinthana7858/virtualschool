@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { SubmitButton } from '../../ui/atoms/Buttons';
 
-function DocumentUploadPopup(props: { topicId: string }) {
+function NewAssignmentPopup(props: { topicId: string,classId:string,subjectId:string}) {
   // Define state to hold the input field values
   const [formValues, setFormValues] = useState({
-    topicId: props.topicId,
-    materialName: '',
-    date:new Date().toISOString(),
+    classId:props.classId,
+    subjectId:props.subjectId,
+    topicId:props.topicId,
+    assignmentHead: '',
+    assignmentBody: '',
+    dueDate: '',
     file: '' as File | string,
   });
 
@@ -16,9 +19,12 @@ function DocumentUploadPopup(props: { topicId: string }) {
   
     // Create a new FormData object and add the form values to it
     const formData = new FormData();
+    formData.append('classId', formValues.classId);
+    formData.append('subjectId', formValues.subjectId);
     formData.append('topicId', formValues.topicId);
-    formData.append('materialName', formValues.materialName);
-    formData.append('date', formValues.date);
+    formData.append('assignmentHead', formValues.assignmentHead);
+    formData.append('assignmentBody', formValues.assignmentBody);
+    formData.append('dueDate', formValues.dueDate);
     formData.append('file', formValues.file);
   
     // Create a new XMLHttpRequest object
@@ -53,7 +59,7 @@ function DocumentUploadPopup(props: { topicId: string }) {
     });
   
     // Open and send the XMLHttpRequest
-    xhr.open('POST', `http://localhost:8080/api/v1/learning-materials/${props.topicId}/materialUpload`);
+    xhr.open('POST', `http://localhost:8080/api/v1/assignment/${props.classId}/${props.subjectId}/${props.topicId}`);
     xhr.send(formData);
   };
   
@@ -90,27 +96,44 @@ function DocumentUploadPopup(props: { topicId: string }) {
 
   return (
     <>
+          <h1 className="pb-6 text-xl font-semibold text-center">Create Assignment</h1>
     <div className='pl-24'>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
+
         <div  className='p-2'>
+          
         <label>
-          Material Name:
-          <input type="text" name="materialName" value={formValues.materialName} onChange={handleInputChange} />
+          Short Description :
+          <input type="text" name="assignmentHead" className='w-[300px]' value={formValues.assignmentHead} onChange={handleInputChange} />
         </label>
         </div>
         <br />
+        <div  className='p-2'>
+        <label>
+          Instructions:
+          <input type="textarea" name="assignmentBody" className='w-[300px] h-[150px] ml-[47px]' value={formValues.assignmentBody} onChange={handleInputChange} />
+        </label>
+        </div>
+        <br/>
+        <div  className='p-2'>
+        <label>
+          Due date:
+          <input type="datetime-local" className='ml-[65px]' name="dueDate" value={formValues.dueDate} onChange={handleInputChange} />
+        </label>
+        </div>
+        <br/>
         <div  className='p-2'>
         <label>
           File:
-          <input type="file" name="file" onChange={handleFileChange} required/>
+          <input type="file" className='ml-[105px]' name="file" onChange={handleFileChange} required/>
         </label>
         </div>
-        <br />
-        <button type="submit" onClick={() => window.location.reload()}><SubmitButton/></button>
+        <br/>
+        <button type="submit" className='ml-[170px]' onClick={() => window.location.reload()}><SubmitButton/></button>
       </form>
       </div>
     </>
   );
 }
 
-export default DocumentUploadPopup;
+export default NewAssignmentPopup;
