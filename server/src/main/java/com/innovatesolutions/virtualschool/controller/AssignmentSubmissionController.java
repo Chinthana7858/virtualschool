@@ -1,6 +1,5 @@
 package com.innovatesolutions.virtualschool.controller;
 
-import com.innovatesolutions.virtualschool.entity.Assignment;
 import com.innovatesolutions.virtualschool.entity.AssignmentSubmission;
 import com.innovatesolutions.virtualschool.service.AssignmentSubmissionService;
 import lombok.AllArgsConstructor;
@@ -71,5 +70,10 @@ public class AssignmentSubmissionController {
         }
     }
 
+    @DeleteMapping("/{submissionId}")
+    public ResponseEntity<String> deleteSubmission(@PathVariable String submissionId) {
+        assignmentSubmissionService.deleteSubmissionById(submissionId);
+        return ResponseEntity.status(HttpStatus.OK).body("Assignment submission deleted successfully");
+    }
 
 }

@@ -85,6 +85,8 @@ public class AssignmentSubmissionService {
         }
     }
 
-
+    public void deleteSubmissionById(String submissionId) {
+        repository.deleteById(submissionId);
+    }
 
 }
