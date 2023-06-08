@@ -43,11 +43,29 @@ interface Subject {
     return section ? <span>{section.subjectName}</span> : null;
   }
 
-const SResults2: React.FC = () => {
+    //Get name by userId
+    function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
+        interface User {
+      
+          nameWithInitials:string;
+        
+        }
+        const [user, setUser] = useState<User | null>(null);
+        useEffect(() => {
+          fetch(`http://localhost:8080/api/v1/users/${userid}`)
+            .then(res => res.json())
+            .then(data => setUser(data))
+            .catch(error => console.error(error));
+        }, [userid]);
+      
+        return user ? <span>{user.nameWithInitials}</span> : null;
+      }
+
+const PResults2: React.FC = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userid');
+    const storedUserId = localStorage.getItem('studentId');
     if (storedUserId) {
       setUserId(storedUserId.toString());
     }
@@ -130,7 +148,7 @@ const SResults2: React.FC = () => {
     <div className={`bg-slate-300 p-[5%] mt-[7%]  min-h-screen  ${open ? "w-[85vw]" : "w-[100vw]"}`}>  
     <div className={`pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-white rounded-lg`}>
      <div className='text-2xl'>
-     StudentName results
+     <GetNameByuserid userid={userId??''}/>'s exam results
      </div>
       </div>
       
@@ -190,4 +208,4 @@ const SResults2: React.FC = () => {
   );
 };
 
-export default SResults2;
+export default PResults2;

@@ -8,6 +8,7 @@ import MarkAttendancePopup from './MarkAttendancePopup';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 interface Users {
   userid: string;
@@ -130,6 +131,8 @@ function StringToJSX(props: { str: string }) {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
         </div>
    
      

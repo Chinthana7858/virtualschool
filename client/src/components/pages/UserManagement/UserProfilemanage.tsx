@@ -11,6 +11,7 @@ import { AiFillDelete } from "react-icons/ai";
 import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
 import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 interface User {
   userid: string;
@@ -104,6 +105,8 @@ const UserProfilemanage:React.FC= () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
       

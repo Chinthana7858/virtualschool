@@ -5,18 +5,18 @@ const SideBarParent = () => {
 
     const Menus = [
       { title: "Home",path:"/HomePageParent", icon: <BiHome/>},
-      { title: "Results",path:"/HomePageParent", icon: <BiNotepad/> },
-      { title: "Attendance",path:"/HomePageParent", icon: <FaChild/>},
-      { title: "Feedback",path:"/HomePageParent", icon: <BsChatLeftDots/>},
-      { title: "Profile",path:"/HomePageParent", icon: <BiUser/> },
-      { title: "Contacts",path:"/HomePageParent", icon: <BiPaperPlane/>},
-      { title: "SignOut",path:"/", icon: <BiLogOut/>, gap: true },
+      { title: "Results",path:"/PResults1", icon: <BiNotepad/> },
+      { title: "Attendance",path:"/AttendanceParent", icon: <FaChild/>},
+      { title: "Feedback",path:"/ParentFeedback", icon: <BsChatLeftDots/>},
+      { title: "Profile",path:"/MyProfile", icon: <BiUser/> },
+      { title: "Contacts",path:"/Users", icon: <BiPaperPlane/>},
+      { title: "SignOut", icon: <BiLogOut/>, gap: true },
     ];
 
     const handleSignOut = () => {
       const confirmation = window.confirm("Are you sure you want to sign out?");
       if (confirmation) {
-      
+        window.location.href = "/";
       }
     };
   

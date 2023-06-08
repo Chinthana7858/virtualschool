@@ -6,6 +6,7 @@ import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -116,6 +117,8 @@ const UsersDetails: React.FC = () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -213,11 +216,11 @@ const UsersDetails: React.FC = () => {
     </table>)}
     
     <div className="py-[3vh]"></div>
-    {usersRole !=='STUDENT' && (
+    {usersRole ==='TEACHER'||usersRole==='PRINCIPAL'||usersRole==='ADMIN' && (
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Parents
     </h1>)}
-    {usersRole !=='STUDENT' && (
+    {usersRole ==='TEACHER'||usersRole==='PRINCIPAL'||usersRole==='ADMIN' && (
     <table>
       <thead>
       <tr className="">

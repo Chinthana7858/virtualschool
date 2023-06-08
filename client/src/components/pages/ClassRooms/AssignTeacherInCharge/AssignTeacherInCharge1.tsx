@@ -7,6 +7,7 @@ import SideBarStudent from '../../../ui/templates/SideBar/SideBar-Student';
 import SideBarAdmin from '../../../ui/templates/SideBar/SideBar-Admin';
 import SideBarParent from '../../../ui/templates/SideBar/SideBar-Parent';
 import SideBarTeacher from '../../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -103,6 +104,8 @@ const AssignTeacherInCharge1: React.FC = () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      

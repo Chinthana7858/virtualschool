@@ -5,19 +5,19 @@ import { GiGraduateCap } from "react-icons/gi";
 const SideBarAdmin = () => {
 
   const Menus = [
-    { title: "Home", path:"/", icon: <BiHome/> },
+    { title: "Home", path:"/HomePageAdmin", icon: <BiHome/> },
     { title: "Sections",path:"/sections",icon: <GiGraduateCap/> },
-    { title: "Results", path:"/", icon: <BiNotepad/> },
+   // { title: "Results", path:"/", icon: <BiNotepad/> },
     { title: "Requests", path:"/UsersRequests", icon: <BiUserPlus/> },
     { title: "Users", path:"/Users", icon: <FiUsers/>},
-    { title: "Profile", path:"/", icon: <BiUser/> },
-    { title: "SignOut", path:"/", icon: <BiLogOut/>, gap: true },
+    { title: "Profile", path:"/MyProfile", icon: <BiUser/> },
+    { title: "SignOut",  icon: <BiLogOut/>, gap: true },
   ];
 
   const handleSignOut = () => {
     const confirmation = window.confirm("Are you sure you want to sign out?");
     if (confirmation) {
-    
+      window.location.href = "/";
     }
   };
 

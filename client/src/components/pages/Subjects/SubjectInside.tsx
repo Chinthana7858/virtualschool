@@ -17,6 +17,7 @@ import { ResultsAdd } from '../../ui/atoms/Buttons';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 interface Assignment {
@@ -355,6 +356,8 @@ const SubjectInside: React.FC = () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -433,7 +436,7 @@ const SubjectInside: React.FC = () => {
       </a>
     </div>)}
 
-    {usersRole ==='TEACHER'||usersRole==='PRINCIPAL' && (
+    {usersRole !=='STUDENT' && (
     <div className='py-4 basis-2/12'>
     <a href={`http://localhost:3000/teacherFeedback/${classId}/${subjectId}`}>
     <Button name={'Feedback'} 

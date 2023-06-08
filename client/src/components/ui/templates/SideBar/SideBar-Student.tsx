@@ -12,15 +12,15 @@ const SideBarStudent = () => {
     { title: "Results",path:"/SResults1", icon:<BiNotepad/>},
     { title: "Attendance ",path:"/AttendanceStudent", icon: <FaChild/>},
     { title: "Feedback",path:"/StudentFeedback", icon: <BsChatLeftDots/>},
-    { title: "Profile",path:"/HomePageStudent", icon: <BiUser/>},
+    { title: "Profile",path:"/MyProfile", icon: <BiUser/>},
     { title: "Contacts",path:"/Users",icon: <BiPaperPlane/> },
-    { title: "SignOut",path:"/", icon: <BiLogOut/>  , gap: true },
+    { title: "SignOut", icon: <BiLogOut/>  , gap: true },
   ];
 
   const handleSignOut = () => {
     const confirmation = window.confirm("Are you sure you want to sign out?");
     if (confirmation) {
-    
+      window.location.href = "/";
     }
   };
 

@@ -10,6 +10,7 @@ import EditRowPopup from './EditRowPopup';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -132,6 +133,8 @@ const TimeTable: React.FC = () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      

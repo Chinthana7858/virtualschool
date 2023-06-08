@@ -25,11 +25,11 @@ function convertDate(inputDate: string): string {
 }
 
 
-function AttendanceStudentView() {
+function AttendanceParentView() {
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userid');
+    const storedUserId = localStorage.getItem('studentId');
     if (storedUserId) {
       setUserId(storedUserId.toString());
     }
@@ -60,14 +60,6 @@ function AttendanceStudentView() {
   
     const [attendance, setAttendance] = useState<Attendance | null>(null);
 
-    const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    const storedUsersRole = localStorage.getItem('role');
-    if (storedUsersRole) {
-      setUsersRole(storedUsersRole.toString());
-    }
-  }, []);
   
     useEffect(() => {
       fetch(`http://localhost:8080/api/v1/attendance/${date}/${studentId}`)
@@ -137,6 +129,6 @@ function AttendanceStudentView() {
   );
 };
 
-export default AttendanceStudentView;;
+export default AttendanceParentView;
 
 

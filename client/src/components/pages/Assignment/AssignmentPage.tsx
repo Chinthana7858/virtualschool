@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
-import Button, { AccessButton, CloseButton, SubmitButton } from '../../ui/atoms/Buttons';
+import Button, { AccessButton, CloseButton, ExtraTinyDelete, SubmitButton } from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import SubmissionPopup from './SubmissionPopup';
@@ -10,6 +10,7 @@ import { BiCog } from 'react-icons/bi';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 interface Subject {
   subjectName: string;
@@ -36,6 +37,31 @@ interface Submission {
   grade: string;
   submissionDocLink: string;
 }
+
+  //Delete Submission
+  const handleDeleteSubmission = async (submissionId: string) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this submission ?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/assignmentSubmit/${submissionId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Submission deleted successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null {
   const [subject, setSubject] = useState<Subject | null>(null);
@@ -106,6 +132,15 @@ function AssignmentPage() {
     }
   }, []);
 
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
      //Get Submissions
      useEffect(() => {
        const fetchData = async () => {
@@ -146,6 +181,8 @@ function AssignmentPage() {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
         </div>
    
         <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"} min-w-[85vw]`}>
@@ -201,7 +238,7 @@ function AssignmentPage() {
       <div className='p-5 bg-green-300 rounded-xl'>
             <tbody>
             {submission
-              .filter((submission) => submission.studentId ==='56789', {/*userId*/})
+              .filter((submission) => submission.studentId ===userId, {/*userId*/})
               .map((submission) => (
                 <tr key={submission.submissionId}>
                 <td className='py-3 w-[20vw]'>{submission.studentId}</td>
@@ -212,6 +249,7 @@ function AssignmentPage() {
               </span>
               </td>
                 <td className='pr-6 w-[10vw]'><a href={`http://localhost:3000/Submission/${classId}/${subjectId}/${topicId}/${assignmentId}/${submission.submissionId}`}><AccessButton/></a></td>
+                <td><button onClick={() => handleDeleteSubmission(submission.submissionId)}><ExtraTinyDelete/></button></td>
                </tr>
              ))}
             </tbody>

@@ -7,6 +7,7 @@ import AddNewSectionPopup from './AddNewSectionPopup';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -85,7 +86,7 @@ const Sections: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-      {usersRole ==='ADMIN' && (
+          {usersRole ==='ADMIN' && (
           <SideBarAdmin/>)}
           {usersRole ==='TEACHER' && (
           <SideBarTeacher/>)}
@@ -93,6 +94,8 @@ const Sections: React.FC = () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      

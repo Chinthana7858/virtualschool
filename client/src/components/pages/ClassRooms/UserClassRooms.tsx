@@ -8,6 +8,7 @@ import { AccessButton } from "../../ui/atoms/Buttons";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
 import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
 import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 interface User {
   classIds: string[];
@@ -103,6 +104,8 @@ const UserClassRooms: React.FC = () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
         </div>
 
         <div className={` ${open ? "w-[85vw] h-[100%]" : "w-[100vw] h-[100%]"} duration-100`}>

@@ -54,6 +54,11 @@ import AssignmentPage from './components/pages/Assignment/AssignmentPage';
 import SubmissionPage from './components/pages/Assignment/SubmissionPage';
 import Login from './components/pages/Login/Login';
 import Registration from './components/pages/Login/Registration';
+import MyProfile from './components/pages/UserManagement/MyProfile';
+import PResults1 from './components/pages/ParentResults/PResults1';
+import PResults2 from './components/pages/ParentResults/PResults2';
+import AttendanceParentView from './components/pages/Attendance/AttendanceParentView';
+import ParentFeedback from './components/pages/Feedback/ParentFeedback';
 
 
 
@@ -102,6 +107,13 @@ function App() {
         path='/HomePageAdmin'
         element={  
           <HomePageAdmin/>
+        }
+       />
+
+       <Route
+        path='/MyProfile'
+        element={  
+          <MyProfile/>
         }
        />
 
@@ -317,6 +329,20 @@ function App() {
         }
        />
 
+       <Route
+        path='/PResults1'
+        element={
+          <PResults1/>
+        }
+       />
+
+       <Route
+       path='/PResults2/:classId'
+       element={
+         <PResults2/>
+       }
+      />
+
         <Route
         path='/teachersSubjects'
         element={
@@ -331,6 +357,14 @@ function App() {
           <AttendanceStudentView/>
         }
        />
+
+       
+       <Route
+       path='/AttendanceParent'
+       element={
+         <AttendanceParentView/>
+       }
+      />
 
         <Route
         path='/teachersClasses'
@@ -364,6 +398,13 @@ function App() {
         path='/StudentFeedback'
         element={
           <StudentFeedback/>
+        }
+       />
+       
+       <Route
+        path='/ParentFeedback'
+        element={
+          <ParentFeedback/>
         }
        />
 

@@ -9,15 +9,15 @@ const SideBarTeacher = () => {
       { title: "Subjects",path:"/teachersSubjects",icon: <BiLibrary/> },
       { title: "Classes",path:"/teachersClasses",icon: <SiGoogleclassroom/> },
       { title: "Section",path:"/MySections",icon: <GiGraduateCap/> },
-      { title: "Profile",path:"/HomePageTeacher",icon: <BiUser/> },
+      { title: "Profile",path:"/MyProfile",icon: <BiUser/> },
       { title: "Contacts",path:"/Users",icon: <BiPaperPlane/> },
-      { title: "SignOut",path:"/",icon: <BiLogOut/> , gap: true },
+      { title: "SignOut",icon: <BiLogOut/> , gap: true },
     ];
 
     const handleSignOut = () => {
       const confirmation = window.confirm("Are you sure you want to sign out?");
       if (confirmation) {
-      
+        window.location.href = "/";
       }
     };
   

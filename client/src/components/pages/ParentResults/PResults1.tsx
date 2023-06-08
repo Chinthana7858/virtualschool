@@ -51,11 +51,11 @@ function GetAccYearByClassRoomId({classId }: { classId: string }): JSX.Element |
 
 
 
-const SResults1: React.FC = () => {
+const PResults1: React.FC = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userid');
+    const storedUserId = localStorage.getItem('studentId');
     if (storedUserId) {
       setUserId(storedUserId.toString());
     }
@@ -108,7 +108,7 @@ const SResults1: React.FC = () => {
 
         <div className={` ${open ? "w-[85vw] h-[100%]" : "w-[100vw] h-[100%]"} duration-100`}>
         <div className={`ml-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 text-white mt-[10%] rounded-lg`}>
-        <div className="p-[4%] text-3xl"> Your Classes </div>
+        <div className="p-[4%] text-3xl"> Select the class </div>
         </div>
 
         <table className={`ml-[30px]`}>
@@ -124,7 +124,7 @@ const SResults1: React.FC = () => {
     <tr key={classId} className="bg-blue-300 border-2 border-blue-400 hover:bg-white sm:text-xs md:text-md xl:text-base">
       <td className="sm:w-[0vw] md:w-[35vw] xl:w-[40vw] h-[10vh] text-center"><GetAccYearByClassRoomId classId={classId}/></td>
       <td className="sm:w-[0vw] md:w-[35vw] xl:w-[40vw] h-[10vh] text-center"><GetClassRoomNameByid classId={classId}/></td>
-      <td className='sm:w-[0vw] md:w-[25vw] xl:w-[30vw] h-[10vh] text-center"'> <a href={`http://localhost:3000/SResults2/${classId}`}><AccessButton/></a></td>
+      <td className='sm:w-[0vw] md:w-[25vw] xl:w-[30vw] h-[10vh] text-center"'> <a href={`http://localhost:3000/PResults2/${classId}`}><AccessButton/></a></td>
     </tr>
   ))}
 </tbody>
@@ -136,4 +136,4 @@ const SResults1: React.FC = () => {
   );
 };
 
-export default SResults1;
+export default PResults1;

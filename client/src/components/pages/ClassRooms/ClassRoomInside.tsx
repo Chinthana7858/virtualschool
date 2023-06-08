@@ -223,6 +223,8 @@ const ClassRoomInside: React.FC = () => {
         <SideBarParent/>)}
       {usersRole ==='STUDENT' && (
         <SideBarStudent/>)}
+        {usersRole ==='PRINCIPAL' && (
+        <SideBarPrincipal/>)}
       </div>
    
      

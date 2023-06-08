@@ -56,11 +56,11 @@ interface Feedback {
         return section ? <span>{section.subjectName}</span> : null;
       }
 
-const StudentFeedback: React.FC = () => {
+const ParentFeedback: React.FC = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userid');
+    const storedUserId = localStorage.getItem('studentId');
     if (storedUserId) {
       setUserId(storedUserId.toString());
     }
@@ -198,4 +198,4 @@ const StudentFeedback: React.FC = () => {
   );
 };
 
-export default StudentFeedback;
+export default ParentFeedback;

@@ -40,7 +40,7 @@ const HomePageParent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Child's Results</a></div>
-                        <div className="pl-[45%]"><a href={`http://localhost:3000/SResults1`}><ViewButton/></a></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/PResults1`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourResults.jpg"className="w-[450px] h-[300px] basis-11/12"/>
                    </div>
@@ -52,7 +52,7 @@ const HomePageParent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Child's Attendance</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/AttendanceParent`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourAttendance.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>
@@ -62,7 +62,7 @@ const HomePageParent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Child's Feedback</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/ParentFeedback`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourFeedback.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>

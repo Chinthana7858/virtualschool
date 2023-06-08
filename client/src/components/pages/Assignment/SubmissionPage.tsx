@@ -10,6 +10,7 @@ import SubmissionGradingPopup from './SubmissionGradingPopup';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -88,6 +89,8 @@ function SubmissionPage() {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
         </div>
    
         <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"} min-w-[85vw]`}>

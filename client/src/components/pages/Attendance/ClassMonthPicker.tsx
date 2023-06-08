@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
 import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 function Calendar() {
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
@@ -60,6 +61,8 @@ function Calendar() {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
         </div>
    
         <div className={` ${!open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>

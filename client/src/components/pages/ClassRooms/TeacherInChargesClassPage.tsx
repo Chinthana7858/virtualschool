@@ -7,6 +7,7 @@ import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 interface ClassRoom {
     id:string;
@@ -73,6 +74,8 @@ const TeacherInChargesClassPage: React.FC = () => {
           <SideBarParent/>)}
           {usersRole ==='STUDENT' && (
           <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
 
      <div className={`flex `}>
