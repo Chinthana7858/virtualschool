@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SubmitButton } from '../../ui/atoms/Buttons';
 
 
 
 function DiscussionReplyPopup(props: { classId: string, subjectId:string ,userid:String,id:string}) {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+  
   // Define state to hold the input field values
   const [formValues, setFormValues] = useState({
     classId:props.classId,
     subjectId:props.subjectId,
     discussionTopic: '',
-    userid:props.userid,
+    userid:userId,
     message: '',
     motherDiscussionId:props.id,
     dateTime:  new Date().toISOString(),

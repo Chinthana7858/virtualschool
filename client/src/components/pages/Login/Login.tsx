@@ -78,7 +78,7 @@ const Login = () => {
 
           if (data.role === "PRINCIPAL") {
             localStorage.setItem('role', 'PRINCIPAL');
-            navigate('/HomePagePrinciple');
+            navigate('/HomePagePrincipal');
 
           } else if (data.role === "TEACHER") {
             localStorage.setItem('role', 'TEACHER');

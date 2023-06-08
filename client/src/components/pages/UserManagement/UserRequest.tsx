@@ -9,6 +9,9 @@ import Button from "../../ui/atoms/Buttons";
 import Footer from "../../ui/templates/Footer/Footer";
 import { BiCheck } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
+import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
 
 interface User {
   userid: string; 
@@ -40,6 +43,15 @@ const UserRequest:React.FC= () => {
   localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 //Get users details by userid
   useEffect(() => {
@@ -109,7 +121,14 @@ const UserRequest:React.FC= () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 pt-20`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
       </div>
    
       
@@ -194,6 +213,7 @@ const UserRequest:React.FC= () => {
     
      </span>
 
+     {usersRole ==='ADMIN' && (
      <div className="flex w-[25vw] ml-[65%] xs:ml-[25%]"> 
      <div className="basis-1/2">
      <BackLink url={`http://localhost:3000/UsersRequests`}>
@@ -219,7 +239,7 @@ const UserRequest:React.FC= () => {
       />
       </BackLink>
       </div>
-     </div>
+     </div>)}
 
 
      <div className="w-[100%] top-[120%] pt-8">

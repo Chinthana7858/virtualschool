@@ -114,6 +114,7 @@ const Registration = () => {
       if (!NIC) {
         errors.NIC = 'NIC is required';
         isValid = false;
+        
       }else if(userRole!=="STUDENT" && userRole==="PARENT"){
         if (!studentId) {
           errors.studentId = 'Student Userid is required';
@@ -154,26 +155,34 @@ const Registration = () => {
     setShowPassWord(!showPassWord);
   };
 
-  const postData = (e: { preventDefault: () => void; }) => {
+  const postData = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("came",postData)
-    axios.post('http://localhost:8080/api/v1/users/save',{
-      userState:'0',
-      userRole,
-      fullName,
-      nameWithInitials,
-      phoneNo,
-      email,
-      address,
-      dateOfBirth,
-      NIC,
-      studentId,
-      userid,
-      passWord
-    }).then((res: any)=>console.log('post data',res)).catch((err: any)=>console.log(err))
-  }
-}
+      axios
+        .post('http://localhost:8080/api/v1/users/save', {
+          userState: '0',
+          userRole,
+          fullName,
+          nameWithInitials,
+          phoneNo,
+          email,
+          address,
+          dateOfBirth,
+          NIC,
+          studentId,
+          userid,
+          passWord,
+        })
+        .then((res: any) => {
+          console.log('post data', res);
+          window.alert('Request sent successfully. Wait untill acept the request');
+          window.location.reload();
+        })
+        .catch((err: any) => console.log(err));
+       
+    }
+  };
+  
   return (
     
      

@@ -11,8 +11,15 @@ const SideBarTeacher = () => {
       { title: "Section",path:"/MySections",icon: <GiGraduateCap/> },
       { title: "Profile",path:"/HomePageTeacher",icon: <BiUser/> },
       { title: "Contacts",path:"/Users",icon: <BiPaperPlane/> },
-      { title: "SignOut",path:"/HomePageTeacher",icon: <BiLogOut/> , gap: true },
+      { title: "SignOut",path:"/",icon: <BiLogOut/> , gap: true },
     ];
+
+    const handleSignOut = () => {
+      const confirmation = window.confirm("Are you sure you want to sign out?");
+      if (confirmation) {
+      
+      }
+    };
   
     return (
     
@@ -21,18 +28,20 @@ const SideBarTeacher = () => {
        
          
           <div className="flex items-center gap-x-4">
-            <img src="./images/logo.png"className={` duration-500  w-14 h-14" }`}/>
+          <img src={`${process.env.PUBLIC_URL}/images/logo.png`}className={` duration-500  w-14 h-14" }`}/>
             <h1 className={` origin-left fontmedium text-xl duration-1000 text-white`} >
               Virtial School
             </h1>
           </div>
           <ol className="pt-6">
-            {Menus.map((Menu) => (
+
+              {Menus.map((Menu) => (
               <a href={Menu.path}>
               <li
                
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
+                onClick={Menu.title === "SignOut" ? handleSignOut : undefined}
               >
                 <span className={` hover:bg-slate-700 text-2xl`}>
                 {Menu.icon}

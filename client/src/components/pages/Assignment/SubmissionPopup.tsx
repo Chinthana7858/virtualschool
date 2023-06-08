@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitButton } from '../../ui/atoms/Buttons';
 
 function SubmissionPopup(props: { assignmentId: string}) {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+  
 const currentDate = new Date();
 const year = currentDate.getFullYear();
 const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -62,7 +70,7 @@ const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     });
   
     // Open and send the XMLHttpRequest
-    xhr.open('POST', `http://localhost:8080/api/v1/assignmentSubmit/${props.assignmentId}/56789`);//Hardcoded
+    xhr.open('POST', `http://localhost:8080/api/v1/assignmentSubmit/${props.assignmentId}/${userId}`);//Hardcoded
     xhr.send(formData);
   };
   

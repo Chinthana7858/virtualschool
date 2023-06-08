@@ -14,6 +14,9 @@ import DocumentUploadPopup from './DocumentUploadPopup';
 import NewAssignmentPopup from '../Assignment/NewAssignmentPopup';
 import ChangeDeadlinePopup from '../Assignment/ChangeDeadlinePopup';
 import { ResultsAdd } from '../../ui/atoms/Buttons';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 
 interface Assignment {
@@ -96,6 +99,14 @@ const SubjectInside: React.FC = () => {
   const [learningMaterial, setLearningMaterial] = useState<LearningMaterial[]>([]);
   const [assignment, SetAssignment] = useState<Assignment[]>([]);
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
   
   const handleRemoveTeacher = async () => {
     try {
@@ -336,7 +347,14 @@ const SubjectInside: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
       </div>
    
      
@@ -355,15 +373,19 @@ const SubjectInside: React.FC = () => {
         Teacher - {teacherName}
        </div>
        <div className='pr-1 basis-1/12'>
+
+       {usersRole ==='ADMIN' && (
        <a href={`http://localhost:3000/AssignSubT1/${subjectId}`}>
         <Button name={'Assign'} 
                 buttonType={'primary'} 
                 size={'md'}
                 padding={'3'}
                 icon={FiUserPlus}/>
-        </a>
+        </a>)}
+
        </div>
        <div className='pl-2 basis-1/12'>
+       {usersRole ==='ADMIN' && (
        <BackLink url={`http://localhost:3000/Subject/${classId}/uid/${subjectId}`}>
        <Button name={'Remove'} 
                 buttonType={'primary-red'} 
@@ -371,7 +393,7 @@ const SubjectInside: React.FC = () => {
                 padding={'3'}
                 onClick={handleRemoveTeacher}
                 icon={AiFillDelete }/>
-        </BackLink>
+        </BackLink>)}
        </div>
        <div>
     </div>
@@ -380,6 +402,7 @@ const SubjectInside: React.FC = () => {
     </div>
     
     <div className='flex pb-10'>
+    {usersRole ==='TEACHER' && (
     <div className={`py-4 basis-2/12 `}>
     <Button name={'Create topic'} 
                 buttonType={'tab'} 
@@ -388,7 +411,8 @@ const SubjectInside: React.FC = () => {
                 onClick={() => { setVisibleAddTopic(true)}}
                 icon={BiCard}/>
 
-    </div>
+    </div>)}
+
     <div className={`py-4  basis-2/12`}>
       <a href={`http://localhost:3000/Discussions/${classId}/${subjectId}/00`}>
       <Button name={'Discussion forum'} 
@@ -398,6 +422,7 @@ const SubjectInside: React.FC = () => {
                 icon={FiAlignLeft}/>
       </a>
     </div>
+    {usersRole !=='STUDENT' && (
     <div className='py-4 basis-2/12'>
     <a href={`http://localhost:3000/Results/${classId}/${subjectId}`}>
     <Button name={'Exam results'} 
@@ -406,7 +431,9 @@ const SubjectInside: React.FC = () => {
                 padding={'4'}
                 icon={BiBook}/>
       </a>
-    </div>
+    </div>)}
+
+    {usersRole ==='TEACHER'||usersRole==='PRINCIPAL' && (
     <div className='py-4 basis-2/12'>
     <a href={`http://localhost:3000/teacherFeedback/${classId}/${subjectId}`}>
     <Button name={'Feedback'} 
@@ -415,7 +442,7 @@ const SubjectInside: React.FC = () => {
                 padding={'4'}
                 icon={BsChatLeftDots}/>
       </a>
-    </div>
+    </div>)}
     </div>
 
     <div>
@@ -458,7 +485,8 @@ const SubjectInside: React.FC = () => {
               </a>
               </td>
               <td className='sm:w-[0vw] md:w-[10vw] xl:w-[25vw] h-[7vh] text-center pl-[40px]'>
-                <button onClick={() => handleDeleteSession(link.sessionId)}><ExtraTinyDelete/></button>
+              {usersRole ==='TEACHER' && (
+                <button onClick={() => handleDeleteSession(link.sessionId)}><ExtraTinyDelete/></button>)}
             </td>
              </tr>
              ))}
@@ -507,7 +535,8 @@ const SubjectInside: React.FC = () => {
              </td>
              
              <td className='sm:w-[0vw] md:w-[10vw] xl:w-[25vw] h-[7vh] text-center"'>
-               <button onClick={() => handleDeleteAssignment(assignment.assignmentId)}><ExtraTinyDelete/></button>
+             {usersRole ==='TEACHER' && (
+               <button onClick={() => handleDeleteAssignment(assignment.assignmentId)}><ExtraTinyDelete/></button>)}
              </td>
             </tr>
             ))} 
@@ -545,7 +574,8 @@ const SubjectInside: React.FC = () => {
              </td>
 
              <td className='sm:w-[0vw] md:w-[10vw] xl:w-[25vw] h-[7vh] text-center pl-[11vw]'>
-               <button onClick={() => handleDeleteMaterial(learningMaterial.materialId)}><ExtraTinyDelete/></button>
+             {usersRole ==='TEACHER' && (
+               <button onClick={() => handleDeleteMaterial(learningMaterial.materialId)}><ExtraTinyDelete/></button>)}
              </td>
             </tr>
             ))}
@@ -557,7 +587,7 @@ const SubjectInside: React.FC = () => {
           <td className='p-4 pl-8 text-lg font-medium text-slate-700'>Quizzes</td>
           <td className="w-[18vw]"></td>
           </tr>
-
+          {usersRole !=='STUDENT' && (
           <tr key={topic.topicId} className="">
             <div className='flex w-[30vw] pb-10'>
               <div>
@@ -618,7 +648,7 @@ const SubjectInside: React.FC = () => {
               </td>
               </div>
               </div>
-          </tr>
+          </tr>)}
 
           </>
         ))}
@@ -628,12 +658,13 @@ const SubjectInside: React.FC = () => {
   
     <div className={`p-4`}>
        <div className=" ml-[68%]">
+       {usersRole ==='ADMIN' && (
         <Button name={'Remove subject'} 
                 buttonType={'secondary-red'} 
                 size={'md'}
                 padding={'3'}
                 onClick={handleDelete}
-                icon={AiFillDelete }/>
+                icon={AiFillDelete }/>)}
         </div>
     </div>
 

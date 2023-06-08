@@ -8,6 +8,9 @@ import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
 import{useParams} from "react-router-dom";
 import Button from "../../ui/atoms/Buttons";
 import { AiFillCheckCircle, AiFillDelete } from "react-icons/ai";
+import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
 
 interface User {
   userid: string;
@@ -33,6 +36,14 @@ const RemovedUser:React.FC= () => {
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
   
   const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
@@ -107,7 +118,14 @@ const RemovedUser:React.FC= () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
       </div>
    
       
@@ -187,6 +205,7 @@ const RemovedUser:React.FC= () => {
         </div>
       </span>
      </span>
+     {usersRole ==='ADMIN' && (
      <div className="flex w-[25vw] ml-[70%] xs:ml-[25%] pt-6">
      <div className="basis-1/2">
       <BackLink url={`http://localhost:3000/RemovedUsers`}>
@@ -212,7 +231,7 @@ const RemovedUser:React.FC= () => {
       />
       </BackLink>
     </div>
-     </div>
+     </div>)}
      <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
       </div>

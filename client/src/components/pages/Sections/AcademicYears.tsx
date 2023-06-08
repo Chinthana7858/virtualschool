@@ -9,6 +9,9 @@ import Button, { AccessButton,CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewAcademicYearPopup from './AddNewAcademicYearPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 
 
@@ -75,6 +78,15 @@ const AcademicYears: React.FC = () => {
   const sectionName=<GetSectionNameBysectionId sectionId={sectionId??defaultSectionId} />
   const sectionHeadId = GetSectionHeadIdBysectionId({ sectionId: sectionId ?? '' });
   const sectionHeadName=<GetNameByuserid userid={sectionHeadId??defaultSectionId}/>
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 
 
@@ -180,7 +192,14 @@ const handleRemoveSectionHead = async () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
       </div>
    
      

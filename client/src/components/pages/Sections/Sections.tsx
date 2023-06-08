@@ -4,6 +4,9 @@ import Button, { AccessButton,CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewSectionPopup from './AddNewSectionPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 
 
@@ -22,6 +25,16 @@ interface ViewLinkProps {
   );
 
 const Sections: React.FC = () => {
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
+
+
   const [section, setSection] = useState<Section[]>([]);
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
@@ -72,7 +85,14 @@ const Sections: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
       </div>
    
      
@@ -104,8 +124,9 @@ const Sections: React.FC = () => {
     </tr>
   ))}
 </tbody>
-    
     </table>
+
+    {usersRole ==='ADMIN' && (
      <div className={`${visibleAdd ? "blur-sm" : "blur-0"} p-4`}>
       <Button 
       name={'Add section'} 
@@ -115,6 +136,8 @@ const Sections: React.FC = () => {
       padding={'4'}
       />
 </div>  
+      )}
+      
     {visibleAdd && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
           <div className="w-full max-w-md p-4 rounded-lg bg-blue-50">

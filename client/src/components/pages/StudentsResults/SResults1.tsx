@@ -6,6 +6,8 @@ import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
 import NavBar from "../../ui/templates/NavBar/NavBar";
 import { AccessButton } from "../../ui/atoms/Buttons";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
+import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
+import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
 
 interface User {
   classIds: string[];
@@ -50,18 +52,35 @@ function GetAccYearByClassRoomId({classId }: { classId: string }): JSX.Element |
 
 
 const SResults1: React.FC = () => {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   const [user, setUser] = useState<User | null>(null);
-  const { userid } = useParams<{ userid: string }>();
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   // Get users details by userid
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/users/56789`)//Hardcoded
+    fetch(`http://localhost:8080/api/v1/users/${userId}`)//Hardcoded
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(error => console.error(error));
-  }, [userid]);
+  }, [userId]);
 
   return (
     <div className="min-h-[100vh] bg-slate-200">
@@ -75,7 +94,14 @@ const SResults1: React.FC = () => {
 
       <div className="flex">
         <div className={` ${open ? "w-[15vw]" : "scale-0"} z-10 duration-100 pt-20`} >
-          <SideBarStudent/>
+        {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
         </div>
 
         <div className={` ${open ? "w-[85vw] h-[100%]" : "w-[100vw] h-[100%]"} duration-100`}>

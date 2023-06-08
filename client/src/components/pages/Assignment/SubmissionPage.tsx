@@ -7,6 +7,9 @@ import { BiCameraMovie, BiMessageSquareCheck } from 'react-icons/bi';
 import Button, { CloseButton } from '../../ui/atoms/Buttons';
 import SubmissionPopup from './SubmissionPopup';
 import SubmissionGradingPopup from './SubmissionGradingPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 
 
@@ -47,6 +50,15 @@ function SubmissionPage() {
   const [submission, SetSubmission] = useState<Submission | null>(null);
   const [visibleGrading, setVisibleGrading] = useState(false);
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
+
       //Get submission details
     useEffect(() => {
       fetch(`http://localhost:8080/api/v1/assignmentSubmit/${submissionId}`)
@@ -68,7 +80,14 @@ function SubmissionPage() {
 
       <div className="flex "> 
         <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 `}>
-          <SideBarAdmin/>
+          {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
         </div>
    
         <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"} min-w-[85vw]`}>
@@ -125,12 +144,13 @@ function SubmissionPage() {
             </span>
             
          <span className='pl-96'>
+         {usersRole ==='TEACHER'  && (
                 <Button name={'Grade'} 
                 buttonType={'tab-red'} 
                 size={'md'}
                 padding={'3'}
                 onClick={() => {setVisibleGrading(true)}}
-                icon={BiMessageSquareCheck}/>
+                icon={BiMessageSquareCheck}/>)}
               </span>
           </span>
 

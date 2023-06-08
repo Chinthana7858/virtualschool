@@ -8,6 +8,9 @@ import SideBarAdmin from "../../../ui/templates/SideBar/SideBar-Admin";
 import Footer from "../../../ui/templates/Footer/Footer";
 import Button from "../../../ui/atoms/Buttons";
 import { FiUserPlus } from "react-icons/fi";
+import SideBarParent from "../../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../../ui/templates/SideBar/SideBar-Teacher";
 
 
 interface User {
@@ -34,6 +37,15 @@ const AssignSectionHead2:React.FC= () => {
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
   const { sectionId } = useParams<{ sectionId: string }>();
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   
   const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
@@ -86,7 +98,14 @@ const AssignSectionHead2:React.FC= () => {
     <div className={`flex `}>
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
       </div>
    
     <div className={` flex ${open ? "w-[85vw]" : "w-[100vw]"}`}>

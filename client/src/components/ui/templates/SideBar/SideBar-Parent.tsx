@@ -10,8 +10,15 @@ const SideBarParent = () => {
       { title: "Feedback",path:"/HomePageParent", icon: <BsChatLeftDots/>},
       { title: "Profile",path:"/HomePageParent", icon: <BiUser/> },
       { title: "Contacts",path:"/HomePageParent", icon: <BiPaperPlane/>},
-      { title: "SignOut",path:"/HomePageParent", icon: <BiLogOut/>, gap: true },
+      { title: "SignOut",path:"/", icon: <BiLogOut/>, gap: true },
     ];
+
+    const handleSignOut = () => {
+      const confirmation = window.confirm("Are you sure you want to sign out?");
+      if (confirmation) {
+      
+      }
+    };
   
     return (
     
@@ -32,6 +39,7 @@ const SideBarParent = () => {
                
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
+                onClick={Menu.title === "SignOut" ? handleSignOut : undefined}
               >
                 <span className={` hover:bg-slate-700 text-2xl`}>
                 {Menu.icon}

@@ -7,6 +7,9 @@ import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import SubmissionPopup from './SubmissionPopup';
 import ChangeDeadlinePopup from './ChangeDeadlinePopup';
 import { BiCog } from 'react-icons/bi';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 interface Subject {
   subjectName: string;
@@ -94,6 +97,14 @@ function AssignmentPage() {
   const [submission, SetSubmission] = useState<Submission[]>([]);
   const [visibleChangeDeadline, setVisibleChangeDeadline] = useState(false);
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
      //Get Submissions
      useEffect(() => {
@@ -127,7 +138,14 @@ function AssignmentPage() {
 
       <div className="flex "> 
         <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 `}>
-          <SideBarAdmin/>
+           {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
         </div>
    
         <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"} min-w-[85vw]`}>
@@ -164,17 +182,21 @@ function AssignmentPage() {
      <br />
 
      <div className={`p-4`}> 
+     {usersRole ==='STUDENT' && (
      <Button name={'Submit'} 
                 buttonType={'secondary'} 
                 size={'md'}
                 onClick={() => { setVisibleAddSubmission(true)}}
                 padding={'4'}
-                />
+                />)}
       </div>  
 
   <div>
-  <div className='ml-[3%] py-[40px] text-2xl font-semibold text-green-900'>Your Submission</div>
+  {usersRole ==='STUDENT' && (
+  <div className='ml-[3%] py-[40px] text-2xl font-semibold text-green-900'>Your Submission</div>)}
   {/*Users submission*/}
+
+  {usersRole ==='STUDENT' && (
       <table className="ml-[3%] ">
       <div className='p-5 bg-green-300 rounded-xl'>
             <tbody>
@@ -194,23 +216,24 @@ function AssignmentPage() {
              ))}
             </tbody>
             </div>
-          </table>
+          </table>)}
           </div>
 
-          <div className='ml-[3%] py-[20px] text-2xl font-semibold'>Submissions</div>
+          {usersRole !=='STUDENT'  && (
+          <div className='ml-[3%] py-[20px] text-2xl font-semibold'>Submissions</div>)}
           <div className={`p-4 ml-[2%]`}> 
+          {usersRole !=='STUDENT'  && (
           <Button name={'Change Deadline'} 
                 buttonType={'tab'} 
                 size={'md'}
                 onClick={() => { setVisibleChangeDeadline(true)}}
                 padding={'4'}
                 icon={BiCog}
-                />
-      </div>  
+                />)}
+          </div>  
           {/*All submissions*/}
+          {usersRole !=='STUDENT'  && (
            <table className="ml-[3%]">
-
-
             <div className='ml-[1%] pb-[20px] text-xl font-semibold text-blue-600'>ON TIME SUBMISSIONS</div>
             <div className='p-5 bg-blue-300 rounded-xl'>
             <tbody className=''>
@@ -255,7 +278,7 @@ function AssignmentPage() {
             </tbody>
             </div>
 
-          </table>
+          </table>)}
 
     </div>    
    </div> 

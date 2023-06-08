@@ -5,6 +5,9 @@ import Button, { CloseButton, ViewButton } from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import AddNewDiscussionPopup from './AddNewDiscussionPopup';
+import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 
 
 interface ViewLinkProps {
@@ -99,6 +102,15 @@ const DiscussionForums: React.FC = () => {
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultsubjectId}/>
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,7 +137,14 @@ const DiscussionForums: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarStudent/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
       </div>
    
      
