@@ -91,7 +91,7 @@ function DocumentUploadPopup(props: { topicId: string }) {
   return (
     <>
     <div className='pl-24'>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div  className='p-2'>
         <label>
           Material Name:

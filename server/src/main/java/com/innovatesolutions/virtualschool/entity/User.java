@@ -22,9 +22,7 @@ public class User {
     private String phoneNo;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
-    @Indexed(unique = true)
     private String email;
-    @Indexed(unique = true)
     private String NIC;
     private Gender gender;
     private String address;
@@ -56,7 +54,7 @@ public class User {
         this.phoneNo=phoneNo;
         this.dateOfBirth=dateOfBirth;
         this.email = email;
-        this.NIC = NIC;
+        this.NIC=NIC;
         this.gender = gender;
         this.address = address;
         this.classIds = classIds;

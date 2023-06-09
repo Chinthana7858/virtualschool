@@ -5,14 +5,21 @@ import { GiGraduateCap } from "react-icons/gi";
 const SideBarAdmin = () => {
 
   const Menus = [
-    { title: "Home", path:"/", icon: <BiHome/> },
+    { title: "Home", path:"/HomePageAdmin", icon: <BiHome/> },
     { title: "Sections",path:"/sections",icon: <GiGraduateCap/> },
-    { title: "Results", path:"/", icon: <BiNotepad/> },
+   // { title: "Results", path:"/", icon: <BiNotepad/> },
     { title: "Requests", path:"/UsersRequests", icon: <BiUserPlus/> },
     { title: "Users", path:"/Users", icon: <FiUsers/>},
-    { title: "Profile", path:"/", icon: <BiUser/> },
-    { title: "SignOut", path:"/", icon: <BiLogOut/>, gap: true },
+    { title: "Profile", path:"/MyProfile", icon: <BiUser/> },
+    { title: "SignOut",  icon: <BiLogOut/>, gap: true },
   ];
+
+  const handleSignOut = () => {
+    const confirmation = window.confirm("Are you sure you want to sign out?");
+    if (confirmation) {
+      window.location.href = "/";
+    }
+  };
 
   return (
   
@@ -33,6 +40,7 @@ const SideBarAdmin = () => {
                
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
+                onClick={Menu.title === "SignOut" ? handleSignOut : undefined}
               >
                 <span className={` hover:bg-slate-700 text-2xl`}>
                 {Menu.icon}

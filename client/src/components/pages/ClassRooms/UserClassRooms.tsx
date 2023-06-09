@@ -6,6 +6,9 @@ import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
 import NavBar from "../../ui/templates/NavBar/NavBar";
 import { AccessButton } from "../../ui/atoms/Buttons";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
+import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
+import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 interface User {
   classIds: string[];
@@ -50,18 +53,36 @@ function GetAccYearByClassRoomId({classId }: { classId: string }): JSX.Element |
 
 
 const UserClassRooms: React.FC = () => {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   const [user, setUser] = useState<User | null>(null);
-  const { userid } = useParams<{ userid: string }>();
 
-  // Get users details by userid
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/users/56789`)//Hardcoded
-      .then(res => res.json())
-      .then(data => setUser(data))
-      .catch(error => console.error(error));
-  }, [userid]);
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      fetch(`http://localhost:8080/api/v1/users/${userId}`)
+        .then(res => res.json())
+        .then(data => setUser(data))
+        .catch(error => console.error(error));
+    }
+  }, [userId]);
 
   return (
     <div className="min-h-[100vh] bg-slate-200">
@@ -75,12 +96,21 @@ const UserClassRooms: React.FC = () => {
 
       <div className="flex">
         <div className={` ${open ? "w-[15vw]" : "scale-0"} z-10 duration-100 pt-20`} >
-          <SideBarStudent/>
+          {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
         </div>
 
         <div className={` ${open ? "w-[85vw] h-[100%]" : "w-[100vw] h-[100%]"} duration-100`}>
         <div className={`ml-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 text-white mt-[10%] rounded-lg`}>
-        <div className="p-[4%] text-3xl"> Your Classes </div>
+        <div className="p-[4%] text-3xl"> Your Classes {userId}</div> 
         </div>
 
         <table className={`ml-[30px]`}>

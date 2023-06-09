@@ -6,6 +6,9 @@ import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddFeedbackPopup from './AddFeedbackPopup';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -54,11 +57,29 @@ interface Feedback {
       }
 
 const StudentFeedback: React.FC = () => {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
   const [visibleAdd, setVisibleAdd] = useState(false);
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   //Get username by user id
   function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
@@ -83,13 +104,13 @@ const StudentFeedback: React.FC = () => {
   //Get Feedbacks
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/v1/feedback/Student/56789`); //Hardcoded
+      const result = await fetch(`http://localhost:8080/api/v1/feedback/Student/${userId}`); //Hardcoded
       const data = await result.json();
       setFeedbacks(data);
     };
 
     fetchData();
-  }, []);
+  }, [userId]);
 
 
 
@@ -106,7 +127,16 @@ const StudentFeedback: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarStudent/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -119,7 +149,7 @@ const StudentFeedback: React.FC = () => {
 
 <div className={`pl-[30px] bg-gradient-to-r from-[#5f9cd4] to-slate-300 p-[2vh] text-xl font-medium text-white rounded-md mt-7 ${visibleAdd? "blur-sm" : "blur-0"}`}>
       <div className="pb-5 text-2xl">Feedbacks</div>
-      <div className="py-5 "><GetNameByuserid userid={'56789'} /></div> {/*Hardcoded*/}
+      <div className="py-5 "><GetNameByuserid userid={userId??''} /></div> {/*Hardcoded*/}
     </div>
 
 

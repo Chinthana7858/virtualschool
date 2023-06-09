@@ -5,6 +5,10 @@ import { CloseButton, ResultsAdd} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddSubjectResultsPopup from './AddSubjectResultsPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 interface Users {
     userid: string;
@@ -67,6 +71,14 @@ const SubjectResults: React.FC = () => {
   const defaultclassId='';
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultclassId}/>
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 
 
@@ -118,7 +130,16 @@ const SubjectResults: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      

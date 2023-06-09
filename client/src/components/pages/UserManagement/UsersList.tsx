@@ -3,6 +3,10 @@ import { HiBars4 } from 'react-icons/hi2';
 import Button, {ViewButton } from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -33,6 +37,15 @@ const UsersDetails: React.FC = () => {
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
@@ -96,7 +109,16 @@ const UsersDetails: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -104,12 +126,13 @@ const UsersDetails: React.FC = () => {
     <div className="bg-slate-300 p-[5%] mt-[7%]  w-[100vw] rounded-md">
         <h1 className="text-3xl p-[2%] text-slate-700 font-medium">User details</h1>
         <div className='p-3'>
+        {usersRole ==='ADMIN'||usersRole==='PRINCIPAL' && (
         <a href={`http://localhost:3000/RemovedUsers`}>
         <Button name={'Removed users'} 
                 buttonType={'secondary'} 
                 size={'lg'}
                 padding={'4'}/>
-        </a>
+        </a>)}
         </div>
    
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
@@ -165,9 +188,11 @@ const UsersDetails: React.FC = () => {
     </table>
 
     <div className="py-[3vh]"></div>
+    {usersRole !=='STUDENT'&&usersRole!=='PARENT' && (
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Students
-    </h1>
+    </h1>)}
+    {usersRole !=='STUDENT'&&usersRole!=='PARENT' && (
     <table>
       <thead>
       <tr className="">
@@ -188,12 +213,14 @@ const UsersDetails: React.FC = () => {
           </tr>
         ))}
       </tbody>
-    </table>
-
+    </table>)}
+    
     <div className="py-[3vh]"></div>
+    {usersRole ==='TEACHER'||usersRole==='PRINCIPAL'||usersRole==='ADMIN' && (
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Parents
-    </h1>
+    </h1>)}
+    {usersRole ==='TEACHER'||usersRole==='PRINCIPAL'||usersRole==='ADMIN' && (
     <table>
       <thead>
       <tr className="">
@@ -214,7 +241,7 @@ const UsersDetails: React.FC = () => {
           </tr>
         ))}
       </tbody>
-    </table>
+    </table>)}
 
     </div>
      

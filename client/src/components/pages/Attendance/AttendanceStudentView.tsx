@@ -7,6 +7,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import NavBar from "../../ui/templates/NavBar/NavBar";
 import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
+import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
+import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 
 
@@ -23,9 +26,27 @@ function convertDate(inputDate: string): string {
 
 
 function AttendanceStudentView() {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   const handleMonthChange = (info: any) => {
     console.log('Month changed:', info);
@@ -38,6 +59,15 @@ function AttendanceStudentView() {
     }
   
     const [attendance, setAttendance] = useState<Attendance | null>(null);
+
+    const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
   
     useEffect(() => {
       fetch(`http://localhost:8080/api/v1/attendance/${date}/${studentId}`)
@@ -65,7 +95,16 @@ function AttendanceStudentView() {
 
       <div className="flex "> 
         <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 `}>
-          <SideBarStudent/>
+          {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
         </div>
    
         <div className={` ${!open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
@@ -85,7 +124,7 @@ function AttendanceStudentView() {
               dayCellContent={(arg) => (
                 <div className="text-left text-md">
                   <div>{arg.dayNumberText}</div>
-                  <div className="font-semibold text-red-700"><GetAttendance studentId={'56789'} date={convertDate(arg.date.toISOString())} /></div>
+                  <div className="font-semibold text-red-700"><GetAttendance studentId={userId??''} date={convertDate(arg.date.toISOString())} /></div>
                 </div>
               )}
 

@@ -8,6 +8,10 @@ import SideBarAdmin from "../../../ui/templates/SideBar/SideBar-Admin";
 import Footer from "../../../ui/templates/Footer/Footer";
 import Button from "../../../ui/atoms/Buttons";
 import { FiUserPlus } from "react-icons/fi";
+import SideBarParent from "../../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../../ui/templates/SideBar/SideBar-Principal";
 
 
 interface User {
@@ -35,6 +39,14 @@ const AssignTeacherInCharge2:React.FC= () => {
   const { userid } = useParams<{ userid: string }>();
   const { classId } = useParams<{ classId: string }>();
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
   
   const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
@@ -85,7 +97,16 @@ const AssignTeacherInCharge2:React.FC= () => {
     <div className={`flex `}>
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
       <div className={`${open ? "w-[85vw]" : "w-[100vw]"}`}>

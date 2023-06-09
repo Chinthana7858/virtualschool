@@ -8,6 +8,10 @@ import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
 import{useParams} from "react-router-dom";
 import Button from "../../ui/atoms/Buttons";
 import { AiFillDelete } from "react-icons/ai";
+import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 interface User {
   userid: string;
@@ -32,6 +36,15 @@ const UserProfilemanage:React.FC= () => {
   localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   
   const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
@@ -84,7 +97,16 @@ const UserProfilemanage:React.FC= () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
       
@@ -165,6 +187,7 @@ const UserProfilemanage:React.FC= () => {
       </span>
      </span>
      <div className="pt-7 ml-[80%]">
+     {usersRole ==='ADMIN' && (
       <BackLink url={`http://localhost:3000/Users`}>
       <Button 
       name={'Remove user'} 
@@ -174,7 +197,7 @@ const UserProfilemanage:React.FC= () => {
       padding={'3'}
       icon={AiFillDelete}
       />
-      </BackLink>
+      </BackLink>)}
     </div>
      <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
