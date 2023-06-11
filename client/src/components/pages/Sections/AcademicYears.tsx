@@ -266,9 +266,8 @@ const handleRemoveSectionHead = async () => {
     </tr>
   ))}
 </tbody>
-
-    
     </table>
+    
     <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
        <div className=" ml-[68%]">
        {usersRole ==='ADMIN' && (

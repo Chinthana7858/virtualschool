@@ -17,7 +17,8 @@ interface FormErrors {
   phoneNo?:string;
   dateOfBirth?:string;
   email?: string;
-  NIC?:string;
+  nic?:string;
+  gender?:string;
   address?:string;
   passWord?: string;
   studentId?:string;
@@ -43,6 +44,17 @@ const Registration = () => {
       value: "TEACHER",
     },
   ];
+
+  const Genderoptions = [
+    {
+      label: "MALE",
+      value: "FEMALE",
+    },
+    {
+      label: "FEMALE",
+      value: "FEMALE",
+    }
+  ];
   const [userRole,setUserRole]=useState('');
   const [fullName,setFullName]=useState('');
   const [nameWithInitials,seNameWithInitials]=useState('');
@@ -50,7 +62,8 @@ const Registration = () => {
   const [email,setemail]=useState('');
   const [address,setaddress]=useState('');
   const [dateOfBirth,setdateOfBirth]=useState('');
-  const [NIC,setNIC]=useState('');
+  const [nic,setnic]=useState('');
+  const [gender,setGender]=useState('');
   const [studentId,setStudentId]=useState('');
   const [userid,setuserid]=useState('');
   const [passWord,setpassWord]=useState('');
@@ -78,6 +91,11 @@ const Registration = () => {
       errors.fullName = 'Invalid name format. Only text characters with spaces are allowed.';
       isValid = false;
     }
+    if (!gender) {
+      errors.userRole = 'Select gender';
+      isValid = false;
+    }
+
     if (!phoneNo) {
       errors.phoneNo = 'Phone Number is required';
       isValid = false;
@@ -111,8 +129,8 @@ const Registration = () => {
 
 
     if(userRole!=="STUDENT"){
-      if (!NIC) {
-        errors.NIC = 'NIC is required';
+      if (!nic) {
+        errors.nic = 'NIC is required';
         isValid = false;
         
       }else if(userRole!=="STUDENT" && userRole==="PARENT"){
@@ -168,7 +186,8 @@ const Registration = () => {
           email,
           address,
           dateOfBirth,
-          NIC,
+          nic,
+          gender,
           studentId,
           userid,
           passWord,
@@ -227,6 +246,15 @@ const Registration = () => {
               <input type="text" className="p-[1px] border-2 rounded-md" id="nameWithInitials" name="nameWithInitials" value={nameWithInitials} onChange={(e)=> seNameWithInitials(e.target.value)} placeholder="Name with initials"></input> 
               {errors.nameWithInitials && <span>{errors.nameWithInitials}</span>}
             </div>
+            <div className='p-4 text-lg text-slate-600'>
+            <label className="font-medium pr-[70px]">Select Gender</label>
+            <select className="p-[1px] border-2 rounded-md w-[210px]" value={gender} onChange={(e)=> setGender(e.target.value)}>
+              {Genderoptions.map((Genderoptions) => (
+                <option value={Genderoptions.value}>{Genderoptions.label}</option>
+              ))}
+            </select>
+            {errors.gender && <span>{errors.gender}</span>}
+            </div>
             <div className="p-4 text-lg text-slate-600">
               <label className="font-medium pr-[60px]">Phone number</label>
               <input type="text" className="p-[1px] border-2 rounded-md" id="phoneNo" name="phoneNo" value={phoneNo} onChange={(e)=> setphoneNo(e.target.value)} placeholder="Phone number"></input>
@@ -236,16 +264,18 @@ const Registration = () => {
               <label className="font-medium pr-[130px]">E-mail</label>
               <input type="text" className="p-[1px] border-2 rounded-md" id="email" name="email" value={email} onChange={(e)=> setemail(e.target.value)} placeholder="E-mail"></input>
               {errors.email && <span>{errors.email}</span>}
-              <div className='pt-2 text-sm font-normal'>We'll never share your email with anyone else.</div>
-            </div>
-            <div className="px-4 text-lg text-slate-600">
-              <label className="font-medium pr-[115px]">Address</label>
-              <input type="text" className="p-[1px] border-2 rounded-md" id="address" name="address" value={address} onChange={(e)=> setaddress(e.target.value)} placeholder="Address"></input>
-              {errors.address && <span>{errors.address}</span>}
+              <div className='pt-2 text-sm font-normal'></div>
             </div>
             </div>
 
             <div className="pl-16 basis-1/2">
+            <div className="pl-2">
+            <div className="px-4 text-lg text-slate-600">
+              <label className="font-medium pr-[170px]">Address</label>
+              <input type="text" className="p-[1px] border-2 rounded-md" id="address" name="address" value={address} onChange={(e)=> setaddress(e.target.value)} placeholder="Address"></input>
+              {errors.address && <span>{errors.address}</span>}
+              </div>
+            </div>
               <div className="pl-2">
             <div className="p-4 text-lg text-slate-600">
               <label className="font-medium pr-[130px]">Date of Birth</label>
@@ -270,8 +300,8 @@ const Registration = () => {
           {userRole !== 'STUDENT' && (
           <div className="">
                   <label className="font-medium pr-[200px]">NIC </label>
-                  <input type="text" className="p-[1px] border-2 rounded-md" id="NIC" name="NIC" value={NIC} onChange={(e) => setNIC(e.target.value)} placeholder="NIC"></input>
-                  {errors.NIC && <span>{errors.NIC}</span>}
+                  <input type="text" className="p-[1px] border-2 rounded-md" id="nic" name="nic" value={nic} onChange={(e) => setnic(e.target.value)} placeholder="NIC"></input>
+                  {errors.nic && <span>{errors.nic}</span>}
                 </div>)}
                 </div>
           <div className="p-4 text-lg text-slate-600">
