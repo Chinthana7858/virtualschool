@@ -3,7 +3,6 @@ import com.innovatesolutions.virtualschool.enums.Gender;
 import com.innovatesolutions.virtualschool.enums.UserRole;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,7 +22,7 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
     private String email;
-    private String NIC;
+    private String nic;
     private Gender gender;
     private String address;
     private List<String> classIds;
@@ -40,7 +39,7 @@ public class User {
                 String phoneNo,
                 LocalDate dateOfBirth,
                 String email,
-                String NIC,
+                String nic,
                 Gender gender,
                 String address,
                 List<String> classIds,
@@ -54,7 +53,7 @@ public class User {
         this.phoneNo=phoneNo;
         this.dateOfBirth=dateOfBirth;
         this.email = email;
-        this.NIC=NIC;
+        this.nic=nic;
         this.gender = gender;
         this.address = address;
         this.classIds = classIds;

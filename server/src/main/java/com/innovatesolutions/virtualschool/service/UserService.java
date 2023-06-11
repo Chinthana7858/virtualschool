@@ -27,8 +27,8 @@ public class UserService {
     }
 
     //Add new user
-    public void addNewUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     public LoginResponse Login(User user){

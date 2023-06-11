@@ -43,9 +43,9 @@ public class UserController {
 
     //Save users
     @PostMapping("/save")
-    public String RegisterNewUser(@RequestBody User user) {
-        userService.addNewUser(user);
-        return "Profile created";
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User savedUser = userService.saveUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     //login users
