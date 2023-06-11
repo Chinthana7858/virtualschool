@@ -7,6 +7,7 @@ import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
+import { BiSearch } from 'react-icons/bi';
 
 
 
@@ -32,11 +33,18 @@ const UsersDetails: React.FC = () => {
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
   const [usersPrincipal, setUsersPrincipal] = useState<Users[]>([]);
-  const [usersSectionHead, setUsersSectionHead] = useState<Users[]>([]);
   const [usersParent, setUsersParent] = useState<Users[]>([]);
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
+  const [searchQueryStudents, setSearchQueryStudents] = useState("");
+  const [filteredStudents, setFilteredStudents] = useState<Users[]>([]);
+  const [searchQueryPrincipals, setSearchQueryPrincipals] = useState("");
+  const [filteredPrincipals, setFilteredPrincipals] = useState<Users[]>([]);
+  const [searchQueryTeachers, setSearchQueryTeachers] = useState("");
+  const [filteredTeachers, setFilteredTeachers] = useState<Users[]>([]);
+  const [searchQueryParents, setSearchQueryParents] = useState("");
+  const [filteredParents, setFilteredParents] = useState<Users[]>([]);
 
   const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
 
@@ -52,6 +60,7 @@ const UsersDetails: React.FC = () => {
     <a href={url}>{children}</a>
   );
 
+
   //Get students data
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +71,22 @@ const UsersDetails: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const filterStudents = () => {
+    const filtered = usersStudent.filter((sec) =>
+      sec.nameWithInitials.toLowerCase().includes(searchQueryStudents.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+  
+  useEffect(() => {
+    filterStudents();
+  }, [searchQueryStudents,usersStudent]);
+  
+  useEffect(() => {
+    setFilteredStudents(usersStudent); // Set initial filtered sections to all sections
+  }, [usersStudent]);
+
 
   //Get teachers data
   useEffect(() => {
@@ -74,6 +99,22 @@ const UsersDetails: React.FC = () => {
     fetchData();
   }, []);
 
+  const filterTeachers = () => {
+    const filtered = usersTeacher.filter((sec) =>
+      sec.nameWithInitials.toLowerCase().includes(searchQueryTeachers.toLowerCase())
+    );
+    setFilteredTeachers(filtered);
+  };
+  
+  useEffect(() => {
+    filterTeachers();
+  }, [searchQueryTeachers,usersTeacher]);
+  
+  useEffect(() => {
+    setFilteredTeachers(usersTeacher); // Set initial filtered sections to all sections
+  }, [usersTeacher]);
+
+
   //Get principals details
   useEffect(() => {
     const fetchData = async () => {
@@ -84,6 +125,21 @@ const UsersDetails: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const filterPrincipals = () => {
+    const filtered = usersPrincipal.filter((sec) =>
+      sec.nameWithInitials.toLowerCase().includes(searchQueryPrincipals.toLowerCase())
+    );
+    setFilteredPrincipals(filtered);
+  };
+  
+  useEffect(() => {
+    filterPrincipals();
+  }, [searchQueryPrincipals,usersPrincipal]);
+  
+  useEffect(() => {
+    setFilteredPrincipals(usersPrincipal); // Set initial filtered sections to all sections
+  }, [usersPrincipal]);
 
 
   //Get patents details
@@ -96,6 +152,23 @@ const UsersDetails: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const filterParents = () => {
+    const filtered = usersParent.filter((sec) =>
+      sec.nameWithInitials.toLowerCase().includes(searchQueryParents.toLowerCase())
+    );
+    setFilteredParents(filtered);
+  };
+  
+  useEffect(() => {
+    filterParents();
+  }, [searchQueryParents,usersParent]);
+  
+  useEffect(() => {
+    setFilteredParents(usersParent); // Set initial filtered sections to all sections
+  }, [usersParent]);
+
+
   return ( 
     <div>
 
@@ -126,13 +199,13 @@ const UsersDetails: React.FC = () => {
     <div className="bg-slate-300 p-[5%] mt-[7%]  w-[100vw] rounded-md">
         <h1 className="text-3xl p-[2%] text-slate-700 font-medium">User details</h1>
         <div className='p-3'>
-        {usersRole ==='ADMIN'||usersRole==='PRINCIPAL' && (
+     
         <a href={`http://localhost:3000/RemovedUsers`}>
         <Button name={'Removed users'} 
                 buttonType={'secondary'} 
                 size={'lg'}
                 padding={'4'}/>
-        </a>)}
+        </a>
         </div>
    
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
@@ -140,6 +213,13 @@ const UsersDetails: React.FC = () => {
     </h1>
     <table>
       <thead>
+      <div className='px-8'><input
+          type="text"
+          value={searchQueryPrincipals}
+          onChange={(e) => setSearchQueryPrincipals(e.target.value)}
+          placeholder={`Search by name`}
+          className="p-2 mt-2 border border-gray-300"
+        /></div>
         <tr className="">
           <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
@@ -148,7 +228,7 @@ const UsersDetails: React.FC = () => {
        </tr>
       </thead>
       <tbody>
-        {usersPrincipal.map(user => (
+      {filteredPrincipals.map((user) => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white ">
             <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
@@ -167,6 +247,13 @@ const UsersDetails: React.FC = () => {
         </h1>
     <table>
       <thead>
+      <div className='px-8'><input
+          type="text"
+          value={searchQueryTeachers}
+          onChange={(e) => setSearchQueryTeachers(e.target.value)}
+          placeholder="Search by name"
+          className="p-2 mt-2 border border-gray-300"
+        /></div>
       <tr className="">
           <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
@@ -175,7 +262,7 @@ const UsersDetails: React.FC = () => {
        </tr>
       </thead>
       <tbody>
-        {usersTeacher.map(user => (
+      {filteredTeachers.map((user) => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
             <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
@@ -192,18 +279,28 @@ const UsersDetails: React.FC = () => {
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Students
     </h1>)}
+    
     {usersRole !=='STUDENT'&&usersRole!=='PARENT' && (
     <table>
       <thead>
+      <div className='px-8'><input
+          type="text"
+          value={searchQueryStudents}
+          onChange={(e) => setSearchQueryStudents(e.target.value)}
+          placeholder="Search by name"
+          className="p-2 mt-2 border border-gray-300"
+        /></div>
       <tr className="">
-          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">
+           <div> UserID</div>
+          </th>
           <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
        </tr>
       </thead>
       <tbody>
-        {usersStudent.map(user => (
+      {filteredStudents.map((user) => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
             <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
@@ -216,7 +313,7 @@ const UsersDetails: React.FC = () => {
     </table>)}
     
     <div className="py-[3vh]"></div>
-    {usersRole ==='TEACHER'||usersRole==='PRINCIPAL'||usersRole==='ADMIN' && (
+    {usersRole !=='STUDENT'&& usersRole!=='PARENT' && (
     <h1 className='pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl rounded-xl font-medium text-white'>
         Parents
     </h1>)}
@@ -224,6 +321,13 @@ const UsersDetails: React.FC = () => {
     <table>
       <thead>
       <tr className="">
+         <div className='px-8'><input
+          type="text"
+          value={searchQueryParents}
+          onChange={(e) => setSearchQueryParents(e.target.value)}
+          placeholder="Search by name"
+          className="p-2 mt-2 border border-gray-300"
+        /></div>
           <th className="w-[18vw] p-[1.5vh] text-left rounded-l-xl pl-8">UserID</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
@@ -231,7 +335,7 @@ const UsersDetails: React.FC = () => {
        </tr>
       </thead>
       <tbody>
-        {usersParent.map(user => (
+      {filteredParents.map((user) => (
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
             <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>

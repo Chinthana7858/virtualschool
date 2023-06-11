@@ -12,8 +12,6 @@ import { BsChatLeftDots} from 'react-icons/bs';
 import AddNewSessionPopup from './Session/AddNewSessionPopup';
 import DocumentUploadPopup from './DocumentUploadPopup';
 import NewAssignmentPopup from '../Assignment/NewAssignmentPopup';
-import ChangeDeadlinePopup from '../Assignment/ChangeDeadlinePopup';
-import { ResultsAdd } from '../../ui/atoms/Buttons';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
@@ -405,7 +403,7 @@ const SubjectInside: React.FC = () => {
     </div>
     
     <div className='flex pb-10'>
-    {usersRole ==='TEACHER' && (
+    {usersRole !=='STUDENT' && (
     <div className={`py-4 basis-2/12 `}>
     <Button name={'Create topic'} 
                 buttonType={'tab'} 

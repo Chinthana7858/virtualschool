@@ -10,20 +10,18 @@ import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
 import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
-
 interface Section {
   sectionId: string;
   sectionName:string;
   sectionHeadId:string;
 }
-
 interface ViewLinkProps {
-    url: string;
-    children?: React.ReactNode;
-  }
-  const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
-    <a href={url}>{children}</a>
-  );
+  url: string;
+  children?: React.ReactNode;
+}
+const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
+  <a href={url}>{children}</a>
+);
 
 const Sections: React.FC = () => {
   const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
@@ -35,32 +33,34 @@ const Sections: React.FC = () => {
     }
   }, []);
 
-
   const [section, setSection] = useState<Section[]>([]);
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
   const [visibleAdd, setVisibleAdd] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredSections, setFilteredSections] = useState<Section[]>([]);
 
-//Get user name by UserId
-  function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
-    interface User {
+ //Get user name by UserId
+ function GetNameByuserid({ userid }: { userid: string }): JSX.Element | null{
+  interface User {
+
+    nameWithInitials:string;
   
-      nameWithInitials:string;
-    
-    }
-    const [user, setUser] = useState<User | null>(null);
-    useEffect(() => {
-      fetch(`http://localhost:8080/api/v1/users/${userid}`)
-        .then(res => res.json())
-        .then(data => setUser(data))
-        .catch(error => console.error(error));
-    }, [userid]);
-  
-    return user ? <span>{user.nameWithInitials}</span> : null;
   }
-  
-// Get all Sections
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/v1/users/${userid}`)
+      .then(res => res.json())
+      .then(data => setUser(data))
+      .catch(error => console.error(error));
+  }, [userid]);
+
+  return user ? <span>{user.nameWithInitials}</span> : null;
+}
+
+
+  // Get all Sections
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`http://localhost:8080/api/v1/sections`); 
@@ -71,7 +71,20 @@ const Sections: React.FC = () => {
     fetchData();
   }, []);
 
-
+  const filterSections = () => {
+    const filtered = section.filter((sec) =>
+      sec.sectionName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredSections(filtered);
+  };
+  
+  useEffect(() => {
+    filterSections();
+  }, [searchQuery, section]);
+  
+  useEffect(() => {
+    setFilteredSections(section); // Set initial filtered sections to all sections
+  }, [section]);
 
   return (
     <div>
@@ -100,36 +113,41 @@ const Sections: React.FC = () => {
    
      
      <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"}`}>
+      <div className={`bg-slate-300 p-[5%] mt-[7%]  min-h-screen`}>
+        <h1 className={`pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[4vh] text-2xl  text-white  ${visibleAdd ? "blur-sm" : "blur-0"} rounded-lg`}>
+          Sections
+        </h1>
 
-    <div className={`bg-slate-300 p-[5%] mt-[7%]  min-h-screen`}>
-   
- 
-        
-    <h1 className={`pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[2vh] text-xl font-medium text-white  ${visibleAdd ? "blur-sm" : "blur-0"} rounded-lg`}>
-   Sections
-    </h1>
-    <table className={` ${visibleAdd? "blur-sm" : "blur-0"}`}>
-      <thead>
-        <tr className="sm:text-xs md:text-md xl:text-base">
-          <th className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] p-[3vh]">Section Id</th>
-          <th className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] p-[3vh]">Section Name</th>
-          <th className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] p-[3vh]">Section Head</th>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by section name..."
+          className="p-2 mt-2 border border-gray-300 rounded-md"
+        />
+
+        <table className={`${visibleAdd ? "blur-sm" : "blur-0"}`}>
+          <thead>
+          <tr className="sm:text-xs md:text-md xl:text-base">
+          <th className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] p-[3vh] text-left">Section Id</th>
+          <th className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] py-[3vh] text-left">Section Name</th>
+          <th className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] py-[3vh] text-left">Section Head</th>
           <th></th>
         </tr>
-      </thead>
-      <tbody>
-  {section.map(section => (
-   <tr key={section.sectionId} className="bg-blue-300 border-2 border-blue-400 hover:bg-white sm:text-xs md:text-md xl:text-base">
-      <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-center">{section.sectionId}</td>
-      <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-center">{section.sectionName}</td>
-      <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-center"><GetNameByuserid userid={section.sectionHeadId}/></td>
-      <td className='sm:w-[0vw] md:w-[5vw]  xl:w-[15vw] h-[15vh] text-center"'> <ViewLink url={`http://localhost:3000/AcademicYears/${section.sectionId}`}><AccessButton/></ViewLink></td>
-    </tr>
-  ))}
-</tbody>
-    </table>
+          </thead>
+          <tbody>
+            {filteredSections.map((section) => (
+              <tr key={section.sectionId} className="bg-blue-300 border-2 border-blue-400 hover:bg-white sm:text-xs md:text-md xl:text-base">
+                <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-left pl-10">{section.sectionId}</td>
+                <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-left">{section.sectionName}</td>
+                <td className="sm:w-[0vw] md:w-[25vw] xl:w-[35vw] h-[15vh] text-left"><GetNameByuserid userid={section.sectionHeadId}/></td>
+                <td className='sm:w-[0vw] md:w-[5vw]  xl:w-[15vw] h-[15vh] text-center"'> <ViewLink url={`http://localhost:3000/AcademicYears/${section.sectionId}`}><AccessButton/></ViewLink></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-    {usersRole ==='ADMIN' && (
+        {usersRole ==='ADMIN' && (
      <div className={`${visibleAdd ? "blur-sm" : "blur-0"} p-4`}>
       <Button 
       name={'Add section'} 
@@ -149,16 +167,10 @@ const Sections: React.FC = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
-
-     </div>
-    
-      </div>
-      
-      </div>
-      
-  
-    
+    </div>
+    </div>
   );
 };
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiBars4 } from "react-icons/hi2";
 import React from 'react';
-import { useParams } from "react-router-dom";
 import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
 import NavBar from "../../ui/templates/NavBar/NavBar";
 import { AccessButton } from "../../ui/atoms/Buttons";
@@ -110,7 +109,7 @@ const UserClassRooms: React.FC = () => {
 
         <div className={` ${open ? "w-[85vw] h-[100%]" : "w-[100vw] h-[100%]"} duration-100`}>
         <div className={`ml-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 text-white mt-[10%] rounded-lg`}>
-        <div className="p-[4%] text-3xl"> Your Classes {userId}</div> 
+        <div className="p-[4%] text-3xl"> Your Classes</div> 
         </div>
 
         <table className={`ml-[30px]`}>

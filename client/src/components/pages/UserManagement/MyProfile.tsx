@@ -25,10 +25,6 @@ interface User {
  
 }
 
-interface BackLinkProps {
-    url: string;
-    children?: React.ReactNode;
-  }
 
 const MyProfile:React.FC= () => {
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');

@@ -232,7 +232,6 @@ function AssignmentPage() {
   {usersRole ==='STUDENT' && (
   <div className='ml-[3%] py-[40px] text-2xl font-semibold text-green-900'>Your Submission</div>)}
   {/*Users submission*/}
-
   {usersRole ==='STUDENT' && (
       <table className="ml-[3%] ">
       <div className='p-5 bg-green-300 rounded-xl'>
