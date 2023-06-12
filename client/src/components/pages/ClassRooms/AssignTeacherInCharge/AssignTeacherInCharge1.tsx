@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 import { ViewButton } from '../../../ui/atoms/Buttons';
 import NavBar from '../../../ui/templates/NavBar/NavBar';
 import SideBarStudent from '../../../ui/templates/SideBar/SideBar-Student';
+import SideBarAdmin from '../../../ui/templates/SideBar/SideBar-Admin';
+import SideBarParent from '../../../ui/templates/SideBar/SideBar-Parent';
+import SideBarTeacher from '../../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -53,6 +57,14 @@ const AssignTeacherInCharge1: React.FC = () => {
   const defaultclassRoomId=';'
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultclassRoomId}/>
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
@@ -84,7 +96,16 @@ const AssignTeacherInCharge1: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarStudent/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      

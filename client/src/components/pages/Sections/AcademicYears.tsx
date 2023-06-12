@@ -9,6 +9,10 @@ import Button, { AccessButton,CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewAcademicYearPopup from './AddNewAcademicYearPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -75,6 +79,15 @@ const AcademicYears: React.FC = () => {
   const sectionName=<GetSectionNameBysectionId sectionId={sectionId??defaultSectionId} />
   const sectionHeadId = GetSectionHeadIdBysectionId({ sectionId: sectionId ?? '' });
   const sectionHeadName=<GetNameByuserid userid={sectionHeadId??defaultSectionId}/>
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 
 
@@ -180,7 +193,16 @@ const handleRemoveSectionHead = async () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+          {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -197,15 +219,18 @@ const handleRemoveSectionHead = async () => {
      <div className="basis-8/12">
      Section head - {sectionHeadName}
      </div>
+    
       <div className="p-2 basis-1/12">
+      {usersRole ==='ADMIN' && (
       <a href={`http://localhost:3000/AssignSecH1/${sectionId}`}>
         <Button name={'Assign'} 
                 buttonType={'primary'} 
                 size={'md'}
                 padding={'3'}
                 icon={FiUserPlus}/>
-        </a>
+        </a>)}
       </div>
+      {usersRole ==='ADMIN' && (
       <div className='p-2 basis-1/12'>
         <Button name={'Remove'} 
                 buttonType={'primary-red'} 
@@ -213,12 +238,13 @@ const handleRemoveSectionHead = async () => {
                 padding={'3'}
                 onClick={handleRemoveSectionHead}
                 icon={AiFillDelete }/>
-     </div>
+     </div>)}
     </div>
       </div>
         
     <div className={`pl-[30px] bg-gradient-to-r from-[#536d85] to-slate-300 p-[2vh] text-lg  text-white mt-8 ${visibleAdd ? "blur-sm" : "blur-0"} rounded-lg flex`}>
    <div className='basis-8/12'>Academic years</div>
+   {usersRole ==='ADMIN' && (
    <div className='pl-2 basis-4/12'>
     <Button name={'Start year'} 
                 buttonType={'primary'} 
@@ -226,7 +252,7 @@ const handleRemoveSectionHead = async () => {
                 padding={'3'}
                 onClick={() => { setVisibleAdd(true)}}
                 icon={BiCalendar }/>
-  </div>
+  </div>)}
     </div>
 
 
@@ -240,11 +266,11 @@ const handleRemoveSectionHead = async () => {
     </tr>
   ))}
 </tbody>
-
-    
     </table>
+    
     <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
        <div className=" ml-[68%]">
+       {usersRole ==='ADMIN' && (
         <BackLink url={`http://localhost:3000/sections`}>
         <Button name={'Remove section'} 
                 buttonType={'secondary-red'} 
@@ -252,7 +278,7 @@ const handleRemoveSectionHead = async () => {
                 padding={'3'}
                 onClick={handleDelete}
                 icon={AiFillDelete }/>
-        </BackLink>
+        </BackLink>)}
         </div>
     </div>
     

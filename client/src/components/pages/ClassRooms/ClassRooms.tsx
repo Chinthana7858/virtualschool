@@ -6,6 +6,10 @@ import Button, { AccessButton, CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewClassPopup from './AddNewClassPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -77,6 +81,15 @@ const ClassRooms: React.FC = () => {
   const defaultyear='';
   const sectionName=<GetSectionNameBysectionId sectionId={sectionId??defaultSectionId} />
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
+
   const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
   );
@@ -134,7 +147,16 @@ const ClassRooms: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+          {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -151,11 +173,12 @@ const ClassRooms: React.FC = () => {
 
    
 <div className={` ${visibleAdd? "blur-sm" : "blur-0"} p-4`}>
+{usersRole ==='ADMIN' && (
         <Button name={'Add classroom'} 
                 buttonType={'secondary'}
                 onClick={() => { setVisibleAdd(true)}} 
                 size={'md'}
-                padding={'3'}/>
+                padding={'3'}/>)}
 </div> 
 
 
@@ -181,6 +204,7 @@ const ClassRooms: React.FC = () => {
 <div className=''>
 <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
 <div className=" ml-[73%]">
+{usersRole ==='ADMIN' && (
 <BackLink url={`http://localhost:3000/AcademicYears/${sectionId}`}>
         <Button name={'Remove year'} 
                 buttonType={'secondary-red'} 
@@ -188,7 +212,7 @@ const ClassRooms: React.FC = () => {
                 padding={'3'}
                 onClick={handleDelete}
                 icon={AiFillDelete }/>
-        </BackLink>
+        </BackLink>)}
 </div>
 
 </div>

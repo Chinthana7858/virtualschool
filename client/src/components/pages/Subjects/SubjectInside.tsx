@@ -4,13 +4,31 @@ import { BiBook, BiBulb, BiCameraMovie, BiCard, BiEdit, BiFolderOpen } from 'rea
 import { FiAlignLeft, FiUserPlus } from 'react-icons/fi';
 import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
-import Button, {CloseButton, ExtraTinyDelete} from '../../ui/atoms/Buttons';
+import Button, {CloseButton, ExtraTinyDelete, ViewButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewTopicPopup from './Topic/AddNewTopicPopup';
 import { BsChatLeftDots} from 'react-icons/bs';
 import AddNewSessionPopup from './Session/AddNewSessionPopup';
 import DocumentUploadPopup from './DocumentUploadPopup';
+import NewAssignmentPopup from '../Assignment/NewAssignmentPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
+
+
+interface Assignment {
+   assignmentId:string;
+   classId:string;
+   subjectId:string;
+   topicId:string;
+   assignmentHead:string;
+   assignmentBody:string;
+   dueDate:string;
+   docLink:string;
+}
+
 
 interface LearningMaterial {
   materialId:string;
@@ -33,8 +51,6 @@ interface Topic {
   subjectId:string;
   date:Date;
 }
-
-
 
   //Get subject name by subject id
   function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.Element | null{
@@ -70,6 +86,7 @@ const SubjectInside: React.FC = () => {
   const [visibleAddTopic, setVisibleAddTopic] = useState(false);
   const [visibleAddSession, setVisibleAddSession] = useState(false);
   const [visibleAddDoc, setVisibleAddDoc] = useState(false);
+  const [visibleAddAss, setVisibleAddAss] = useState(false);
   const { classId } = useParams<{ classId: string }>();
   const { subjectId } = useParams<{ subjectId: string }>();
   const defaultclassId='';
@@ -77,8 +94,18 @@ const SubjectInside: React.FC = () => {
   const teacherId=GetTeacherIdBySubjectId ({ subjectId: subjectId ?? '' });
   const teacherName=<GetNameByuserid userid={teacherId}/>
   const [topicId, setTopicId] = useState(""); 
+  const [assignmentId, setAssignmentId] = useState(""); 
   const [learningMaterial, setLearningMaterial] = useState<LearningMaterial[]>([]);
+  const [assignment, SetAssignment] = useState<Assignment[]>([]);
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
   
   const handleRemoveTeacher = async () => {
     try {
@@ -201,6 +228,31 @@ const SubjectInside: React.FC = () => {
     }
   };
 
+   //Delete learning material
+   const handleDeleteAssignment = async (assignmentId: string) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to Remove this assignment ?');
+  
+      if (!confirmed) {
+        return; // user clicked cancel, so do nothing
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/v1/assignment/${assignmentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (response.ok) {
+        alert('Assignment removed successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //Get teacher id by subject id
   function GetTeacherIdBySubjectId({ subjectId }: { subjectId: string }): string {
     interface Subject {
@@ -258,6 +310,18 @@ const SubjectInside: React.FC = () => {
           fetchData();
         }, []);
 
+
+        //Get Assignments
+    useEffect(() => {
+      const fetchData = async () => {
+        const result = await fetch(`http://localhost:8080/api/v1/assignment/subjects/${subjectId}`); 
+        const data = await result.json();
+        SetAssignment(data);
+      };
+  
+      fetchData();
+    }, []);
+
     //Get links
     useEffect(() => {
       const fetchData = async () => {
@@ -282,13 +346,22 @@ const SubjectInside: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
      <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"} min-w-[85vw]`}>
 
-    <div className={`bg-slate-300 p-[5%] mt-[7%]  min-h-screen  ${open ? "w-[85vw]" : "w-[100vw]"}`}>
+     <div className={`bg-slate-300 p-[5%] mt-[7%]  min-h-screen  ${open ? "w-[85vw]" : "w-[100vw]"}`}>
    
 
         
@@ -301,15 +374,19 @@ const SubjectInside: React.FC = () => {
         Teacher - {teacherName}
        </div>
        <div className='pr-1 basis-1/12'>
+
+       {usersRole ==='ADMIN' && (
        <a href={`http://localhost:3000/AssignSubT1/${subjectId}`}>
         <Button name={'Assign'} 
                 buttonType={'primary'} 
                 size={'md'}
                 padding={'3'}
                 icon={FiUserPlus}/>
-        </a>
+        </a>)}
+
        </div>
        <div className='pl-2 basis-1/12'>
+       {usersRole ==='ADMIN' && (
        <BackLink url={`http://localhost:3000/Subject/${classId}/uid/${subjectId}`}>
        <Button name={'Remove'} 
                 buttonType={'primary-red'} 
@@ -317,7 +394,7 @@ const SubjectInside: React.FC = () => {
                 padding={'3'}
                 onClick={handleRemoveTeacher}
                 icon={AiFillDelete }/>
-        </BackLink>
+        </BackLink>)}
        </div>
        <div>
     </div>
@@ -326,6 +403,7 @@ const SubjectInside: React.FC = () => {
     </div>
     
     <div className='flex pb-10'>
+    {usersRole !=='STUDENT' && (
     <div className={`py-4 basis-2/12 `}>
     <Button name={'Create topic'} 
                 buttonType={'tab'} 
@@ -334,7 +412,8 @@ const SubjectInside: React.FC = () => {
                 onClick={() => { setVisibleAddTopic(true)}}
                 icon={BiCard}/>
 
-    </div>
+    </div>)}
+
     <div className={`py-4  basis-2/12`}>
       <a href={`http://localhost:3000/Discussions/${classId}/${subjectId}/00`}>
       <Button name={'Discussion forum'} 
@@ -344,6 +423,7 @@ const SubjectInside: React.FC = () => {
                 icon={FiAlignLeft}/>
       </a>
     </div>
+    {usersRole !=='STUDENT' && (
     <div className='py-4 basis-2/12'>
     <a href={`http://localhost:3000/Results/${classId}/${subjectId}`}>
     <Button name={'Exam results'} 
@@ -352,7 +432,9 @@ const SubjectInside: React.FC = () => {
                 padding={'4'}
                 icon={BiBook}/>
       </a>
-    </div>
+    </div>)}
+
+    {usersRole !=='STUDENT' && (
     <div className='py-4 basis-2/12'>
     <a href={`http://localhost:3000/teacherFeedback/${classId}/${subjectId}`}>
     <Button name={'Feedback'} 
@@ -361,7 +443,7 @@ const SubjectInside: React.FC = () => {
                 padding={'4'}
                 icon={BsChatLeftDots}/>
       </a>
-    </div>
+    </div>)}
     </div>
 
     <div>
@@ -377,60 +459,64 @@ const SubjectInside: React.FC = () => {
           </tr>
 
           <tr className="">
-          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Sessions</td>
+          <td className='p-4 pl-8 text-lg font-medium text-slate-700'>Sessions</td>
           <td className="w-[18vw]"></td>
           </tr>
 
-          <table className="ml-[7%] ">
+          <table className="ml-[7%]">
             <th>
-              <td className='pr-[100px]'>Date</td>
+              <td className='pr-[100px] text-slate-600'>Date</td>
             </th>
             <th>
-              <td className='pr-[100px]'>Time</td>
+              <td className='px-[100px] text-slate-600'>Time</td>
             </th>
             <th>
-              <td className='pr-[100px]'>Link</td>
+              <td className='px-[100px] text-slate-600'>Link</td>
             </th>
-            <tbody>
+            <tbody className="hover:bg-cyan-200">
             {link
               .filter((link) => link.topicId === topic.topicId)
               .map((link) => (
               <tr key={link.sessionId}>
-              
-              <td className='py-3'>{link.date}</td>
-              <td className=''>{link.startingTime}</td>
-              <td className='pr-6'>
+              <td className='w-[100px]'>{link.date}</td>
+              <td className='w-[100px] pl-[100px]'>{link.startingTime}</td>
+              <td className='w-[100px] pl-[20px]'>
               <a href={link.link} target="_blank" className="font-medium text-blue-700 ">
                Click here to join the lecture!
               </a>
               </td>
-              <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
-                <button onClick={() => handleDeleteSession(link.sessionId)}><ExtraTinyDelete/></button>
+              <td className='sm:w-[0vw] md:w-[10vw] xl:w-[25vw] h-[7vh] text-center pl-[40px]'>
+              {usersRole ==='TEACHER' && (
+                <button onClick={() => handleDeleteSession(link.sessionId)}><ExtraTinyDelete/></button>)}
             </td>
              </tr>
              ))}
             </tbody>
           </table>
-
-
-          <tr className="">
-          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Assignments</td>
-          <td className="w-[18vw]"></td>
-          </tr>
-          <tr className="">
-          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Documents</td>
+          <tr>
+          <td className='p-4 pl-8 text-lg font-medium text-slate-700'>Assignments</td>
           <td className="w-[18vw]"></td>
           </tr>
 
-          <table className="ml-[3%]">
-           
+
+          <table className="ml-[7%]">
+            <th>
+              <td className='pr-[0px] text-slate-600'>Deadline</td>
+            </th>
+            <th>
+              <td className='pr-[100px] text-slate-600'>Description</td>
+            </th>
+            <th>
+              <td className='px-[100px] text-slate-600'></td>
+            </th>
            <tbody>
-           {learningMaterial
-             .filter((learningMaterial) => learningMaterial.topicId === topic.topicId)
-             .map((learningMaterial) => (
-             <tr key={learningMaterial.materialId}>
+           {assignment
+             .filter((assignment) => assignment.topicId === topic.topicId).sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
+             .map((assignment) => (
+          
+             <tr key={assignment.assignmentId} className='hover:bg-cyan-200'>
              
-             <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh]  text-left pl-7 rounded-lg"><div className='p-2'>{new Date(learningMaterial.date).toLocaleString("en-US", {
+             <td className="sm:w-[0vw] md:w-[10vw] xl:w-[58vw] h-[5vh]  text-left "><div className="">{new Date(assignment.dueDate).toLocaleString("en-US", {
               year: "numeric",
               month: "2-digit",
               day: "2-digit",
@@ -441,14 +527,56 @@ const SubjectInside: React.FC = () => {
              })}</div>
              </td>
 
-             <td className='pr-6'>
-             <a href={learningMaterial.materialLink} className="font-medium text-blue-700 ml-[100px]">
+             <td className='h-[5vh]'>
+              {assignment.assignmentHead}
+             </td>
+
+             <td className='sm:w-[0vw] md:w-[10vw] xl:w-[38vw] h-[5vh] text-center"'>
+               <a href={`http://localhost:3000/Assignment/${classId}/${subjectId}/${topic.topicId}/${assignment.assignmentId}`}><ViewButton/></a>
+             </td>
+             
+             <td className='sm:w-[0vw] md:w-[10vw] xl:w-[25vw] h-[7vh] text-center"'>
+             {usersRole ==='TEACHER' && (
+               <button onClick={() => handleDeleteAssignment(assignment.assignmentId)}><ExtraTinyDelete/></button>)}
+             </td>
+            </tr>
+            ))} 
+           </tbody>
+         </table>
+
+
+
+
+          <tr className="">
+          <td className='p-4 pl-8 text-lg font-medium text-slate-700'>Documents</td>
+          <td className="w-[18vw]"></td>
+          </tr>
+
+          <table className="ml-[7%]">
+           
+           <tbody>
+           {learningMaterial
+             .filter((learningMaterial) => learningMaterial.topicId === topic.topicId)
+             .map((learningMaterial) => (
+             <tr key={learningMaterial.materialId} className='hover:bg-cyan-200'>
+             
+             <td className="sm:w-[0vw] md:w-[10vw] xl:w-[38vw] h-[5vh]  text-left "><div className="">{new Date(learningMaterial.date).toLocaleString("en-US", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour12: true,
+             })}</div>
+             </td>
+
+             <td className=''>
+             <a href={learningMaterial.materialLink} className="font-medium text-blue-700 ml-[0vw]">
               {learningMaterial.materialName}
              </a>
              </td>
 
-             <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
-               <button onClick={() => handleDeleteMaterial(learningMaterial.materialId)}><ExtraTinyDelete/></button>
+             <td className='sm:w-[0vw] md:w-[10vw] xl:w-[25vw] h-[7vh] text-center pl-[11vw]'>
+             {usersRole ==='TEACHER' && (
+               <button onClick={() => handleDeleteMaterial(learningMaterial.materialId)}><ExtraTinyDelete/></button>)}
              </td>
             </tr>
             ))}
@@ -457,10 +585,10 @@ const SubjectInside: React.FC = () => {
 
 
           <tr className="">
-          <td className='p-4 pl-8 text-lg font-medium text-slate-600'>Quizzes</td>
+          <td className='p-4 pl-8 text-lg font-medium text-slate-700'>Quizzes</td>
           <td className="w-[18vw]"></td>
           </tr>
-
+          {usersRole !=='STUDENT' && (
           <tr key={topic.topicId} className="">
             <div className='flex w-[30vw] pb-10'>
               <div>
@@ -473,18 +601,22 @@ const SubjectInside: React.FC = () => {
                   setTopicId(topic.topicId);
                   setVisibleAddSession(true);
                 }}
-                
                 icon={BiCameraMovie}/>
-
               </td>
               </div>
               <div>
-              <td className="h-[6vh] text-left opacity-75">
+              <td className="h-[6vh] text-left opacity-75"> 
                 <Button name={'Assignment'} 
                 buttonType={'tab'} 
                 size={'md'}
                 padding={'3'}
-                icon={BiEdit}/>
+                icon={BiEdit}
+                onClick={() => {
+                  setTopicId(topic.topicId);
+                  setVisibleAddAss(true);
+                }}
+                />
+            
               </td>
               </div>
               <div>
@@ -517,7 +649,7 @@ const SubjectInside: React.FC = () => {
               </td>
               </div>
               </div>
-          </tr>
+          </tr>)}
 
           </>
         ))}
@@ -527,12 +659,13 @@ const SubjectInside: React.FC = () => {
   
     <div className={`p-4`}>
        <div className=" ml-[68%]">
+       {usersRole ==='ADMIN' && (
         <Button name={'Remove subject'} 
                 buttonType={'secondary-red'} 
                 size={'md'}
                 padding={'3'}
                 onClick={handleDelete}
-                icon={AiFillDelete }/>
+                icon={AiFillDelete }/>)}
         </div>
     </div>
 
@@ -561,6 +694,16 @@ const SubjectInside: React.FC = () => {
           </div>
         </div>
       )}
+
+    {visibleAddAss && (
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
+          <div className="w-full h-[80%] max-w-2xl p-4 rounded-lg bg-blue-50">
+          <div className='pl-[95%]'><button onClick={() => setVisibleAddAss(false)}><CloseButton/></button></div>
+          <NewAssignmentPopup topicId={topicId ?? ''} classId={classId??''} subjectId={subjectId??''}/>
+          </div>
+        </div>
+      )}
+
 
     </div>
   

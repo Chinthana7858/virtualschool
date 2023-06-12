@@ -8,6 +8,10 @@ import Button, { AccessButton,CloseButton,ViewButton } from '../../ui/atoms/Butt
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewSubjectPopup from '../Subjects/AddNewSubjectPopup';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 
 
 
@@ -74,8 +78,17 @@ const ClassRoomInside: React.FC = () => {
   const { sectionId } = useParams<{ sectionId: string }>();
   const teacherInChargeId = GetTeacherInChargeIdbyclassId({ classId: classId ?? '' });
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultclassRoomId}/>
-
   const teacherInchargeName=<GetNameByuserid userid={teacherInChargeId??defaultclassRoomId}/>
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+  
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
   
   //Remove teacher incharge
   const handleRemoveTeacherInCharge = async () => {
@@ -200,9 +213,18 @@ const ClassRoomInside: React.FC = () => {
     </div>
 
     <div className="flex">
-      
+    
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+         <SideBarAdmin/>)}
+      {usersRole ==='TEACHER' && (
+        <SideBarTeacher/>)}
+      {usersRole ==='PARENT' && (
+        <SideBarParent/>)}
+      {usersRole ==='STUDENT' && (
+        <SideBarStudent/>)}
+        {usersRole ==='PRINCIPAL' && (
+        <SideBarPrincipal/>)}
       </div>
    
      
@@ -217,15 +239,19 @@ const ClassRoomInside: React.FC = () => {
     <div className='flex pl-[30px]  p-[2vh]'>
       <div className='text-xl text-white basis-8/12'>Teacher in charge - {teacherInchargeName}</div>
     <div className='pr-1 basis-1/12'>
+
+    {usersRole ==='ADMIN' && (
     <a href={`http://localhost:3000/AssignTIC1/${classId}`}>
         <Button name={'Assign'} 
                 buttonType={'primary'} 
                 size={'md'}
                 padding={'3'}
                 icon={FiUserPlus}/>
-        </a>
+        </a>)}
+
       </div>
       <div className='pl-1 basis-1/12'>
+      {usersRole ==='ADMIN' && (
      <Button name={'Remove'} 
                 buttonType={'primary-red'} 
                 size={'md'}
@@ -233,6 +259,7 @@ const ClassRoomInside: React.FC = () => {
                 icon={AiFillDelete}
                 onClick={handleRemoveTeacherInCharge}
                 />
+                )}
      </div>
       </div>
     </div>
@@ -253,6 +280,7 @@ const ClassRoomInside: React.FC = () => {
     </a>
     </div>
     <div>
+    {usersRole !=='STUDENT'  && (
     <a href={`http://localhost:3000/MonthPick/${classId}`}>
     <Button name={'Attendance'} 
                 buttonType={'secondary'} 
@@ -260,7 +288,8 @@ const ClassRoomInside: React.FC = () => {
                 padding={'4'}
                 icon={BiBody}
                 />
-    </a>
+    </a>)}
+    
     </div>
     </div>
   </div>
@@ -285,12 +314,13 @@ const ClassRoomInside: React.FC = () => {
     
     </table>
 <div className={` ${visibleAdd? "blur-sm" : "blur-0"} p-4`}> 
+{usersRole ==='ADMIN' && (
 <Button name={'New subject'} 
                 buttonType={'secondary'} 
                 size={'md'}
                 onClick={() => { setVisibleAdd(true)}}
                 padding={'4'}
-                />
+                />)}
 </div>  
 
 <div className={`pl-[30px] bg-gradient-to-r from-[#5f9cd4] to-slate-300 p-[2vh] text-xl font-medium text-white rounded-md mt-7 ${visibleAdd? "blur-sm" : "blur-0"}`}>
@@ -298,6 +328,7 @@ const ClassRoomInside: React.FC = () => {
     </div>
 
     <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
+    {usersRole ==='ADMIN' && (
     <a href={`http://localhost:3000/AddStudents/${sectionId}/${year}/${classId}`}>
     <Button name={'Add students'} 
                 buttonType={'secondary'}  
@@ -305,26 +336,27 @@ const ClassRoomInside: React.FC = () => {
                 padding={'4'}
                 icon={FiUserPlus}
                 />
-    </a>
+    </a>)}
+
     </div>
     <table className={` ${visibleAdd? "blur-sm" : "blur-0"}`}>
       <thead>
         <tr className="">
-          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
         </tr>
       </thead>
       <tbody>
         {usersStudent.map(user => (
             
           <tr key={user.userid} className="cursor-pointer hover:bg-white">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/ClassStudent/${sectionId}/${year}/${classId}/${user.userid}`}><ViewButton/></ViewLink></td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-r-xl"> <ViewLink url={`http://localhost:3000/ClassStudent/${sectionId}/${year}/${classId}/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
 
         ))}
@@ -333,6 +365,7 @@ const ClassRoomInside: React.FC = () => {
 
     <div className={`p-4  ${visibleAdd? "blur-sm" : "blur-0"}`}>
        <div className=" ml-[68%]">
+       {usersRole ==='ADMIN' && (
         <BackLink url={`http://localhost:3000/classes/${sectionId}/${year}`}>
         <Button name={'Remove class'} 
                 buttonType={'secondary-red'} 
@@ -340,7 +373,7 @@ const ClassRoomInside: React.FC = () => {
                 padding={'3'}
                 onClick={handleDelete}
                 icon={AiFillDelete }/>
-        </BackLink>
+        </BackLink>)}
         </div>
     </div>
 

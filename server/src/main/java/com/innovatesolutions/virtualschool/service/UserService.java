@@ -1,5 +1,6 @@
 package com.innovatesolutions.virtualschool.service;
 import com.innovatesolutions.virtualschool.entity.ClassRoom;
+import com.innovatesolutions.virtualschool.entity.LoginResponse;
 import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.repository.UserRepository;
 import com.innovatesolutions.virtualschool.entity.User;
@@ -26,9 +27,42 @@ public class UserService {
     }
 
     //Add new user
-    public void addNewUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
+
+    public LoginResponse Login(User user){
+        String msg="";
+        User userlog= userRepository.findByEmail(user.getEmail());
+        if (userlog != null) {
+            String password = userlog.getPassWord();
+            String userid=userlog.getUserid();
+            UserRole urole = userlog.getUserRole();
+            String role = urole.toString();
+            String studentId=userlog.getStudentId();
+
+
+            if (password.equals(user.getPassWord())) {
+                if (userlog.getUserState().equals("1") || role.equals("ADMIN")) {
+                    return new LoginResponse("Login Success", true,role,userid,studentId);
+
+                }
+                else  {
+                    return new LoginResponse("Your registration request not approved yet", false,role,"78PpWeytrvhgftui876TYP",studentId);
+
+                }
+
+
+            } else {
+                return new LoginResponse("password Not Match", false,role,"78PpWeytrvhgftui876TYP",studentId);
+            }
+          }else {
+
+            return new LoginResponse("Email not exits", false,"","78PpWeytrvhgftui876TYP", user.getStudentId());
+                }
+    }
+
+
     //Get user bu userid
     public Optional<User> getUserById(String userid) {
         return userRepository.findById(userid);
@@ -156,4 +190,5 @@ public class UserService {
         }
     }
 }
+
 

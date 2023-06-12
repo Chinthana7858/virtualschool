@@ -6,12 +6,18 @@ const SideBarPrincipal = () => {
 
     const Menus = [
       { title: "Home",path:"/HomePagePrincipal", icon: <BiHome/>},
-      { title: "Sections",path:"/HomePagePrincipal", icon: <GiGraduateCap/>},
-      { title: "Results",path:"/HomePagePrincipal", icon: <BiNotepad/> },
-      { title: "Profile",path:"/HomePagePrincipal", icon: <BiUser/> },
-      { title: "Contacts",path:"/HomePagePrincipal", icon: <BiPaperPlane/> },
-      { title: "SignOut",path:"/HomePagePrincipal", icon:  <BiLogOut/> , gap: true },
+      { title: "Sections",path:"/sections", icon: <GiGraduateCap/>},
+      { title: "Profile",path:"/MyProfile", icon: <BiUser/> },
+      { title: "Contacts",path:"/Users", icon: <BiPaperPlane/> },
+      { title: "SignOut", icon:  <BiLogOut/> , gap: true },
     ];
+
+    const handleSignOut = () => {
+      const confirmation = window.confirm("Are you sure you want to sign out?");
+      if (confirmation) {
+        window.location.href = "/";
+      }
+    };
   
     return (
     
@@ -32,6 +38,7 @@ const SideBarPrincipal = () => {
                
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
+                onClick={Menu.title === "SignOut" ? handleSignOut : undefined}
               >
                 <span className={` hover:bg-slate-700 text-2xl`}>
                 {Menu.icon}

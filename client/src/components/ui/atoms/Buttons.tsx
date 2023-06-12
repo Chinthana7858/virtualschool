@@ -72,6 +72,7 @@ export  function ExtraTinyDelete() {
   )
 }
 
+
 interface ButtonProps {
   name: any;
   type?: any;
@@ -128,6 +129,12 @@ const Button: React.FunctionComponent<ButtonProps> = ({
   }else if (buttonType === 'tab-red') {
     buttonProperty =
     'bg-red-700 hover:bg-red-900 text-white text-sm border rounded';
+  }else if (buttonType === 'tab-green') {
+    buttonProperty =
+    'bg-green-500 hover:bg-green-700 text-white text-sm border rounded';
+  }else if (buttonType === 'tab-indigo') {
+    buttonProperty =
+    'bg-indigo-500 hover:bg-indigo-700 text-white text-sm border rounded';
   }
   
 

@@ -3,6 +3,10 @@ import { HiBars4 } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 interface Users {
     userid: string;
@@ -40,6 +44,15 @@ interface Subject {
   }
 
 const SResults2: React.FC = () => {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
@@ -47,6 +60,15 @@ const SResults2: React.FC = () => {
   const [subject, setSubject] = useState<Subject[]>([]);
   const { classId } = useParams<{ classId: string }>();
   const defaultclassId='';
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 
   function GetResult({ subjectId, classId, term, userid }: { subjectId: string, classId: string, term: string, userid: string }): JSX.Element | null {
@@ -90,7 +112,16 @@ const SResults2: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -120,7 +151,7 @@ const SResults2: React.FC = () => {
             <td className="w-[15vw] h-[10vh] text-center border-2 border-blue-600">
               <div className='flex'>
                 <div className='ml-10 basis-3/4'>
-                  <GetResult subjectId={subject.subjectId}userid="56789" classId={classId ?? defaultclassId} term={'term1'}/> {/*Hardcoded*/}
+                  <GetResult subjectId={subject.subjectId}userid={userId??''} classId={classId ?? defaultclassId} term={'term1'}/> {/*Hardcoded*/}
                 </div>
   
               </div>
@@ -128,7 +159,7 @@ const SResults2: React.FC = () => {
             <td className="w-[15vw] h-[10vh] text-center border-2 border-blue-600">
               <div className='flex'>
                 <div className='ml-10 basis-3/4'>
-                  <GetResult subjectId={subject.subjectId} userid="56789" classId={classId ?? defaultclassId} term={'term2'}/> {/*Hardcoded*/}
+                  <GetResult subjectId={subject.subjectId} userid={userId??''} classId={classId ?? defaultclassId} term={'term2'}/> {/*Hardcoded*/}
                 </div>
 
               </div>
@@ -136,7 +167,7 @@ const SResults2: React.FC = () => {
             <td className="w-[15vw] h-[10vh] text-center border-2 border-blue-600">
               <div className='flex'>
                 <div className='ml-10 basis-3/4'>
-                  <GetResult subjectId={subject.subjectId} userid="56789" classId={classId ?? defaultclassId} term={'term3'}/> {/*Hardcoded*/}
+                  <GetResult subjectId={subject.subjectId} userid={userId??''} classId={classId ?? defaultclassId} term={'term3'}/> {/*Hardcoded*/}
                 </div>
               </div>
             </td>

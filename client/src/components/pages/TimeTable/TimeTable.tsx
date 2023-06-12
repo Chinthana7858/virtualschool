@@ -7,6 +7,10 @@ import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddNewRowPopup from './AddNewRowPopup';
 import EditRowPopup from './EditRowPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 
@@ -64,6 +68,15 @@ const TimeTable: React.FC = () => {
   const { classId } = useParams<{ classId: string }>();
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
+
 
 
   //Delete row function
@@ -112,7 +125,16 @@ const TimeTable: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -151,6 +173,7 @@ const TimeTable: React.FC = () => {
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.wednesdaySubject}</td>
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.thursdaySubject}</td>
       <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center">{timetable.fridaySubject}</td>
+      {usersRole ==='ADMIN' && (
       <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
         <Button 
             name="" 
@@ -160,7 +183,8 @@ const TimeTable: React.FC = () => {
             icon={AiFillEdit}
             onClick={() => { setVisibleEdit(true); setId(timetable.id);setClassIds(timetable.classId);setRowNo(timetable.rowNo);setStartingTime(timetable.startingTime);setEndingTime(timetable.endingTime);setMondaySubject(timetable.mondaySubject);setTuesdaySubject(timetable.tuesdaySubject);setWednesdaySubject(timetable.wednesdaySubject);setThursdaySubject(timetable.thursdaySubject);setFridaySubject(timetable.fridaySubject)}}
          />
-      </td>
+      </td>)}
+      {usersRole ==='ADMIN' && (
       <td className='sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh] text-center"'>
         <Button 
             name="" 
@@ -170,11 +194,12 @@ const TimeTable: React.FC = () => {
             icon={AiFillDelete}
             onClick={() => handleDelete( timetable.rowNo)}
             />
-      </td>
+      </td>)}
     </tr>
   ))}
 </tbody> 
     </table>
+    {usersRole ==='ADMIN' && (
     <div className={` ${visibleAdd||visibleEdit ? "blur-sm" : "blur-0"}`}>
     <Button 
             name="Add new row" 
@@ -184,7 +209,7 @@ const TimeTable: React.FC = () => {
             icon={AiFillEdit}
             onClick={() => { setVisibleAdd(true)}}
             />
-    </div>
+    </div>)}
     {visibleEdit && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen ">
           <div className="w-full max-w-md p-4 rounded-lg bg-blue-50">
