@@ -1,6 +1,5 @@
 package com.innovatesolutions.virtualschool.controller;
 import com.innovatesolutions.virtualschool.entity.Section;
-import com.innovatesolutions.virtualschool.entity.User;
 import com.innovatesolutions.virtualschool.service.SectionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

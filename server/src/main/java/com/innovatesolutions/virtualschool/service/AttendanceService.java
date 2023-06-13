@@ -1,7 +1,6 @@
 package com.innovatesolutions.virtualschool.service;
 
 import com.innovatesolutions.virtualschool.entity.Attendance;
-import com.innovatesolutions.virtualschool.enums.AttendanceEnum;
 import com.innovatesolutions.virtualschool.repository.AttendanceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
