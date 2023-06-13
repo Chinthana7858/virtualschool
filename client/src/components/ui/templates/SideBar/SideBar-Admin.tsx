@@ -1,4 +1,4 @@
-import { BiHome, BiLogOut, BiNotepad, BiUser, BiUserPlus } from "react-icons/bi";
+import { BiHome, BiLogOut, BiUser, BiUserPlus } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { GiGraduateCap } from "react-icons/gi";
 
@@ -7,7 +7,6 @@ const SideBarAdmin = () => {
   const Menus = [
     { title: "Home", path:"/HomePageAdmin", icon: <BiHome/> },
     { title: "Sections",path:"/sections",icon: <GiGraduateCap/> },
-   // { title: "Results", path:"/", icon: <BiNotepad/> },
     { title: "Requests", path:"/UsersRequests", icon: <BiUserPlus/> },
     { title: "Users", path:"/Users", icon: <FiUsers/>},
     { title: "Profile", path:"/MyProfile", icon: <BiUser/> },
@@ -29,7 +28,7 @@ const SideBarAdmin = () => {
        
         <div className="flex items-center gap-x-4">
           <img src={`${process.env.PUBLIC_URL}/images/logo.png`}className={` duration-500  w-14 h-14" }`}/>
-          <h1 className={` origin-left fontmedium text-xl duration-1000 text-white`} >
+          <h1 className={`origin-left fontmedium text-xl duration-1000 text-white`} >
             Virtial School
           </h1>
         </div>

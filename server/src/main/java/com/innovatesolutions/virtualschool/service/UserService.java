@@ -1,6 +1,4 @@
 package com.innovatesolutions.virtualschool.service;
-import com.amazonaws.services.kms.model.NotFoundException;
-import com.innovatesolutions.virtualschool.entity.ClassRoom;
 import com.innovatesolutions.virtualschool.entity.LoginResponse;
 import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.repository.UserRepository;
@@ -9,7 +7,7 @@ import lombok.AllArgsConstructor;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +18,10 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Get all users
     public List<User> getAllUsers(){
@@ -29,38 +30,33 @@ public class UserService {
 
     //Add new user
     public User saveUser(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassWord());
+        user.setPassWord(encodedPassword);
         return userRepository.save(user);
     }
 
-    public LoginResponse Login(User user){
-        String msg="";
-        User userlog= userRepository.findByEmail(user.getEmail());
-        if (userlog != null) {
-            String password = userlog.getPassWord();
-            String userid=userlog.getUserid();
-            UserRole urole = userlog.getUserRole();
-            String role = urole.toString();
-            String studentId=userlog.getStudentId();
+    public LoginResponse login(User user) {
+        User userLog = userRepository.findByEmail(user.getEmail());
 
+        if (userLog != null) {
+            String encodedPassword = userLog.getPassWord();
+            String userId = userLog.getUserid();
+            UserRole userRole = userLog.getUserRole();
+            String role = userRole.toString();
+            String studentId = userLog.getStudentId();
 
-            if (password.equals(user.getPassWord())) {
-                if (userlog.getUserState().equals("1") || role.equals("ADMIN")) {
-                    return new LoginResponse("Login Success", true,role,userid,studentId);
-
+            if (passwordEncoder.matches(user.getPassWord(), encodedPassword)) {
+                if (userLog.getUserState().equals("1") || role.equals("ADMIN")) {
+                    return new LoginResponse("Login Success", true, role, userId, studentId);
+                } else {
+                    return new LoginResponse("Your registration request has not been approved yet", false, role, "78PpWeytrvhgftui876TYP", studentId);
                 }
-                else  {
-                    return new LoginResponse("Your registration request not approved yet", false,role,"78PpWeytrvhgftui876TYP",studentId);
-
-                }
-
-
             } else {
-                return new LoginResponse("password Not Match", false,role,"78PpWeytrvhgftui876TYP",studentId);
+                return new LoginResponse("Password does not match", false, role, "78PpWeytrvhgftui876TYP", studentId);
             }
-          }else {
-
-            return new LoginResponse("Email not exits", false,"","78PpWeytrvhgftui876TYP", user.getStudentId());
-                }
+        } else {
+            return new LoginResponse("Email does not exist", false, "", "78PpWeytrvhgftui876TYP", user.getStudentId());
+        }
     }
 
 

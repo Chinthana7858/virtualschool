@@ -34,7 +34,6 @@ const RemovedUses: React.FC = () => {
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
   const [usersPrincipal, setUsersPrincipal] = useState<Users[]>([]);
-  const [usersSectionHead, setUsersSectionHead] = useState<Users[]>([]);
   const [usersParent, setUsersParent] = useState<Users[]>([]);
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);
@@ -239,15 +238,15 @@ const RemovedUses: React.FC = () => {
             Teachers
         </h1>
     <table>
-      <thead>
-        <tr className="">
-        <div className='px-8'><input
+      <thead> 
+         <div className='px-8'><input
           type="text"
           value={searchQueryTeachers}
           onChange={(e) => setSearchQueryTeachers(e.target.value)}
           placeholder={`Search by name`}
           className="p-2 mt-2 border border-gray-300 rounded-lg"
         /></div>
+        <tr className="">
           <th className="  w-[18vw] p-[1.5vh]">UserID</th>
           <th className="  w-[18vw] p-[1.5vh]">Name</th>
           <th className="w-[18vw] p-[1.5vh]">Phone No</th>

@@ -147,9 +147,10 @@ const MyProfile:React.FC= () => {
           <div>
             <h6 className="p-3 text-left ">Date Of Birth</h6>
           </div>
+          {user?.userRole !=='STUDENT' && (
           <div>
             <h6 className="p-3 text-left ">NIC</h6>
-          </div>
+          </div>)}
 
         </div>
       </span>
@@ -192,7 +193,7 @@ const MyProfile:React.FC= () => {
       </div>
       {visibleUpdateDetails && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
-          <div className="w-[40vw] h-[68%] max-w-2xl p-4 rounded-lg bg-blue-50">
+          <div className="w-[40vw] h-[50%] max-w-2xl p-4 rounded-lg bg-blue-50">
           <div className='pl-[95%]'><button onClick={() => setVisibleUpdateDetails(false)}><CloseButton/></button></div>
           <UpdateUserDetailsPopup
            userid={user?.userid ?? ''}

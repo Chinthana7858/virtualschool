@@ -1,12 +1,9 @@
 package com.innovatesolutions.virtualschool.service;
 
 import com.innovatesolutions.virtualschool.entity.Assignment;
-import com.innovatesolutions.virtualschool.entity.LearningMaterial;
 import com.innovatesolutions.virtualschool.enums.BucketName;
 import com.innovatesolutions.virtualschool.fileStore.FileStore;
 import com.innovatesolutions.virtualschool.repository.AssignmentRepository;
-import com.innovatesolutions.virtualschool.repository.LearningMaterialRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
