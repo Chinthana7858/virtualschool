@@ -41,6 +41,8 @@ const AddStudentsToClass: React.FC = () => {
   const{classId}=useParams<{classId:string}>();
   const{sectionId}=useParams<{sectionId:string}>();
   const{year}=useParams<{year:string}>();
+  const [searchQueryStudents, setSearchQueryStudents] = useState("");
+  const [filteredStudents, setFilteredStudents] = useState<Users[]>([]);
 
   const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
 
@@ -62,6 +64,22 @@ const AddStudentsToClass: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const filterStudents = () => {
+    const filtered = usersStudent.filter((sec) =>
+      sec.nameWithInitials.toLowerCase().includes(searchQueryStudents.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+  
+  useEffect(() => {
+    filterStudents();
+  }, [searchQueryStudents,usersStudent]);
+  
+  useEffect(() => {
+    setFilteredStudents(usersStudent); // Set initial filtered sections to all sections
+  }, [usersStudent]);
+
 
 
   return (
@@ -103,22 +121,28 @@ const AddStudentsToClass: React.FC = () => {
     </h1>
     <table>
       <thead>
+      <div className='px-8'><input
+          type="text"
+          value={searchQueryStudents}
+          onChange={(e) => setSearchQueryStudents(e.target.value)}
+          placeholder="Search by name"
+          className="p-2 mt-2 border border-gray-300 rounded-lg"
+        /></div>
         <tr className="">
-          <th className="  w-[18vw] p-[1.5vh]">UserID</th>
-          <th className="  w-[18vw] p-[1.5vh]">Name</th>
-          <th className="w-[18vw] p-[1.5vh]">Phone No</th>
-          <th className=" w-[18vw] p-[1.5vh]">Email</th>
+          <th className="w-[18vw] p-[1.5vh] text-left pl-8">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
+          <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
         </tr>
       </thead>
       <tbody>
-        {usersStudent.map(user => (
-            
-          <tr key={user.userid} className="cursor-pointer hover:bg-white">
-            <td className="w-[18vw] h-[6vh] text-center rounded-l-xl">{user.userid}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.nameWithInitials}</td>
-            <td className="w-[18vw] h-[6vh] text-center">{user.phoneNo}</td>
-            <td className="w-[18vw] h-[6vh] text-center ">{user.email}</td>
-            <td className="w-[18vw] h-[6vh] text-center rounded-r-xl"> <ViewLink url={`http://localhost:3000/AddStudent/${sectionId}/${year}/${classId}/${user.userid}`}><ViewButton/></ViewLink></td>
+      {filteredStudents.map((user) => (
+      <tr key={user.userid} className="cursor-pointer hover:bg-white">
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
+            <td className="w-[18vw] h-[6vh] text-leftr">{user.nameWithInitials}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
+            <td className="w-[18vw] h-[6vh] text-left">{user.email}</td>
+            <td className="w-[18vw] h-[6vh] text-left rounded-r-xl"> <ViewLink url={`http://localhost:3000/AddStudent/${sectionId}/${year}/${classId}/${user.userid}`}><ViewButton/></ViewLink></td>
           </tr>
 
         ))}

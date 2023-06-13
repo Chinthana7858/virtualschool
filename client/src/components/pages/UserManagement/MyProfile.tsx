@@ -5,16 +5,17 @@ import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
 import React, {useEffect } from 'react';
 import SideBarAdmin from "../../ui/templates/SideBar/SideBar-Admin";
-import{useParams} from "react-router-dom";
-import Button from "../../ui/atoms/Buttons";
-import { AiFillDelete } from "react-icons/ai";
 import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
 import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
 import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
+import { CloseButton} from "../../ui/atoms/Buttons";
+import UpdateUserDetailsPopup from "./UpdateUserDetailsPopup";
+import { AiFillSetting } from "react-icons/ai";
 
 interface User {
   userid: string;
+  userState:string;
   userRole:string;
   nameWithInitials:string;
   fullName:string;
@@ -22,7 +23,11 @@ interface User {
   dateOfBirth:string;
   email:string;
   nic:string;
- 
+  gender:string;
+  address:string;
+  passWord:string;
+  studentId:string
+  classIds: string[];
 }
 
 
@@ -31,8 +36,8 @@ const MyProfile:React.FC= () => {
   const [open, setOpen] = useState(initialState);
   localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
-
   const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+  const [visibleUpdateDetails, setVisibleUpdateDetails] = useState(false);
 
   useEffect(() => {
     const storedUsersRole = localStorage.getItem('role');
@@ -71,7 +76,7 @@ const MyProfile:React.FC= () => {
 
     <div className="flex">
       
-      <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
+      <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[7%]`} >
       {usersRole ==='ADMIN' && (
           <SideBarAdmin/>)}
           {usersRole ==='TEACHER' && (
@@ -86,11 +91,13 @@ const MyProfile:React.FC= () => {
    
       
     <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
+      <div className="pl-4">
     <div className="text-[#ffffff] rounded-b-3xl bg-gradient-to-r from-[#577794] to-transparent h-[280px]">
         <div className=" pl-[10%]">
               <div className='  pt-[7%] w-[50%]'>
                 <p className="pt-[65px] text-left 2xl:text-5xl xl:text-5xl lg:text-5xl md:text-5xl sm:text-5xl xs:text-4xl">
-                  {user?. nameWithInitials}
+               <span className='text-blue-50'> {user?.gender === 'MALE' ? 'Mr' : 'Ms'}</span> . 
+                  {user?.nameWithInitials}
                 </p>
               </div>
              
@@ -106,9 +113,16 @@ const MyProfile:React.FC= () => {
     
     <div className="sm:max-w-[400px] md:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1250px] 
     2xl:max-w-[1300px] bg-slate-400 mt-1 relative rounded-l-[20px] h-auto ">
-      <h2 className="text-xl pl-[10%]  py-5 2xl:mr-[64%] xl:mr-[500px] lg:mr-[600px] sm:mr-[400px]">
-      User Information
-      </h2>
+      <div className=" pl-[10%] py-5 2xl:mr-[64%] xl:mr-[500px] lg:mr-[600px] sm:mr-[400px] flex ">
+      <div className="text-2xl font-semibold text-slate-700 ">Your Information  </div>
+      <div>
+      <button
+      className="pl-10"
+      onClick={() => setVisibleUpdateDetails(true)}>
+        <AiFillSetting size={28} color="#2A3652" />
+      </button>
+      </div>
+      </div>
     </div>
      
      <span className="flex sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1250px] 2xl:max-w-[1300px]
@@ -125,10 +139,13 @@ const MyProfile:React.FC= () => {
             <h6 className="p-3 text-left ">Phone No</h6>
           </div>
           <div>
-            <h6 className="p-3 text-left ">Date Of Birth</h6>
+            <h6 className="p-3 text-left ">Email</h6>
           </div>
           <div>
-            <h6 className="p-3 text-left ">Email</h6>
+            <h6 className="p-3 text-left ">Address</h6>
+          </div>
+          <div>
+            <h6 className="p-3 text-left ">Date Of Birth</h6>
           </div>
           <div>
             <h6 className="p-3 text-left ">NIC</h6>
@@ -148,25 +165,55 @@ const MyProfile:React.FC= () => {
             <h6 className="p-3 text-left">:{user?.phoneNo}</h6>
           </div>
           <div>
-            <h6 className="p-3 text-left">:{user?.dateOfBirth}</h6>
-          </div>
-          <div>
             <h6 className="p-3 text-left">:{user?.email}</h6>
           </div>
           <div>
-            <h6 className="p-3 text-left">:{user?.nic}</h6>
+            <h6 className="p-3 text-left">:{user?.address}</h6>
           </div>
-         
+          <div>
+            <h6 className="p-3 text-left">:{user?.dateOfBirth}</h6>
+          </div>
+          {user?.userRole !=='STUDENT' && (
+          <div>
+            <h6 className="p-3 text-left">:{user?.nic}</h6>
+          </div>)}
 
         </div>
       </span>
-     </span>
+     </span>    
+     <br />
 
+
+
+     </div>
      <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
       </div>
       </div>
-      
+      {visibleUpdateDetails && (
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
+          <div className="w-[40vw] h-[68%] max-w-2xl p-4 rounded-lg bg-blue-50">
+          <div className='pl-[95%]'><button onClick={() => setVisibleUpdateDetails(false)}><CloseButton/></button></div>
+          <UpdateUserDetailsPopup
+           userid={user?.userid ?? ''}
+           userRole={user?.userRole ?? ''}
+           nameWithInitials={user?.nameWithInitials ?? ''}
+           fullName={user?.fullName ?? ''}
+           phoneNo={user?.phoneNo ?? ''}
+           dateOfBirth={user?.dateOfBirth ?? ''}
+           email={user?.email ?? ''}
+           nic={user?.nic ?? ''}
+           gender={user?.gender ?? ''}
+           address={user?.address ?? ''}
+           passWord={user?.passWord ?? ''}
+           userState={user?.userState ?? ''}
+           studentId={user?.studentId ?? ''}
+           classIds={user?.classIds ?? []}
+           />
+
+          </div>
+        </div>
+      )} 
       </div>
       
     </div>

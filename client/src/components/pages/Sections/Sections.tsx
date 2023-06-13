@@ -117,13 +117,12 @@ const Sections: React.FC = () => {
         <h1 className={`pl-[30px] bg-gradient-to-r from-[#586B7D] to-slate-300 p-[4vh] text-2xl  text-white  ${visibleAdd ? "blur-sm" : "blur-0"} rounded-lg`}>
           Sections
         </h1>
-
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search by section name..."
-          className="p-2 mt-2 border border-gray-300 rounded-md"
+          className={`p-2 mt-2 border border-gray-300 rounded-md  ${visibleAdd ? "blur-sm" : "blur-0"} rounded-lg`}
         />
 
         <table className={`${visibleAdd ? "blur-sm" : "blur-0"}`}>

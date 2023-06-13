@@ -48,7 +48,7 @@ const Registration = () => {
   const Genderoptions = [
     {
       label: "MALE",
-      value: "FEMALE",
+      value: "MALE",
     },
     {
       label: "FEMALE",
@@ -92,7 +92,7 @@ const Registration = () => {
       isValid = false;
     }
     if (!gender) {
-      errors.userRole = 'Select gender';
+      errors.gender = 'Select gender';
       isValid = false;
     }
 

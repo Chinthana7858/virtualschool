@@ -211,7 +211,7 @@ const RemovedUses: React.FC = () => {
           value={searchQueryPrincipals}
           onChange={(e) => setSearchQueryPrincipals(e.target.value)}
           placeholder={`Search by name`}
-          className="p-2 mt-2 border border-gray-300"
+          className="p-2 mt-2 border border-gray-300 rounded-lg"
         /></div>
         <tr className="">
         <th className="  w-[18vw] p-[1.5vh]">UserID</th>
@@ -246,7 +246,7 @@ const RemovedUses: React.FC = () => {
           value={searchQueryTeachers}
           onChange={(e) => setSearchQueryTeachers(e.target.value)}
           placeholder={`Search by name`}
-          className="p-2 mt-2 border border-gray-300"
+          className="p-2 mt-2 border border-gray-300 rounded-lg"
         /></div>
           <th className="  w-[18vw] p-[1.5vh]">UserID</th>
           <th className="  w-[18vw] p-[1.5vh]">Name</th>
@@ -279,7 +279,7 @@ const RemovedUses: React.FC = () => {
           value={searchQueryStudents}
           onChange={(e) => setSearchQueryStudents(e.target.value)}
           placeholder={`Search by name`}
-          className="p-2 mt-2 border border-gray-300"
+          className="p-2 mt-2 border border-gray-300 rounded-lg"
         /></div>
         <tr className="">
           <th className="  w-[18vw] p-[1.5vh]">UserID</th>
@@ -314,7 +314,7 @@ const RemovedUses: React.FC = () => {
           value={searchQueryParents}
           onChange={(e) => setSearchQueryParents(e.target.value)}
           placeholder={`Search by name`}
-          className="p-2 mt-2 border border-gray-300"
+          className="p-2 mt-2 border border-gray-300 rounded-lg"
         /></div>
         <tr className="">
           <th className="  w-[18vw] p-[1.5vh]">UserID</th>
