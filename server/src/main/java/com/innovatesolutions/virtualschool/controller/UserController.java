@@ -67,14 +67,17 @@ public class UserController {
 
 
     //Update user by userid
-    @PutMapping("/{userid}")
-    public ResponseEntity<String> updateUser(@PathVariable("userid") String userid, @RequestBody User user) {
-        if (userService.updateUser(userid, user)) {
-            return new ResponseEntity<>("User with userid " + userid + " has been updated.", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("User with userid " + userid + " not found.", HttpStatus.NOT_FOUND);
+    @PutMapping("/{userid}/contactDetails")
+    public ResponseEntity<User> updateUserContactDetails(
+            @PathVariable("userid") String userid,
+            @RequestParam("email") String email,
+            @RequestParam("address") String address
+    ) {
+        User updatedUser = userService.updateUserContactDetails(userid, email, address);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
         }
-
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     //User states: 0 - Request pending user/ 1 - Request approved user/ 2 - Removed user
