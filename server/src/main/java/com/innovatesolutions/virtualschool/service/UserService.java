@@ -1,4 +1,5 @@
 package com.innovatesolutions.virtualschool.service;
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.innovatesolutions.virtualschool.entity.ClassRoom;
 import com.innovatesolutions.virtualschool.entity.LoginResponse;
 import com.innovatesolutions.virtualschool.enums.UserRole;
@@ -89,25 +90,15 @@ public class UserService {
     }
 
     //Update user details
-    public boolean updateUser(String userid, User user) {
-        List<User> usersToUpdate = userRepository.findByUserid(userid);
-        if (!usersToUpdate.isEmpty()) {
-            User userToUpdate = usersToUpdate.get(0);
-            userToUpdate.setUserRole(user.getUserRole()!=null?user.getUserRole():userToUpdate.getUserRole());
-            userToUpdate.setUserState(user.getUserState()!=null?user.getUserState():userToUpdate.getUserState());
-            userToUpdate.setFullName(user.getFullName()!=null?user.getFullName():userToUpdate.getFullName());
-            userToUpdate.setPhoneNo(user.getPhoneNo()!=null?user.getPhoneNo():userToUpdate.getPhoneNo());
-            userToUpdate.setDateOfBirth(user.getDateOfBirth()!=null?user.getDateOfBirth():userToUpdate.getDateOfBirth());
-            userToUpdate.setEmail(user.getEmail()!=null?user.getEmail():userToUpdate.getEmail());
-            userToUpdate.setGender(user.getGender()!=null?user.getGender():userToUpdate.getGender());
-            userToUpdate.setAddress(user.getAddress()!=null?user.getAddress():userToUpdate.getAddress());
-            userRepository.save(userToUpdate);
-            return true;
-        } else {
-            throw new IllegalArgumentException("Invalid user Id:" + userid);
+    public User updateUserContactDetails(String userid, String email, String address) {
+        User user = (User) userRepository.findByUserid(userid);
+        if (user != null) {
+            user.setEmail(email);
+            user.setAddress(address);
+            return userRepository.save(user);
         }
+        return null; // or throw an exception if user not found
     }
-
     //User states: 0 - Request pending user/ 1 - Request approved user/ 2 - Removed user
     //
     //Update user state to 1 (Request approve)

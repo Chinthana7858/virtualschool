@@ -79,6 +79,8 @@ const ClassRoomInside: React.FC = () => {
   const teacherInChargeId = GetTeacherInChargeIdbyclassId({ classId: classId ?? '' });
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultclassRoomId}/>
   const teacherInchargeName=<GetNameByuserid userid={teacherInChargeId??defaultclassRoomId}/>
+  const [searchQueryStudents, setSearchQueryStudents] = useState("");
+  const [filteredStudents, setFilteredStudents] = useState<User[]>([]);
 
   const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
   
@@ -177,6 +179,23 @@ const ClassRoomInside: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const filterStudents = () => {
+    const filtered = usersStudent.filter((sec) =>
+      sec.nameWithInitials.toLowerCase().includes(searchQueryStudents.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+  
+  useEffect(() => {
+    filterStudents();
+  }, [searchQueryStudents,usersStudent]);
+  
+  useEffect(() => {
+    setFilteredStudents(usersStudent); // Set initial filtered sections to all sections
+  }, [usersStudent]);
+
+
 
   const handleDelete = async () => {
     try {
@@ -341,18 +360,24 @@ const ClassRoomInside: React.FC = () => {
     </div>
     <table className={` ${visibleAdd? "blur-sm" : "blur-0"}`}>
       <thead>
+      <div className='px-8'><input
+          type="text"
+          value={searchQueryStudents}
+          onChange={(e) => setSearchQueryStudents(e.target.value)}
+          placeholder="Search by name"
+          className="p-2 mt-2 border border-gray-300 rounded-lg"
+        /></div>
         <tr className="">
-          <th className="w-[18vw] p-[1.5vh] text-left">UserID</th>
+          <th className="w-[18vw] p-[1.5vh] text-left pl-8">UserID</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Name</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Phone No</th>
           <th className="w-[18vw] p-[1.5vh] text-left">Email</th>
         </tr>
       </thead>
       <tbody>
-        {usersStudent.map(user => (
-            
-          <tr key={user.userid} className="cursor-pointer hover:bg-white">
-            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl">{user.userid}</td>
+      {filteredStudents.map((user) => (
+        <tr key={user.userid} className="cursor-pointer hover:bg-white">
+            <td className="w-[18vw] h-[6vh] text-left rounded-l-xl pl-8">{user.userid}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.nameWithInitials}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.phoneNo}</td>
             <td className="w-[18vw] h-[6vh] text-left">{user.email}</td>

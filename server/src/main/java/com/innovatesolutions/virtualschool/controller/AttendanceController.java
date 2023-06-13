@@ -45,4 +45,5 @@ public class AttendanceController {
         Optional<Attendance> attendanceList = attendanceService.getAttendanceByDateAndUserId(date, userId);
         return new ResponseEntity<>(attendanceList, HttpStatus.OK);
     }
+
 }

@@ -94,7 +94,6 @@ const SubjectInside: React.FC = () => {
   const teacherId=GetTeacherIdBySubjectId ({ subjectId: subjectId ?? '' });
   const teacherName=<GetNameByuserid userid={teacherId}/>
   const [topicId, setTopicId] = useState(""); 
-  const [assignmentId, setAssignmentId] = useState(""); 
   const [learningMaterial, setLearningMaterial] = useState<LearningMaterial[]>([]);
   const [assignment, SetAssignment] = useState<Assignment[]>([]);
 
@@ -481,7 +480,7 @@ const SubjectInside: React.FC = () => {
               <td className='w-[100px]'>{link.date}</td>
               <td className='w-[100px] pl-[100px]'>{link.startingTime}</td>
               <td className='w-[100px] pl-[20px]'>
-              <a href={link.link} target="_blank" className="font-medium text-blue-700 ">
+              <a href={link.link} target="_blank" className="font-semibold text-blue-900">
                Click here to join the lecture!
               </a>
               </td>
