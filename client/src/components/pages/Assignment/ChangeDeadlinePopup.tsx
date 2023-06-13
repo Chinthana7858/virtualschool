@@ -44,19 +44,15 @@ function ChangeDeadlinePopup (props: {assignmentId:string}) {
   return (
     <>
       <div className="bg-blue-50">
-        <h1 className='pb-4 text-xl font-semibold text-center text-slate-700'>Enter data</h1>
-        <div className='flex'>
-          <div className="basis-1/3">
-            <p className="p-[13.5px]">Marks/100</p>
-          </div>
-          <div className="basis-2/3">
-            <form onSubmit={handleSubmit}>
-
-              <input type="datetime-local" name="newDueDate" value={formValues.newDueDate} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
-
-      <button type="submit" onClick={() => window.location.reload()}><SubmitButton/></button>
-    </form>
-      </div>
+      <h1 className='pb-4 text-xl font-semibold text-center text-slate-700'>Enter data</h1>
+      <div className='text-center'>
+      <form onSubmit={handleSubmit}>
+      <input type="datetime-local" name="newDueDate" value={formValues.newDueDate} 
+      className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+      <div className='text-center'><button type="submit" onClick={() => window.location.reload()}>
+      <SubmitButton/>
+      </button></div>
+      </form>
       </div>
       </div>
     </>

@@ -330,7 +330,7 @@ function AssignmentPage() {
       )}
        {visibleChangeDeadline && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
-          <div className="w-full h-[40%] max-w-2xl p-4 rounded-lg bg-blue-50">
+          <div className="w-[30%] h-[40%] max-w-2xl p-4 rounded-lg bg-blue-50">
           <div className='pl-[95%]'><button onClick={() => setVisibleChangeDeadline(false)}><CloseButton/></button></div>
           <ChangeDeadlinePopup assignmentId={assignmentId??''}/>
           </div>
