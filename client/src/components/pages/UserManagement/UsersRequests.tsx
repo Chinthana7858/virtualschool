@@ -35,7 +35,6 @@ const UserList: React.FC = () => {
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
   const [usersTeacher, setUsersTeacher] = useState<Users[]>([]);
   const [usersPrincipal, setUsersPrincipal] = useState<Users[]>([]);
-  const [usersSectionHead, setUsersSectionHead] = useState<Users[]>([]);
   const [usersParent, setUsersParent] = useState<Users[]>([]);
   const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
   const [open, setOpen] = useState(initialState);

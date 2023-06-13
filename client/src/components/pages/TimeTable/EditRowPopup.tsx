@@ -1,18 +1,7 @@
 import React, { useState } from 'react'
 import { SubmitButton } from '../../ui/atoms/Buttons';
 
-interface TimeTable {
-    id: string;
-    classId:string;
-    rowNo:number;
-    startingTime: string;
-    endingTime:string
-    mondaySubject:string;
-    tuesdaySubject:string
-    wednesdaySubject:string;
-    thursdaySubject:string;
-    fridaySubject: string;
-  }
+
 
 function EditRowPopup(props: {  id: string;
   classId:string;

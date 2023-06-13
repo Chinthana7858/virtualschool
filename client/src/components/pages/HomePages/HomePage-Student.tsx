@@ -4,7 +4,7 @@ import NavBar from "../../ui/templates/NavBar/NavBar";
 import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
-import { AccessButton,ViewButton } from "../../ui/atoms/Buttons";
+import {ViewButton } from "../../ui/atoms/Buttons";
 import HomePageDescription from "../../ui/organisms/HomePageDescription";
 
 const HomePageStudent = () => {

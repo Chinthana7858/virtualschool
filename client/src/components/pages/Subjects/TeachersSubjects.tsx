@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
-import { useParams } from 'react-router-dom';
 import { AccessButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';

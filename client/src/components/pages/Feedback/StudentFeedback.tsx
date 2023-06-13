@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HiBars4 } from 'react-icons/hi2';
-import { useParams } from 'react-router-dom';
-import Button, {AccessButton, CloseButton}  from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
-import AddFeedbackPopup from './AddFeedbackPopup';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
 import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';

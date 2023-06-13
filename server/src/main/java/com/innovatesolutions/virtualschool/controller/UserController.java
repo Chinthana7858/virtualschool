@@ -50,9 +50,9 @@ public class UserController {
 
     //login users
     @PostMapping("/login")
-    public LoginResponse Login(@RequestBody User user) {
-        LoginResponse logres =  userService.Login(user);
-        return logres;
+    public LoginResponse login(@RequestBody User user) {
+        LoginResponse loginResponse = userService.login(user);
+        return loginResponse;
     }
 
     //Delete users by userid
