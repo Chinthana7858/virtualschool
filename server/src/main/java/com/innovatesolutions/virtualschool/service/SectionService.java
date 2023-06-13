@@ -58,4 +58,8 @@ public class SectionService {
         section.setSectionHeadId(sectionHeadId);
         return sectionRepository.save(section);
     }
+
+    public List<Section> getSectionsBySectionHeadId(String sectionHeadId) {
+        return sectionRepository.findBySectionHeadId(sectionHeadId);
+    }
 }

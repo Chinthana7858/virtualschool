@@ -1,6 +1,5 @@
 package com.innovatesolutions.virtualschool.controller;
 import com.innovatesolutions.virtualschool.entity.Section;
-import com.innovatesolutions.virtualschool.entity.User;
 import com.innovatesolutions.virtualschool.service.SectionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,6 +57,12 @@ public class SectionController {
     @PutMapping("/{sectionId}/{sectionHeadId}")
     public Section updateSectionHeadId(@PathVariable String sectionId, @PathVariable String sectionHeadId) {
         return sectionService.updateSectionHeadId(sectionId, sectionHeadId);
+    }
+
+    @GetMapping("/sectionHead/{sectionHeadId}")
+    public ResponseEntity<List<Section>> getSectionsBySectionHeadId(@PathVariable("sectionHeadId") String sectionHeadId) {
+        List<Section> sections = sectionService.getSectionsBySectionHeadId(sectionHeadId);
+        return new ResponseEntity<>(sections, HttpStatus.OK);
     }
 }
 

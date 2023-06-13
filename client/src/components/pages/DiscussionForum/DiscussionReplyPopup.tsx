@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { SubmitButton } from '../../ui/atoms/Buttons';
 
 
 
-function DiscussionReplyPopup(props: { classId: string, subjectId:string ,userid:String,id:string}) {
+function DiscussionReplyPopup(props: { classId: string, subjectId:string,id:string}) {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
+
   // Define state to hold the input field values
   const [formValues, setFormValues] = useState({
     classId:props.classId,
     subjectId:props.subjectId,
     discussionTopic: '',
-    userid:props.userid,
+    userid:userId||'',
     message: '',
     motherDiscussionId:props.id,
     dateTime:  new Date().toISOString(),
   });
   
+    // Update the formValues object when userId changes
+    useEffect(() => {
+      setFormValues(prevFormValues => ({
+        ...prevFormValues,
+        userid: userId || '', // Assign the userId value to the formValues object
+      }));
+    }, [userId]);
 
   // Handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

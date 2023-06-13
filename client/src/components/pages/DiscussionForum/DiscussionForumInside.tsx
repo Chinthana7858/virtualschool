@@ -6,6 +6,10 @@ import Button, {CloseButton} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import DiscussionReplyPopup from './DiscussionReplyPopup';
+import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 interface DiscussionForuminside {
@@ -91,10 +95,11 @@ const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
 const DiscussionForuminside: React.FC = () => {
   const [DiscussionForuminside, setDiscussionForuminside] = useState<DiscussionForuminside | null>(null);
   const [DiscussionForum, setDiscussionForum] = useState<DiscussionForums[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const defaultClassId = '';
   const defaultsubjectId='';
-  const defaultuserid='';
   const defaultid='';
   const { classId } = useParams<{ classId: string }>();
   const{subjectId}=useParams<{subjectId:string}>();
@@ -104,8 +109,28 @@ const DiscussionForuminside: React.FC = () => {
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultsubjectId}/>
 
+
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userid');
+    if (storedUserId) {
+      setUserId(storedUserId.toString());
+    }
+  }, []);
+
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
+
 //Delete discussion
-  const handleDelete = async () => {
+  const handleDelete = async (passeddiscussionForumId:string) => {
     try {
       const confirmed = window.confirm('Are you sure you want to Remove this discussion? ');
   
@@ -113,7 +138,7 @@ const DiscussionForuminside: React.FC = () => {
         return; // user clicked cancel, so do nothing
       }
   
-      const response = await fetch(`http://localhost:8080/api/v1/discussionForum/${discussionForumId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/discussionForum/${passeddiscussionForumId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -154,14 +179,23 @@ const DiscussionForuminside: React.FC = () => {
     <div className="fixed z-20 w-[100%]">
     <HiBars4  
           className={`absolute cursor-pointer  w-24
-           fill-slate-100  mr-[82vw] h-12 top-14 bg-[#586B7D] rounded-tr-2xl `} onClick={() => setOpen(!open)}/>
+           fill-slate-100  mr-[82vw] h-12 xl:top-14 lg:top-12 md:top-10 sm:top-8 xs:top-6 bg-[#586B7D] rounded-tr-2xl `} onClick={() => setOpen(!open)}/>
       <NavBar/>
     </div>
 
     <div className="flex">
       
-      <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] duration-100`} >
-         <SideBarStudent/>
+      <div className={` ${open ? "w-[15vw]" : "scale-0"} xl:pt-24 lg:pt-20 sm:pt-16 xs:pt-12 duration-100 z-10`} >
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -179,19 +213,19 @@ const DiscussionForuminside: React.FC = () => {
     <div className="pt-3">
     <table className={`rounded-md bg-white ${visibleAdd ? "blur-sm" : "blur-0"}`}>
       <thead>
-        <tr className="sm:text-xs md:text-md xl:text-base ">
-          <th className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] p-[3vh]">Discussion Topic</th>
-          <th className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] p-[3vh]">Date </th>
-          <th className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] p-[3vh]">Created By</th>
+        <tr className="font-light sm:text-xs md:text-md xl:text-base ">
+          <th className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] p-[3vh] text-left">Discussion Topic</th>
+          <th className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] p-[3vh] text-left">Date </th>
+          <th className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] p-[3vh] text-left">Created By</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
   
 
-  <tr  className="cursor-pointe sm:text-xs md:text-md xl:text-base ">
-    <td className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] h-[10vh] text-center rounded-l-xl">{DiscussionForuminside?.discussionTopic}</td>
-    <td className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] h-[10vh] text-center"> {DiscussionForuminside?.dateTime && new Date(DiscussionForuminside.dateTime).toLocaleString("en-US", {
+  <tr className="cursor-pointe sm:text-xs md:text-md xl:text-base ">
+    <td className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] h-[10vh] text-left rounded-l-xl p-[3vh]">{DiscussionForuminside?.discussionTopic}</td>
+    <td className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] h-[10vh] text-left p-[3vh]"> {DiscussionForuminside?.dateTime && new Date(DiscussionForuminside.dateTime).toLocaleString("en-US", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -201,7 +235,7 @@ const DiscussionForuminside: React.FC = () => {
     hour12: true,
   })}</td>
 
-    <td className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] h-[10vh] text-center"><GetNameByuserid userid={DiscussionForuminside?.userid} /></td>
+    <td className="sm:w-[0vw] md:w-[20vw] xl:w-[30vw] h-[10vh] text-left p-[3vh]"><GetNameByuserid userid={DiscussionForuminside?.userid} /></td>
   </tr>
 
 </tbody>
@@ -209,68 +243,116 @@ const DiscussionForuminside: React.FC = () => {
     </div>
  
     
-    <div className={`bg-cyan-100 pl-[5vw] rounded-lg mt-[2vh] min-h-[20vh] ${visibleAdd ? "blur-sm" : "blur-0"}`}>
+    <div className={`bg-cyan-100 pl-[5vw] rounded-lg mt-[2vh] ${visibleAdd ? "blur-sm" : "blur-0"}`}>
     <p className={`p-6 `}>{DiscussionForuminside?.message}</p>
     </div>
 
     <div className={`flex ${visibleAdd ? "blur-sm" : "blur-0"}`}>
     <div className='p-4 basis-11/12'>
-    <Button name="Add a reply" 
+    <Button name="Reply"
             buttonType={'secondary'}  
-            size={'lg'} 
-            padding={'4'} 
+            size={'md'} 
+            padding={'3'} 
             onClick={() => { setVisibleAdd(true)}}
     />
     </div>
 
     <div className='p-4 basis-1/12'>
+    {usersRole ==='TEACHER'||usersRole==='ADMIN' && (
       <BackLink url={`http://localhost:3000/Discussions/${classId}/${subjectId}/${userid}`}>
       <Button name="Remove" 
             buttonType={'secondary-red'}  
-            size={'lg'} 
-            padding={'4'} 
-            onClick={handleDelete}
+            size={'md'} 
+            padding={'3'} 
+            onClick={() => {handleDelete(discussionForumId??'')}}
             icon={AiFillDelete}
     />
-    </BackLink>
+    </BackLink>)}
     </div>
     </div>
+
+
+    
+    <div className="pt-10">
+    <table className={`${visibleAdd ? "blur-sm" : "blur-0"} `}>
+        <tbody className="">
+        {DiscussionForum?.filter((discussionForums) => discussionForums.userid ===userId).map(discussionForums => (
+         <>
+          <tr className="text-xl">
+            <div className='py-3 font-semibold text-blue-800'>
+            <a href={`http://localhost:3000/user/${discussionForums.userid}`}> <GetNameByuserid userid={discussionForums?.userid} />(me)</a>
+            </div>
+          </tr>
+          <tr className="text-medium">
+            <div className='font-medium'>
+            {new Date(discussionForums.dateTime).toLocaleString("en-US", {
+             year: "numeric",
+             month: "2-digit",
+             day: "2-digit",
+             hour: "2-digit",
+             minute: "2-digit",
+             second: "2-digit",
+             hour12: true,
+            })}
+            </div>
+         </tr>
+         <tr className="h-[10vh]">
+           <div className='p-3 bg-green-100 rounded-xl'>
+           {discussionForums.message}
+           </div>
+           <br />
+         </tr>
+       </>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
+
+
 
    <div className="pt-10">
-    <table className={`${visibleAdd ? "blur-sm" : "blur-0"} border-separate border-spacing-10 border border-slate-400`}>
-      <thead>
-        <tr className="sm:text-xs md:text-md xl:text-base ">
-          <th className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] p-[3vh] text-left border border-slate-400 rounded-lg">Replied By</th>
-          <th className="sm:w-[0vw] md:w-[30vw] xl:w-[38vw] p-[3vh] text-left border border-slate-400 rounded-lg">Message</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody className='p-14'>
-      {DiscussionForum?.map(discussionForums => (
-  <tr key={discussionForums.id} className="cursor-pointer hover:bg-white sm:text-xs md:text-md xl:text-base">
-    <td className="sm:w-[0vw] md:w-[10vw] xl:w-[18vw] h-[10vh]  text-left pl-7 rounded-lg"><div className='p-2'><GetNameByuserid userid={discussionForums?.userid} /></div><p className='p-2'>at</p><div className='p-2'>{new Date(discussionForums.dateTime).toLocaleString("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true,
-  })}</div></td>
-    <td className="sm:w-[0vw] md:w-[50vw] xl:w-[58vw] h-[10vh] text-left rounded-lg"><div className='p-5'>{discussionForums.message}</div></td>
-  </tr>
-))}
-
-</tbody>
-    </table>
-    </div>
+    <table className={`${visibleAdd ? "blur-sm" : "blur-0"} `}>
+        <tbody className="">
+        {DiscussionForum?.filter((discussionForums) => discussionForums.userid !==userId).map(discussionForums => (
+         <>
+          <tr className="text-xl">
+            <div className='py-3 font-semibold text-blue-800'>
+           <a href={`http://localhost:3000/user/${discussionForums.userid}`}> <GetNameByuserid userid={discussionForums?.userid} /></a>
+            </div>
+          </tr>
+          <tr className="text-medium">
+            <div className='font-medium'>
+            {new Date(discussionForums.dateTime).toLocaleString("en-US", {
+             year: "numeric",
+             month: "2-digit",
+             day: "2-digit",
+             hour: "2-digit",
+             minute: "2-digit",
+             second: "2-digit",
+             hour12: true,
+            })}
+            </div>
+         </tr>
+         <tr className="h-[10vh]">
+           <div className='p-3 bg-cyan-100 rounded-xl'>
+           {discussionForums.message}
+           </div>
+           <br />
+         </tr>
+       </>
+      ))}
+    </tbody>
+  </table>
+</div>
 
 
     {visibleAdd && (
         <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen">
           <div className="w-full h-[60%] max-w-2xl p-4 rounded-lg bg-blue-50">
           <div className='pl-[95%]'><button onClick={() => setVisibleAdd(false)}><CloseButton/></button></div>
-          <DiscussionReplyPopup classId={classId ?? defaultClassId} subjectId={subjectId ?? defaultsubjectId} userid={userid ?? defaultuserid} id={discussionForumId??defaultid} />
+          <DiscussionReplyPopup classId={classId ?? defaultClassId} subjectId={subjectId ?? defaultsubjectId} id={discussionForumId??defaultid} />
           </div>
         </div>
       )}

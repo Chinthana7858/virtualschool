@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface FeedbackRepository extends MongoRepository<Feedback,String> {
-    List<Feedback> findBySubjectId(
-            String subjectId
-    );
+    List<Feedback> findBySubjectIdAndStudentId(String subjectId, String studentId);
 
     List<Feedback> findByStudentId(
             String studentId
     );
+
+    void deleteByFeedbackId(String feedbackId);
 }

@@ -7,7 +7,9 @@ import HomePageDescription from "../../ui/organisms/HomePageDescription";
 import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 const HomePagePrincipal = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div>
@@ -38,7 +40,7 @@ const HomePagePrincipal = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Sections</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/sections`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/Sections.jpg"className="w-[450px] h-[250px] rounded-2xl basis-11/12 mt-4"/>
                    </div>
@@ -50,21 +52,12 @@ const HomePagePrincipal = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">User Profiles</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/Users`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/UserProfiles.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>
                </div>
 
-               <div className="basis-1/2 xs:mt-7 ">
-                  <div className="flex-col">
-                      <div className="flex basis-1/12">
-                        <div><a className="font-semibold text-left">Results</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
-                      </div>
-                      <img src="./images/YourResults.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
-                   </div>
-               </div>
           </div>
          
       

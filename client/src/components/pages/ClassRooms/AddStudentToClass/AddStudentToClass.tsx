@@ -8,6 +8,10 @@ import SideBarAdmin from "../../../ui/templates/SideBar/SideBar-Admin";
 import{useParams} from "react-router-dom";
 import Button from "../../../ui/atoms/Buttons";
 import { AiOutlineUserAdd } from "react-icons/ai";
+import SideBarParent from "../../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../../ui/templates/SideBar/SideBar-Principal";
 
 interface User {
   userid: string;
@@ -31,12 +35,23 @@ interface BackLinkProps {
   );
 
 const AddStudentToClass:React.FC= () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
   const { classId } = useParams<{ classId: string }>();
   const { sectionId } = useParams<{ sectionId: string }>();
   const { year } = useParams<{ year: string }>();
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 //Get user details by user id
   useEffect(() => {
@@ -84,7 +99,16 @@ const AddStudentToClass:React.FC= () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarAdmin/>
+          {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
       
@@ -133,9 +157,6 @@ const AddStudentToClass:React.FC= () => {
           <div>
             <h6 className="p-3 text-left ">Email</h6>
           </div>
-          <div>
-            <h6 className="p-3 text-left ">NIC</h6>
-          </div>
 
         </div>
       </span>
@@ -155,9 +176,6 @@ const AddStudentToClass:React.FC= () => {
           </div>
           <div>
             <h6 className="p-3 text-left">:{user?.email}</h6>
-          </div>
-          <div>
-            <h6 className="p-3 text-left">:{user?.nic}</h6>
           </div>
         </div>
       </span>

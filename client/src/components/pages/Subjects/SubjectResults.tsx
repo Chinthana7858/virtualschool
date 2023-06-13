@@ -5,6 +5,10 @@ import { CloseButton, ResultsAdd} from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
 import AddSubjectResultsPopup from './AddSubjectResultsPopup';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 interface Users {
     userid: string;
@@ -36,7 +40,7 @@ interface ViewLinkProps {
     }
     const [section, setSection] = useState<Section | null>(null);
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/subjects/${subjectId}`)
+      fetch(`http://localhost:8080/api/v1/subjects/${subjectId}`)
         .then(res => res.json())
         .then(data => setSection(data))
         .catch(error => console.error(error));
@@ -55,7 +59,9 @@ interface ViewLinkProps {
   );
 
 const SubjectResults: React.FC = () => {
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [usersStudent, setUsersStudent] = useState<Users[]>([]);
   const [visibleAdd, setVisibleAdd] = useState(false);
   const { classId } = useParams<{ classId: string }>();
@@ -65,6 +71,14 @@ const SubjectResults: React.FC = () => {
   const defaultclassId='';
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultclassId}/>
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 
 
@@ -83,7 +97,7 @@ const SubjectResults: React.FC = () => {
     const [result, setResult] = useState<Result | null>(null);
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/vi/result/${subjectId}/${classId}/${userid}/${term}`)
+      fetch(`http://localhost:8080/api/v1/result/${subjectId}/${classId}/${userid}/${term}`)
         .then(res => res.json())
         .then(data => setResult(data))
         .catch(error => console.error(error));
@@ -95,7 +109,7 @@ const SubjectResults: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:8080/api/vi/users/class/${classId}`); 
+      const result = await fetch(`http://localhost:8080/api/v1/users/class/${classId}`); 
       const data = await result.json();
       setUsersStudent(data);
     };
@@ -116,7 +130,16 @@ const SubjectResults: React.FC = () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
      
@@ -215,10 +238,6 @@ const SubjectResults: React.FC = () => {
 
      </div>
      
-    
- 
-      
-  
     
   );
 };

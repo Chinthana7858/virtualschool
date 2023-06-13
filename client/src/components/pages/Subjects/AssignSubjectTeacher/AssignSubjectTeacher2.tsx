@@ -8,6 +8,10 @@ import SideBarAdmin from "../../../ui/templates/SideBar/SideBar-Admin";
 import Footer from "../../../ui/templates/Footer/Footer";
 import Button  from "../../../ui/atoms/Buttons";
 import { FiUserPlus } from "react-icons/fi";
+import SideBarParent from "../../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../../ui/templates/SideBar/SideBar-Principal";
 
 
 interface User {
@@ -19,6 +23,8 @@ interface User {
   dateOfBirth:string;
   email:string;
   nic:string;
+  address:string;
+  gender:string;
  
 }
 
@@ -28,11 +34,21 @@ interface BackLinkProps {
   }
 
 const AssignSubjectTeacher2:React.FC= () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
   const { subjectId } = useParams<{ subjectId: string }>();
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
   
   const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
     <a href={url}>{children}</a>
@@ -49,7 +65,7 @@ const AssignSubjectTeacher2:React.FC= () => {
 
   const handleAddToSubject = async () => {
     try {
-      const confirmed = window.confirm('Are you sure you want to add this user to class?');
+      const confirmed = window.confirm('Are you sure you want to assign this teacher as subject teacher?');
   
       if (!confirmed) {
         return; // user clicked cancel, so do nothing
@@ -63,7 +79,7 @@ const AssignSubjectTeacher2:React.FC= () => {
       });
   
       if (response.ok) {
-        alert('User added successfully');
+        alert('Teacher added successfully');
       }
     } catch (error) {
       console.error(error);
@@ -84,15 +100,24 @@ const AssignSubjectTeacher2:React.FC= () => {
     <div className={`flex `}>
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarAdmin/>
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
-   
-      <div className={`${open ? "w-[85vw]" : "w-[100vw]"}`}>
-    <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
+      <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
+      <div className="pl-4">
     <div className="text-[#ffffff] rounded-b-3xl bg-gradient-to-r from-[#577794] to-transparent h-[280px]">
         <div className=" pl-[10%]">
               <div className='  pt-[7%] w-[50%]'>
                 <p className="pt-[65px] text-left 2xl:text-5xl xl:text-5xl lg:text-5xl md:text-5xl sm:text-5xl xs:text-4xl">
+               <span className='text-blue-50'> {user?.gender === 'MALE' ? 'Mr' : 'Ms'}</span> . 
                   {user?. nameWithInitials}
                 </p>
               </div>
@@ -136,6 +161,9 @@ const AssignSubjectTeacher2:React.FC= () => {
           <div>
             <h6 className="p-3 text-left ">NIC</h6>
           </div>
+          <div>
+            <h6 className="p-3 text-left ">Address</h6>
+          </div>
 
         </div>
       </span>
@@ -159,18 +187,22 @@ const AssignSubjectTeacher2:React.FC= () => {
           <div>
             <h6 className="p-3 text-left">:{user?.nic}</h6>
           </div>
+          <div>
+            <h6 className="p-3 text-left">:{user?.address}</h6>
+          </div>
          
 
         </div>
       </span>
      </span>
-     <div className="ml-[80%] p-4">
-        <Button name={'Assign'} 
-                buttonType={'secondary'} 
-                size={'md'}
-                padding={'3'}
-                onClick={handleAddToSubject}
-                icon={FiUserPlus}/>
+     </div>
+     <div className="pt-7 ml-[80%]">
+     <Button name={'Assign'} 
+        buttonType={'secondary'} 
+        size={'md'}
+        padding={'3'}
+        onClick={handleAddToSubject}
+        icon={FiUserPlus}/>
      </div>
      <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
@@ -179,7 +211,6 @@ const AssignSubjectTeacher2:React.FC= () => {
       
       </div>
       
-    </div>
     </div>
     
   );

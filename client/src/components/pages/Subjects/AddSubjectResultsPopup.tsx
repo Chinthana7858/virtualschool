@@ -18,7 +18,7 @@ function AddSubjectResultsPopup (props: { classId: string ,subjectId:string,user
     event.preventDefault();
 
     // Send the form data to the backend using an HTTP request
-    const response = await fetch(`http://localhost:8080/api/vi/results/${props.subjectId}/${props.classId}/${props.userid}/${props.term}`, {
+    const response = await fetch(`http://localhost:8080/api/v1/result/${props.subjectId}/${props.classId}/${props.userid}/${props.term}`, {
       method: 'POST',
       body: JSON.stringify(formValues),
       headers: { 
@@ -60,7 +60,7 @@ function AddSubjectResultsPopup (props: { classId: string ,subjectId:string,user
           <div className="basis-2/3">
             <form onSubmit={handleSubmit}>
 
-              <input type="text" name="result" value={formValues.result} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+              <input type="number" name="result" value={formValues.result} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
 
       <button type="submit" onClick={() => window.location.reload()}><SubmitButton/></button>
     </form>
