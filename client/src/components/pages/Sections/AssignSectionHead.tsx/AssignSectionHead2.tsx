@@ -23,6 +23,8 @@ interface User {
   dateOfBirth:string;
   email:string;
   nic:string;
+  address:string;
+  gender:string;
  
 }
 
@@ -110,13 +112,13 @@ const AssignSectionHead2:React.FC= () => {
           {usersRole ==='PRINCIPAL' && (
           <SideBarPrincipal/>)}
       </div>
-   
-    <div className={` flex ${open ? "w-[85vw]" : "w-[100vw]"}`}>
-    <div className={` w-[100vw] duration-100`}>
+      <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
+      <div className="pl-4">
     <div className="text-[#ffffff] rounded-b-3xl bg-gradient-to-r from-[#577794] to-transparent h-[280px]">
         <div className=" pl-[10%]">
               <div className='  pt-[7%] w-[50%]'>
                 <p className="pt-[65px] text-left 2xl:text-5xl xl:text-5xl lg:text-5xl md:text-5xl sm:text-5xl xs:text-4xl">
+               <span className='text-blue-50'> {user?.gender === 'MALE' ? 'Mr' : 'Ms'}</span> . 
                   {user?. nameWithInitials}
                 </p>
               </div>
@@ -160,6 +162,9 @@ const AssignSectionHead2:React.FC= () => {
           <div>
             <h6 className="p-3 text-left ">NIC</h6>
           </div>
+          <div>
+            <h6 className="p-3 text-left ">Address</h6>
+          </div>
 
         </div>
       </span>
@@ -183,21 +188,23 @@ const AssignSectionHead2:React.FC= () => {
           <div>
             <h6 className="p-3 text-left">:{user?.nic}</h6>
           </div>
+          <div>
+            <h6 className="p-3 text-left">:{user?.address}</h6>
+          </div>
          
 
         </div>
       </span>
      </span>
+     </div>
      <div className="pt-7 ml-[80%]">
-      <BackLink url={`http://localhost:3000/AcademicYears/${sectionId}`}>
-        <Button name={'Assign'} 
-                buttonType={'secondary'} 
-                size={'md'}
-                padding={'3'}
-                onClick={handleAssignSectionHead}
-                icon={FiUserPlus}/>
-        </BackLink>
-      </div>
+     <Button name={'Assign'} 
+        buttonType={'secondary'} 
+        size={'md'}
+        padding={'3'}
+        onClick={handleAssignSectionHead}
+        icon={FiUserPlus}/>
+     </div>
      <div className="w-[100%] top-[120%] pt-7">
         <Footer/>
       </div>
@@ -205,7 +212,6 @@ const AssignSectionHead2:React.FC= () => {
       
       </div>
       
-    </div>
     </div>
     
   );

@@ -1,6 +1,7 @@
 package com.innovatesolutions.virtualschool.service;
 
 import com.innovatesolutions.virtualschool.entity.Attendance;
+import com.innovatesolutions.virtualschool.enums.AttendanceEnum;
 import com.innovatesolutions.virtualschool.repository.AttendanceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,6 @@ public class AttendanceService {
     public Optional<Attendance> getAttendanceByDateAndUserId(LocalDate date, String userId) {
         return attendanceRepository.findByDateAndStudentId(date, userId);
     }
+
+
 }

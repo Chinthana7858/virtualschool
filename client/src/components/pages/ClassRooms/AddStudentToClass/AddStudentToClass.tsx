@@ -157,9 +157,6 @@ const AddStudentToClass:React.FC= () => {
           <div>
             <h6 className="p-3 text-left ">Email</h6>
           </div>
-          <div>
-            <h6 className="p-3 text-left ">NIC</h6>
-          </div>
 
         </div>
       </span>
@@ -179,9 +176,6 @@ const AddStudentToClass:React.FC= () => {
           </div>
           <div>
             <h6 className="p-3 text-left">:{user?.email}</h6>
-          </div>
-          <div>
-            <h6 className="p-3 text-left">:{user?.nic}</h6>
           </div>
         </div>
       </span>
