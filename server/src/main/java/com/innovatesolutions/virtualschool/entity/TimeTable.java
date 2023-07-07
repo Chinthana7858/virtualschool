@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalTime;
+
 @Data
 @Document
 @CompoundIndex(def = "{'classId': 1, 'rowNo': 1}", unique = true)
@@ -12,7 +14,8 @@ public class TimeTable {
     private String id;
     private String classId;
     private int rowNo;
-    private String timePeriod;
+    private LocalTime startingTime;
+    private LocalTime endingTime;
     private String MondaySubject;
     private String TuesdaySubject;
     private String WednesdaySubject;
@@ -23,7 +26,8 @@ public class TimeTable {
     }
     public TimeTable(String classId,
                      int rowNo,
-                     String timePeriod,
+                     LocalTime startingTime,
+                     LocalTime endingTime,
                      String MondaySubject,
                      String TuesdaySubject,
                      String WednesdaySubject,
@@ -32,7 +36,8 @@ public class TimeTable {
     {
         this.classId = classId;
         this.rowNo = rowNo;
-        this.timePeriod = timePeriod;
+        this.startingTime=startingTime;
+        this.endingTime=endingTime;
         this.MondaySubject=MondaySubject;
         this.TuesdaySubject=TuesdaySubject;
         this.WednesdaySubject=WednesdaySubject;

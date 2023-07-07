@@ -1,4 +1,5 @@
 package com.innovatesolutions.virtualschool.controller;
+import com.innovatesolutions.virtualschool.entity.LoginResponse;
 import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.service.UserService;
 import com.innovatesolutions.virtualschool.entity.User;
@@ -41,10 +42,17 @@ public class UserController {
     }
 
     //Save users
-    @PostMapping
-    public String RegisterNewUser(@RequestBody User user) {
-        userService.addNewUser(user);
-        return "Profile created";
+    @PostMapping("/save")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User savedUser = userService.saveUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    //login users
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody User user) {
+        LoginResponse loginResponse = userService.login(user);
+        return loginResponse;
     }
 
     //Delete users by userid
@@ -59,14 +67,17 @@ public class UserController {
 
 
     //Update user by userid
-    @PutMapping("/{userid}")
-    public ResponseEntity<String> updateUser(@PathVariable("userid") String userid, @RequestBody User user) {
-        if (userService.updateUser(userid, user)) {
-            return new ResponseEntity<>("User with userid " + userid + " has been updated.", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("User with userid " + userid + " not found.", HttpStatus.NOT_FOUND);
+    @PutMapping("/{userid}/contactDetails")
+    public ResponseEntity<User> updateUserContactDetails(
+            @PathVariable("userid") String userid,
+            @RequestParam("email") String email,
+            @RequestParam("address") String address
+    ) {
+        User updatedUser = userService.updateUserContactDetails(userid, email, address);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
         }
-
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     //User states: 0 - Request pending user/ 1 - Request approved user/ 2 - Removed user
@@ -119,4 +130,10 @@ public class UserController {
     public User removeClassId(@PathVariable String userId, @PathVariable String classId) {
         return userService.removeClassId(userId, classId);
     }
+
+    @GetMapping("/{userId}/classIds")
+    public List<String> getClassIdsByUserId(@PathVariable String userId) {
+        return userService.getClassIdsByUserId(userId);
+    }
+
 }

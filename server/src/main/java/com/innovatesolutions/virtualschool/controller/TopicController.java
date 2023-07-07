@@ -42,4 +42,9 @@ public class TopicController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/subject/{subjectId}")
+    public List<Topic> getBySubjectId(@PathVariable String subjectId) {
+        return topicService.findBySubjectId(subjectId);
+    }
 }

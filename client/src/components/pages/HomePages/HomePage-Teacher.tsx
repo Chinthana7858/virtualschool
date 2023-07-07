@@ -7,7 +7,9 @@ import HomePageDescription from "../../ui/organisms/HomePageDescription";
 import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
 
 const HomePageTeacher = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div>
@@ -29,22 +31,45 @@ const HomePageTeacher = () => {
     <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
         <div className="flex-col xs:mt-[20%] sm:mt-[10%] md:mt[0%] lg:mt[0%] xl:mt[0%] 2xl:mt[0%]">
 
-         <div className="  mt-[15%] ml-[5%] 2xl:flex xl:flex lg:flex md:flex sm:flex xs:flex-col pb-[25vh]">
+         <div className="ml-[5%] 2xl:flex xl:flex lg:flex md:flex sm:flex xs:flex-col">
               <div className=" basis-1/2">
                  <HomePageDescription/>
               </div>
 
-               <div className="basis-1/2 xs:mt-7 ">
+              <div className="basis-1/2 xs:mt-7 ">
                   <div className="flex-col">
                       <div className="flex basis-1/12">
-                        <div><a className="font-semibold text-left">Your Classes</a></div>
-                        <div className="pl-[45%]"><AccessButton/></div>
+                        <div><a className="font-semibold text-left">Your Subjects</a></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/teachersSubjects`}><AccessButton/></a></div>
                       </div>
                       <img src="./images/YourClassroom.jpg"className="w-[450px] h-[300px] basis-11/12"/>
                    </div>
-               </div>
+               </div>   
           </div>
 
+          <div className="  mt-[5%] ml-[5%] 2xl:flex xl:flex lg:flex md:flex sm:flex xs:flex-col">
+          <div className="basis-1/2 xs:mt-7 ">
+                  <div className="flex-col">
+                      <div className="flex basis-1/12">
+                        <div><a className="font-semibold text-left">Your Class</a></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/teachersClasses`}><AccessButton/></a></div>
+                      </div>
+                      <img src="./images/YourAttendance.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
+                   </div>
+               </div>
+
+               <div className="basis-1/2 xs:mt-7 ">
+                  <div className="flex-col">
+                      <div className="flex basis-1/12">
+                        <div><a className="font-semibold text-left">Your Section</a></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/MySections`}><AccessButton/></a></div>
+                      </div>
+                      <img src="./images/Sections.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
+                   </div>
+               </div>
+          </div>
+         
+      
           </div>
       
       <div className="w-[100%] top-[120%] pt-3">

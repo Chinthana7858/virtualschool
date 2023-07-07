@@ -18,7 +18,7 @@ function AddNewTopicPopup(props: AddNewTopicPopupProps) {
     event.preventDefault();
 
     // Send the form data to the backend using an HTTP request
-    const response = await fetch(`http://localhost:8080/api/vi/topic`, {
+    const response = await fetch(`http://localhost:8080/api/v1/topic`, {
       method: 'POST',
       body: JSON.stringify(formValues),
       headers: {

@@ -1,7 +1,6 @@
 package com.innovatesolutions.virtualschool.service;
 import com.innovatesolutions.virtualschool.entity.Topic;
 import com.innovatesolutions.virtualschool.repository.TopicRepository;
-import com.innovatesolutions.virtualschool.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +27,8 @@ public class TopicService {
 
     public void deleteTopic(String topicId) {
         topicRepository.deleteById(topicId);
+    }
+    public List<Topic> findBySubjectId(String subjectId) {
+        return topicRepository.findBySubjectId(subjectId);
     }
 }

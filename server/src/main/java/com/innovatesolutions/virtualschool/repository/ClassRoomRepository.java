@@ -8,6 +8,8 @@ import java.util.List;
 @Repository
 public interface ClassRoomRepository extends MongoRepository<ClassRoom,String> {
     ClassRoom findByClassRoomId(String classRoomId);
-
     List<ClassRoom> findBySectionIdAndAcademicYear(String sectionId,Integer academicYear);
+    List<ClassRoom> findByTeacherInChargeId(String teacherInChargeId);
+
+
 }

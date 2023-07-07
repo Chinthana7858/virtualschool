@@ -3,6 +3,8 @@ package com.innovatesolutions.virtualschool.controller;
 import com.innovatesolutions.virtualschool.entity.Feedback;
 import com.innovatesolutions.virtualschool.service.FeedbackService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,13 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 public class FeedbackController {
     private final FeedbackService feedbackService;
-    @GetMapping("/Subject/{subjectId}")
-    public List<Feedback> getFeedbackBySubjectId(
-            @PathVariable String subjectId
-    ) {
-        return feedbackService.getFeedbackBySubjectId(
-                subjectId
-        );
+    @GetMapping("/{subjectId}/{studentId}")
+    public ResponseEntity<List<Feedback>> getFeedbackBySubjectIdAndStudentId(
+            @PathVariable("subjectId") String subjectId,
+            @PathVariable("studentId") String studentId) {
+        List<Feedback> feedbackList = feedbackService.getFeedbackBySubjectIdAndStudentId(subjectId, studentId);
+        return new ResponseEntity<>(feedbackList, HttpStatus.OK);
     }
 
     @GetMapping("/Student/{studentId}")
@@ -44,5 +45,11 @@ public class FeedbackController {
         feedback.setClassId(classId);
         feedback.setSubjectId(subjectId);
         return feedbackService.saveFeedback(studentId,teacherId, classId, subjectId,feedback);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteFeedbackById(@PathVariable("id") String id) {
+        feedbackService.deleteFeedbackById(id);
+        return new ResponseEntity<>("Feedback deleted successfully", HttpStatus.OK);
     }
 }

@@ -5,6 +5,10 @@ import Button, { CloseButton, ViewButton } from '../../ui/atoms/Buttons';
 import NavBar from '../../ui/templates/NavBar/NavBar';
 import SideBarStudent from '../../ui/templates/SideBar/SideBar-Student';
 import AddNewDiscussionPopup from './AddNewDiscussionPopup';
+import SideBarAdmin from '../../ui/templates/SideBar/SideBar-Admin';
+import SideBarParent from '../../ui/templates/SideBar/SideBar-Parent';
+import SideBarTeacher from '../../ui/templates/SideBar/SideBar-Teacher';
+import SideBarPrincipal from '../../ui/templates/SideBar/SideBar-Principal';
 
 
 interface ViewLinkProps {
@@ -86,7 +90,9 @@ function GetSubjectNameBySubjectId({ subjectId }: { subjectId: string }): JSX.El
 
 const DiscussionForums: React.FC = () => {
   const [DiscussionForum, setDiscussionForum] = useState<DiscussionForums[]>([]);
-  const [open, setOpen] = useState(true); 
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open)); 
   const defaultClassId = '';
   const defaultsubjectId='';
   const defaultuserid='';
@@ -96,6 +102,15 @@ const DiscussionForums: React.FC = () => {
   const [visibleAdd, setVisibleAdd] = useState(false);
   const classRoomName=<GetClassRoomNameByid classId={classId??defaultClassId}/>
   const subjectName=<GetSubjectNameBySubjectId subjectId={subjectId??defaultsubjectId}/>
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 
   useEffect(() => {
@@ -112,24 +127,39 @@ const DiscussionForums: React.FC = () => {
 
   return (
     <div>
-
-    <div className="fixed z-20 w-[100%]">
-    <HiBars4  
-          className={`absolute cursor-pointer  w-24
-           fill-slate-100  mr-[82vw] h-12 top-14 bg-[#586B7D] rounded-tr-2xl `} onClick={() => setOpen(!open)}/>
-      <NavBar/>
-    </div>
-
-    <div className="flex">
-      
-      <div className={` ${open ? "w-[15vw]" : "scale-0"} pt-[14.5vh] z-10 duration-100`} >
-         <SideBarStudent/>
+  
+      <div className="fixed z-20 w-full">
+        <HiBars4
+          className={`absolute cursor-pointer w-24 fill-slate-100 mr-[86%] h-12 xl:top-14 lg:top-12 sm:top-10 xs:top-8 bg-[#586B7D] rounded-tr-2xl xl:scale-100 lg:scale-90 md:scale-75 sm:scale-75 xs:scale-75`}
+          onClick={() => setOpen(!open)}
+        />
+        <NavBar />
       </div>
+  
+      <div className="flex">
+  
+        <div className={` ${open ? "w-[15vw]" : "scale-0"} xl:pt-[14.5vh] lg:pt-[14.5vh] md:pt-[14vh] sm:pt-[13vh] xs:pt-[12vh] z-10 duration-100`}>
+          {usersRole === 'ADMIN' && (
+            <SideBarAdmin />
+          )}
+          {usersRole === 'TEACHER' && (
+            <SideBarTeacher />
+          )}
+          {usersRole === 'PARENT' && (
+            <SideBarParent />
+          )}
+          {usersRole === 'STUDENT' && (
+            <SideBarStudent />
+          )}
+          {usersRole === 'PRINCIPAL' && (
+            <SideBarPrincipal />
+          )}
+        </div>
    
      
      <div className={`flex ${open ? "w-[85vw]" : "w-[100vw]"}`}>
 
-    <div className={`bg-slate-300 p-[5%] mt-[13vh] min-h-[87vh]`}>
+    <div className={`bg-slate-300 p-[5%] mt-[13vh] min-h-screen`}>
         <h1 className={`text-3xl p-[2%] text-slate-700 font-medium ${visibleAdd ? "blur-sm" : "blur-0"}`}> {classRoomName}</h1>
    
 

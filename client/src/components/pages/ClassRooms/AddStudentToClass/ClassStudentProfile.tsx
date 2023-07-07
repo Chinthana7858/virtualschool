@@ -8,6 +8,10 @@ import SideBarAdmin from "../../../ui/templates/SideBar/SideBar-Admin";
 import NavBar from "../../../ui/templates/NavBar/NavBar";
 import Button from "../../../ui/atoms/Buttons";
 import { AiFillDelete } from "react-icons/ai";
+import SideBarParent from "../../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../../ui/templates/SideBar/SideBar-Principal";
 
 
 interface User {
@@ -33,13 +37,23 @@ interface BackLinkProps {
 
 
 const ClassStudentProfile:React.FC= () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
   const { classId } = useParams<{ classId: string }>();
   const { sectionId } = useParams<{ sectionId: string }>();
   const { year } = useParams<{ year: string }>();
 
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/v1/users/${userid}`)
@@ -86,7 +100,16 @@ const ClassStudentProfile:React.FC= () => {
     <div className="flex">
       
       <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 mt-[5%]`} >
-         <SideBarAdmin/>
+          {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
       
@@ -168,12 +191,13 @@ const ClassStudentProfile:React.FC= () => {
      </span>
      <div className="pl-[80%] py-4">
       <BackLink url={`http://localhost:3000/ClassRoom/${sectionId}/${year}/${classId}`}>
+      {usersRole ==='ADMIN'  && (
       <Button name={'Remove from class'} 
                 buttonType={'secondary-red'} 
                 size={'md'}
                 padding={'3'}
                 onClick={handleRemoveFromClass}
-                icon={AiFillDelete}/>
+                icon={AiFillDelete}/>)}
       </BackLink>
       </div>
      <div className="w-[100%] top-[120%] pt-7">

@@ -57,4 +57,11 @@ public class SubjectController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/teacher/{teacherId}")
+    public List<Subject> getSubjectsByTeacherId(@PathVariable("teacherId") String teacherId) {
+        return subjectService.getSubjectsByTeacherId(teacherId);
+    }
+
+
 }

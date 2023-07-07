@@ -10,10 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -33,23 +30,17 @@ public class LearningMaterialService {
             throw new IllegalStateException("Cannot upload empty file");
         }
 
-        // 2. Check if file is a PDF
-        if (!file.getContentType().equals("application/pdf")) {
-            throw new IllegalStateException("Only PDF files are allowed");
-        }
-
-        // 3. Store material in MongoDB
+        // 2. Store material in MongoDB
         String materialId = UUID.randomUUID().toString();
         material.setMaterialId(materialId);
         repository.save(material);
 
-        // 4. Store the file in S3 and update material link in MongoDB
+        // 3. Store the file in S3 and update material link in MongoDB
         String path = String.format("%s/%s", BucketName.LEARNING_MATERIAL.getBucketName(), materialId);
-        String fileName = String.format("%s.pdf", materialId);
+        String fileName = file.getOriginalFilename();
 
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
-        metadata.put("Content-Length", String.valueOf(file.getSize()));
 
         try (InputStream inputStream = file.getInputStream()) {
             fileStore.save(path, fileName, Optional.of(metadata), inputStream);
@@ -77,19 +68,12 @@ public class LearningMaterialService {
 
         return inputStream;
     }
-    public void deleteLearningMaterial(String materialId) {
-        LearningMaterial material = repository.findById(materialId)
-                .orElseThrow(() -> new IllegalStateException("Material not found"));
-
-        String fileName = String.format("%s.pdf", materialId);
-        String path = String.format("%s/%s", BucketName.LEARNING_MATERIAL.getBucketName(), materialId);
-
-        boolean fileDeleted = fileStore.delete(path, fileName);
-
-        if (!fileDeleted) {
-            throw new IllegalStateException("Failed to delete file from S3");
-        }
-
+    public void deleteLearningMaterialById(String materialId) {
         repository.deleteById(materialId);
+    }
+
+
+    public List<LearningMaterial> getAllLearningMaterials() {
+        return repository.findAll();
     }
 }

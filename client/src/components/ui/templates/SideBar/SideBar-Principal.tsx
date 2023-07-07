@@ -1,15 +1,23 @@
+import { BiHome, BiLogOut, BiNotepad, BiPaperPlane, BiUser } from "react-icons/bi";
+import { GiGraduateCap } from "react-icons/gi";
 
 
 const SideBarPrincipal = () => {
 
     const Menus = [
-      { title: "Home", src: "Home" },
-      { title: "Sections", src: "Classroom" },
-      { title: "Results", src: "Results" },
-      { title: "Profile", src: "Profile" },
-      { title: "Contacts", src: "Contacts" },
-      { title: "SignOut", src: "SignOut" , gap: true },
+      { title: "Home",path:"/HomePagePrincipal", icon: <BiHome/>},
+      { title: "Sections",path:"/sections", icon: <GiGraduateCap/>},
+      { title: "Profile",path:"/MyProfile", icon: <BiUser/> },
+      { title: "Contacts",path:"/Users", icon: <BiPaperPlane/> },
+      { title: "SignOut", icon:  <BiLogOut/> , gap: true },
     ];
+
+    const handleSignOut = () => {
+      const confirmation = window.confirm("Are you sure you want to sign out?");
+      if (confirmation) {
+        window.location.href = "/";
+      }
+    };
   
     return (
     
@@ -24,17 +32,23 @@ const SideBarPrincipal = () => {
             </h1>
           </div>
           <ol className="pt-6">
-            {Menus.map((Menu, index) => (
+            {Menus.map((Menu) => (
+               <a href={Menu.path}>
               <li
                
                 className={`flex p-2 cursor-pointer text-white text-sm items-center gap-x-4 
                 ${Menu.gap ? "mt-9" : "mt-2"} hover:bg-slate-700`}
+                onClick={Menu.title === "SignOut" ? handleSignOut : undefined}
               >
-                <img src={`${process.env.PUBLIC_URL}/images/${Menu.src}.png`} className="w-7 h-7" />
-                <span className={` hover:bg-slate-700 `}>
+                <span className={` hover:bg-slate-700 text-2xl`}>
+                {Menu.icon}
+                </span>
+                
+                <span className={` hover:bg-slate-700 text-lg`}>
                   {Menu.title }
                 </span>
               </li>
+              </a>
             ))}
           </ol>
         </div>

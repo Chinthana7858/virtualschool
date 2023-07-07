@@ -1,4 +1,5 @@
 package com.innovatesolutions.virtualschool.service;
+import com.innovatesolutions.virtualschool.entity.LoginResponse;
 import com.innovatesolutions.virtualschool.enums.UserRole;
 import com.innovatesolutions.virtualschool.repository.UserRepository;
 import com.innovatesolutions.virtualschool.entity.User;
@@ -6,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +18,10 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Get all users
     public List<User> getAllUsers(){
@@ -24,9 +29,37 @@ public class UserService {
     }
 
     //Add new user
-    public void addNewUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassWord());
+        user.setPassWord(encodedPassword);
+        return userRepository.save(user);
     }
+
+    public LoginResponse login(User user) {
+        User userLog = userRepository.findByEmail(user.getEmail());
+
+        if (userLog != null) {
+            String encodedPassword = userLog.getPassWord();
+            String userId = userLog.getUserid();
+            UserRole userRole = userLog.getUserRole();
+            String role = userRole.toString();
+            String studentId = userLog.getStudentId();
+
+            if (passwordEncoder.matches(user.getPassWord(), encodedPassword)) {
+                if (userLog.getUserState().equals("1") || role.equals("ADMIN")) {
+                    return new LoginResponse("Login Success", true, role, userId, studentId);
+                } else {
+                    return new LoginResponse("Your registration request has not been approved yet", false, role, "78PpWeytrvhgftui876TYP", studentId);
+                }
+            } else {
+                return new LoginResponse("Password does not match", false, role, "78PpWeytrvhgftui876TYP", studentId);
+            }
+        } else {
+            return new LoginResponse("Email does not exist", false, "", "78PpWeytrvhgftui876TYP", user.getStudentId());
+        }
+    }
+
+
     //Get user bu userid
     public Optional<User> getUserById(String userid) {
         return userRepository.findById(userid);
@@ -53,25 +86,15 @@ public class UserService {
     }
 
     //Update user details
-    public boolean updateUser(String userid, User user) {
-        List<User> usersToUpdate = userRepository.findByUserid(userid);
-        if (!usersToUpdate.isEmpty()) {
-            User userToUpdate = usersToUpdate.get(0);
-            userToUpdate.setUserRole(user.getUserRole()!=null?user.getUserRole():userToUpdate.getUserRole());
-            userToUpdate.setUserState(user.getUserState()!=null?user.getUserState():userToUpdate.getUserState());
-            userToUpdate.setFullName(user.getFullName()!=null?user.getFullName():userToUpdate.getFullName());
-            userToUpdate.setPhoneNo(user.getPhoneNo()!=null?user.getPhoneNo():userToUpdate.getPhoneNo());
-            userToUpdate.setDateOfBirth(user.getDateOfBirth()!=null?user.getDateOfBirth():userToUpdate.getDateOfBirth());
-            userToUpdate.setEmail(user.getEmail()!=null?user.getEmail():userToUpdate.getEmail());
-            userToUpdate.setGender(user.getGender()!=null?user.getGender():userToUpdate.getGender());
-            userToUpdate.setAddress(user.getAddress()!=null?user.getAddress():userToUpdate.getAddress());
-            userRepository.save(userToUpdate);
-            return true;
-        } else {
-            throw new IllegalArgumentException("Invalid user Id:" + userid);
+    public User updateUserContactDetails(String userid, String email, String address) {
+        User user = (User) userRepository.findByUserid(userid);
+        if (user != null) {
+            user.setEmail(email);
+            user.setAddress(address);
+            return userRepository.save(user);
         }
+        return null; // or throw an exception if user not found
     }
-
     //User states: 0 - Request pending user/ 1 - Request approved user/ 2 - Removed user
     //
     //Update user state to 1 (Request approve)
@@ -144,5 +167,15 @@ public class UserService {
 
         return user;
     }
+
+    public List<String> getClassIdsByUserId(String userId) {
+        User user = userRepository.findClassIdsByUserid(userId);
+        if (user != null) {
+            return (List<String>) user.getClassIds();
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
+    }
 }
+
 

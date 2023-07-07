@@ -17,7 +17,9 @@ const ViewLink: React.FC<ViewLinkProps> = ({ url, children }) => (
 );
 
 const HomePageAdmin = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div className="font-nunito">
@@ -65,18 +67,7 @@ const HomePageAdmin = () => {
                </div>
 
                <div className="basis-1/2 xs:mt-7 ">
-                  <div className="flex-col">
-                      <div className="flex basis-1/12">
-                        <div><a className="font-semibold text-left">Results</a></div>
-                        <div className="pl-[45%]"><AccessButton/></div>
-                      </div>
-                      <img src={`${process.env.PUBLIC_URL}/images/YourResults.jpg`} className="w-[450px] h-[300px] basis-11/12"/>
-                   </div>
-               </div>
-          </div>
-          <div className="  mt-[5%] ml-[5%] 2xl:flex xl:flex lg:flex md:flex sm:flex xs:flex-col">
-          <div className="basis-1/2 xs:mt-7 ">
-                  <div className="flex-col">
+               <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">User Profiles</a></div>
                         <div className="pl-[45%]"><ViewLink url={`http://localhost:3000/Users`}><AccessButton/></ViewLink></div>
@@ -84,7 +75,6 @@ const HomePageAdmin = () => {
                       <img src={`${process.env.PUBLIC_URL}/images/UserProfiles.jpg`} className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>
                </div>
-
           </div>
       
           </div>

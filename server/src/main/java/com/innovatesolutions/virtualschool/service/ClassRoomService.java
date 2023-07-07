@@ -58,4 +58,8 @@ public class ClassRoomService {
         }
     }
 
+    public List<ClassRoom> getClassRoomsByTeacherInChargeId(String teacherInChargeId) {
+        return classRoomRepository.findByTeacherInChargeId(teacherInChargeId);
+    }
+
 }

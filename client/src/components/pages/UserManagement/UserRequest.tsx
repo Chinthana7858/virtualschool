@@ -9,6 +9,10 @@ import Button from "../../ui/atoms/Buttons";
 import Footer from "../../ui/templates/Footer/Footer";
 import { BiCheck } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
+import SideBarParent from "../../ui/templates/SideBar/SideBar-Parent";
+import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
+import SideBarTeacher from "../../ui/templates/SideBar/SideBar-Teacher";
+import SideBarPrincipal from "../../ui/templates/SideBar/SideBar-Principal";
 
 interface User {
   userid: string; 
@@ -20,6 +24,7 @@ interface User {
   dateOfBirth:string;
   email:string;
   nic:string;
+  gender:string;
   address:string;
  
 }
@@ -35,9 +40,20 @@ const BackLink: React.FC<BackLinkProps> = ({ url, children }) => (
 
 
 const UserRequest:React.FC= () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
   const [user, setUser] = useState<User | null>(null);
   const { userid } = useParams<{ userid: string }>();
+
+  const [usersRole, setUsersRole] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUsersRole = localStorage.getItem('role');
+    if (storedUsersRole) {
+      setUsersRole(storedUsersRole.toString());
+    }
+  }, []);
 
 //Get users details by userid
   useEffect(() => {
@@ -106,16 +122,27 @@ const UserRequest:React.FC= () => {
 
     <div className="flex">
       
-      <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 pt-20`} >
-         <SideBarAdmin/>
+      <div className={` ${open ? "w-[15vw]" : "scale-0"}  z-10 duration-100 pt-[7%]`} >
+      {usersRole ==='ADMIN' && (
+          <SideBarAdmin/>)}
+          {usersRole ==='TEACHER' && (
+          <SideBarTeacher/>)}
+          {usersRole ==='PARENT' && (
+          <SideBarParent/>)}
+          {usersRole ==='STUDENT' && (
+          <SideBarStudent/>)}
+          {usersRole ==='PRINCIPAL' && (
+          <SideBarPrincipal/>)}
       </div>
    
-      
-    <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
+        
+      <div className={` ${open ? "w-[85vw]" : "w-[100vw]"} duration-100`}>
+      <div className="pl-4">
     <div className="text-[#ffffff] rounded-b-3xl bg-gradient-to-r from-[#577794] to-transparent h-[280px]">
         <div className=" pl-[10%]">
               <div className='  pt-[7%] w-[50%]'>
                 <p className="pt-[65px] text-left 2xl:text-5xl xl:text-5xl lg:text-5xl md:text-5xl sm:text-5xl xs:text-4xl">
+               <span className='text-blue-50'> {user?.gender === 'MALE' ? 'Mr' : 'Ms'}</span> . 
                   {user?. nameWithInitials}
                 </p>
               </div>
@@ -128,18 +155,20 @@ const UserRequest:React.FC= () => {
             </div>
         </div>
   
+
     
-    <div className="max-w-[100vw] bg-slate-400 mt-1 relative rounded-l-[20px] h-auto ">
+    <div className="sm:max-w-[400px] md:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1250px] 
+    2xl:max-w-[1300px] bg-slate-400 mt-1 relative rounded-l-[20px] h-auto ">
       <h2 className="text-xl pl-[10%]  py-5 2xl:mr-[64%] xl:mr-[500px] lg:mr-[600px] sm:mr-[400px]">
-      User request
+      User Information
       </h2>
     </div>
      
-     <span className="flex max-w-[100vw]
-      bg-slate-200 mt-1 relative rounded-l-[20px] h-auto mb-[2%] ">
-      <span className="w-8 h-auto basis-7/12 ml-[10%] ">
+     <span className="flex sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1250px] 2xl:max-w-[1300px]
+      bg-slate-200 mt-1 relative rounded-l-[20px] h-auto ">
+      <span className="w-8 h-auto basis-7/12 ml-[10%]">
         <div className="flex-col ">
-          <div className=""> 
+        <div className="">
             <h6 className="p-3 text-left">User ID</h6>
           </div>
           <div>
@@ -149,17 +178,18 @@ const UserRequest:React.FC= () => {
             <h6 className="p-3 text-left ">Phone No</h6>
           </div>
           <div>
-            <h6 className="p-3 text-left ">Date Of Birth</h6>
-          </div>
-          <div>
             <h6 className="p-3 text-left ">Email</h6>
-          </div>
-          <div>
-            <h6 className="p-3 text-left ">NIC</h6>
           </div>
           <div>
             <h6 className="p-3 text-left ">Address</h6>
           </div>
+          <div>
+            <h6 className="p-3 text-left ">Date Of Birth</h6>
+          </div>
+          {user?.userRole !=='STUDENT' && (
+          <div>
+            <h6 className="p-3 text-left ">NIC</h6>
+          </div>)}
 
         </div>
       </span>
@@ -175,50 +205,53 @@ const UserRequest:React.FC= () => {
             <h6 className="p-3 text-left">:{user?.phoneNo}</h6>
           </div>
           <div>
-            <h6 className="p-3 text-left">:{user?.dateOfBirth}</h6>
-          </div>
-          <div>
             <h6 className="p-3 text-left">:{user?.email}</h6>
-          </div>
-          <div>
-            <h6 className="p-3 text-left">:{user?.nic}</h6>
           </div>
           <div>
             <h6 className="p-3 text-left">:{user?.address}</h6>
           </div>
+          <div>
+            <h6 className="p-3 text-left">:{user?.dateOfBirth}</h6>
+          </div>
+          
+     {user?.userRole !=='STUDENT' && (
+          <div>
+            <h6 className="p-3 text-left">:{user?.nic}</h6>
+          </div>)}
+         
+
         </div>
-
       </span>
-    
      </span>
-
-     <div className="flex w-[25vw] ml-[65%] xs:ml-[25%]"> 
-     <div className="basis-1/2">
-     <BackLink url={`http://localhost:3000/UsersRequests`}>
-      <Button 
-      name={'Accept'} 
-      buttonType={"secondary"} 
-      onClick={handleUpdateState} 
-      size={'md'}
-      padding={'3'}
-      icon={BiCheck}
-      />
-      </BackLink>
-     </div>
-     <div className="basis-1/2">
-     <BackLink url={`http://localhost:3000/UsersRequests`}>
-      <Button 
-      name={'Reject'} 
-      buttonType={"secondary"} 
-      onClick={handleReject} 
-      size={'md'}
-      padding={'3'}
-      icon={AiFillDelete}
-      />
-      </BackLink>
-      </div>
      </div>
 
+     {usersRole ==='ADMIN' && (
+  <div className="flex w-[25vw] ml-[65%] xs:ml-[25%]"> 
+  <div className="basis-1/2">
+  <BackLink url={`http://localhost:3000/UsersRequests`}>
+   <Button 
+   name={'Accept'} 
+   buttonType={"secondary"} 
+   onClick={handleUpdateState} 
+   size={'md'}
+   padding={'3'}
+   icon={BiCheck}
+   />
+   </BackLink>
+  </div>
+  <div className="basis-1/2">
+  <BackLink url={`http://localhost:3000/UsersRequests`}>
+   <Button 
+   name={'Reject'} 
+   buttonType={"secondary"} 
+   onClick={handleReject} 
+   size={'md'}
+   padding={'3'}
+   icon={AiFillDelete}
+   />
+   </BackLink>
+   </div>
+  </div>)}
 
      <div className="w-[100%] top-[120%] pt-8">
         <Footer/>

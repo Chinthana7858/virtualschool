@@ -24,15 +24,13 @@ public class User {
     private LocalDate dateOfBirth;
     @Indexed(unique = true)
     private String email;
-    @Indexed(unique = true)
-    private String NIC;
+    private String nic;
     private Gender gender;
     private String address;
     private List<String> classIds;
     private String passWord;
     private String studentId;
     public User(){
-
     }
 
     public User(String userid,
@@ -43,7 +41,7 @@ public class User {
                 String phoneNo,
                 LocalDate dateOfBirth,
                 String email,
-                String NIC,
+                String nic,
                 Gender gender,
                 String address,
                 List<String> classIds,
@@ -57,7 +55,7 @@ public class User {
         this.phoneNo=phoneNo;
         this.dateOfBirth=dateOfBirth;
         this.email = email;
-        this.NIC = NIC;
+        this.nic=nic;
         this.gender = gender;
         this.address = address;
         this.classIds = classIds;

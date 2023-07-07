@@ -1,22 +1,13 @@
 import React, { useState } from 'react'
 import { SubmitButton } from '../../ui/atoms/Buttons';
 
-interface TimeTable {
-    id: string;
-    classId:string;
-    rowNo:number;
-    timePeriod: string;
-    mondaySubject:string;
-    tuesdaySubject:string
-    wednesdaySubject:string;
-    thursdaySubject:string;
-    fridaySubject: string;
-  }
+
 
 function EditRowPopup(props: {  id: string;
   classId:string;
   rowNo:number;
-  timePeriod: string;
+  startingTime: string;
+  endingTime:string
   mondaySubject:string;
   tuesdaySubject:string
   wednesdaySubject:string;
@@ -25,7 +16,8 @@ function EditRowPopup(props: {  id: string;
 
     // Define state to hold the input field values
     const [formValues, setFormValues] = useState({
-      timePeriod: props.timePeriod,
+      startingTime: props.startingTime,
+      endingTime:props.endingTime,
       mondaySubject: props.mondaySubject,
       tuesdaySubject: props.tuesdaySubject,
       wednesdaySubject: props.wednesdaySubject,
@@ -67,16 +59,18 @@ function EditRowPopup(props: {  id: string;
         <h1 className='pb-4 text-xl font-semibold text-center text-slate-700'>Enter data</h1>
         <div className='flex'>
         <div className="basis-1/3">
-          <p className="p-[13.5px]">Time Period</p>
-          <p className="p-[13.5px]">Monday</p>
-          <p className="p-[13.5px]">Tuesday</p>
-          <p className="p-[13.5px]">Wednesday</p>
-          <p className="p-[13.5px]">Thursday</p>
-          <p className="p-[13.5px]">Friday</p>
+        <p className="p-[13.5px]">Sterting time</p>
+        <p className="p-[13.5px]">Ending time</p>
+        <p className="p-[13.5px]">Monday</p>
+        <p className="p-[13.5px]">Tuesday</p>
+        <p className="p-[13.5px]">Wednesday</p>
+        <p className="p-[13.5px]">Thursday</p>
+        <p className="p-[13.5px]">Friday</p>
       </div>
       <div className="basis-2/3">
       <form onSubmit={handleSubmit}>
-      <input type="text" name="timePeriod" value={formValues.timePeriod} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+      <input type="time" name="startingTime" value={formValues.startingTime} className="w-[200px] p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
+      <input type="time" name="endingTime" value={formValues.endingTime} className="w-[200px] p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
       <input type="text" name="mondaySubject" value={formValues.mondaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
       <input type="text" name="tuesdaySubject" value={formValues.tuesdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />
       <input type="text" name="wednesdaySubject" value={formValues.wednesdaySubject} className="p-1 m-2 border rounded-md border-slate-400" onChange={handleInputChange} />

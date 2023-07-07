@@ -56,4 +56,8 @@ public class SubjectService {
         }
         return Optional.empty();
     }
+
+    public List<Subject> getSubjectsByTeacherId(String teacherId) {
+        return subjectRepository.findByTeacherId(teacherId);
+    }
 }

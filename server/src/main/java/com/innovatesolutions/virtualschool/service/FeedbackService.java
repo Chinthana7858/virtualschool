@@ -13,12 +13,8 @@ import java.util.List;
 public class FeedbackService {
     @Autowired
     private final FeedbackRepository feedbackRepository;
-    public List<Feedback> getFeedbackBySubjectId(
-            String subjectId
-    ) {
-        return feedbackRepository.findBySubjectId(
-                subjectId
-        );
+    public List<Feedback> getFeedbackBySubjectIdAndStudentId(String subjectId, String studentId) {
+        return feedbackRepository.findBySubjectIdAndStudentId(subjectId, studentId);
     }
 
     public List<Feedback> getFeedbackByStudentId(
@@ -43,4 +39,7 @@ public class FeedbackService {
         return feedbackRepository.save(feedback);
     }
 
+    public void deleteFeedbackById(String feedbackId) {
+        feedbackRepository.deleteByFeedbackId(feedbackId);
+    }
 }

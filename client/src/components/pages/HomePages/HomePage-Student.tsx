@@ -4,11 +4,13 @@ import NavBar from "../../ui/templates/NavBar/NavBar";
 import { useState } from "react";
 import { HiBars4 } from "react-icons/hi2";
 import SideBarStudent from "../../ui/templates/SideBar/SideBar-Student";
-import { AccessButton,ViewButton } from "../../ui/atoms/Buttons";
+import {ViewButton } from "../../ui/atoms/Buttons";
 import HomePageDescription from "../../ui/organisms/HomePageDescription";
 
 const HomePageStudent = () => {
-  const [open, setOpen] = useState(true);
+  const initialState = JSON.parse(localStorage.getItem('sidebar') ?? 'false');
+  const [open, setOpen] = useState(initialState);
+  localStorage.setItem('sidebar', JSON.stringify(open));
 
   return (
     <div>
@@ -39,7 +41,7 @@ const HomePageStudent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Results</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/SResults1`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourResults.jpg"className="w-[450px] h-[300px] basis-11/12"/>
                    </div>
@@ -51,7 +53,7 @@ const HomePageStudent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Classroom</a></div>
-                        <div className="pl-[45%]"><AccessButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/MyClasses`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourClassroom.jpg"className="w-[450px] h-[300px] basis-11/12"/>
                    </div>
@@ -61,18 +63,18 @@ const HomePageStudent = () => {
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Feedback</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/StudentFeedback`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourFeedback.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>
                </div>
           </div>
-          <div className="  mt-5%] ml-[5%] 2xl:flex xl:flex lg:flex md:flex sm:flex xs:flex-col">
+          <div className="  mt-[5%] ml-[5%] 2xl:flex xl:flex lg:flex md:flex sm:flex xs:flex-col">
           <div className="basis-1/2 xs:mt-7 ">
                   <div className="flex-col">
                       <div className="flex basis-1/12">
                         <div><a className="font-semibold text-left">Your Attendance</a></div>
-                        <div className="pl-[45%]"><ViewButton/></div>
+                        <div className="pl-[45%]"><a href={`http://localhost:3000/AttendanceStudent`}><ViewButton/></a></div>
                       </div>
                       <img src="./images/YourAttendance.jpg"className="w-[450px] h-[270px] rounded-2xl basis-11/12 mt-4"/>
                    </div>
